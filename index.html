@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio professionnel de SAHRAOUI TUDERT - Spécialiste en Administration Réseau & Cybersécurité">
+    <meta name="keywords" content="cybersécurité, réseau, administration système, développement web">
+    <meta name="author" content="SAHRAOUI TUDERT">
+    <meta property="og:title" content="Portfolio - SAHRAOUI TUDERT">
+    <meta property="og:description" content="Spécialiste en Administration Réseau & Cybersécurité">
+    <meta property="og:type" content="website">
+    
+    <title>Portfolio Premium | SAHRAOUI TUDERT 🌸</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+    
+    <!-- Polices -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    
+    <!-- Styles -->
+
+    
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Préchargeur Premium -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <div class="spinner-container">
+                <div class="spinner"></div>
+                <div class="spinner-ring"></div>
+            </div>
+            <h2 class="preloader-text">SAHRAOUI TUDERT</h2>
+            <p class="preloader-subtitle">Chargement du portfolio...</p>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <span class="progress-percentage" id="progressPercentage">0%</span>
+        </div>
+    </div>
+    
+    <!-- Barre de progression du scroll -->
+    <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+    
+    <!-- Particules de fond -->
+    <div class="particles-background" id="particlesBackground"></div>
+    
+    <!-- Bouton de mode sombre -->
+    <button class="theme-toggle-btn" id="themeToggle" aria-label="Basculer le thème">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+    </button>
+    
+    <!-- Bouton retour en haut -->
+    <button class="scroll-to-top" id="scrollToTop" aria-label="Retour en haut">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <!-- Menu de navigation flottant -->
+    <nav class="floating-nav" id="floatingNav">
+        <button class="nav-toggle" id="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#lobby" class="nav-link active" data-section="lobby">
+                <i class="fas fa-home"></i>
+                <span>Accueil</span>
+            </a></li>
+            <li><a href="#about" class="nav-link" data-section="about">
+                <i class="fas fa-user"></i>
+                <span>À Propos</span>
+            </a></li>
+            <li><a href="#skills" class="nav-link" data-section="skills">
+                <i class="fas fa-code"></i>
+                <span>Compétences</span>
+            </a></li>
+            <li><a href="#projects" class="nav-link" data-section="projects">
+                <i class="fas fa-project-diagram"></i>
+                <span>Projets</span>
+            </a></li>
+            <li><a href="#education" class="nav-link" data-section="education">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Formation</span>
+            </a></li>
+            <li><a href="#testimonials" class="nav-link" data-section="testimonials">
+                <i class="fas fa-star"></i>
+                <span>Témoignages</span>
+            </a></li>
+            <li><a href="#contact" class="nav-link" data-section="contact">
+                <i class="fas fa-envelope"></i>
+                <span>Contact</span>
+            </a></li>
+        </ul>
+    </nav>
+    
+    <!-- Section Lobby Améliorée -->
+    <section class="lobby-section" id="lobby">
+        <div class="lobby-background">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+        
+        <div class="lobby-container">
+            <div class="lobby-content" data-aos="fade-up" data-aos-duration="1000">
+                <!-- Avatar animé -->
+                <div class="lobby-avatar">
+                    <div class="avatar-container">
+                        <div class="avatar-ring"></div>
+                        <div class="avatar-image">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="avatar-status">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Disponible</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Titre principal -->
+                <h1 class="lobby-title">
+                    <span class="title-greeting">Bonjour, je suis</span>
+                    <span class="title-name">SAHRAOUI TUDERT</span>
+                    <span class="title-accent">✨</span>
+                </h1>
+                
+                <!-- Texte animé -->
+                <div class="lobby-subtitle">
+                    <span class="typing-text">
+                        <span class="typed-text"></span>
+                        <span class="cursor">|</span>
+                    </span>
+                </div>
+                
+                <!-- Description -->
+                <p class="lobby-description">
+                    Passionnée par la <strong>cybersécurité</strong> et l'<strong>administration réseau</strong>, 
+                    je combine compétences techniques et créativité pour concevoir des 
+                    <span class="highlight">solutions sécurisées et innovantes</span>.
+                </p>
+                
+                <!-- Badges de compétences -->
+                <div class="skills-badges">
+                    <span class="badge badge-primary">
+                        <i class="fas fa-shield-alt"></i>
+                        Cybersécurité
+                    </span>
+                    <span class="badge badge-secondary">
+                        <i class="fas fa-network-wired"></i>
+                        Réseau
+                    </span>
+                    <span class="badge badge-accent">
+                        <i class="fas fa-code"></i>
+                        Développement
+                    </span>
+                </div>
+                
+                <!-- Statistiques rapides -->
+                <div class="quick-stats">
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                        <div class="stat-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number" data-target="3">0</span>
+                            <span class="stat-label">Projets</span>
+                        </div>
+                    </div>
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                        <div class="stat-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number" data-target="4">0</span>
+                            <span class="stat-label">Certifications</span>
+                        </div>
+                    </div>
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number" data-target="1">0</span>
+                            <span class="stat-label">Prix</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Boutons d'action -->
+                <div class="lobby-actions">
+                    <button class="btn btn-primary btn-lg" onclick="scrollToSection('projects')">
+                        <i class="fas fa-rocket"></i>
+                        <span>Découvrir mes projets</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    <button class="btn btn-outline btn-lg" onclick="scrollToSection('contact')">
+                        <i class="fas fa-envelope"></i>
+                        <span>Me contacter</span>
+                    </button>
+                </div>
+                
+                <!-- Réseaux sociaux -->
+                <div class="social-links-lobby">
+                    <a href="https://www.linkedin.com/in/tudert-sahraoui-44982235b/" target="_blank" rel="noopener" class="social-link" data-aos="zoom-in" data-aos-delay="400">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/tudertshr" target="_blank" rel="noopener" class="social-link" data-aos="zoom-in" data-aos-delay="500">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:tudertsahraoui@gmail.com" class="social-link" data-aos="zoom-in" data-aos-delay="600">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="tel:+213558857832" class="social-link" data-aos="zoom-in" data-aos-delay="700">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Indicateur de scroll -->
+            <div class="scroll-indicator" data-aos="fade-up" data-aos-delay="800">
+                <div class="mouse">
+                    <div class="wheel"></div>
+                </div>
+                <p>Faites défiler</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section À Propos Améliorée -->
+    <section class="about-section section" id="about">
+        <div class="container">
+            <!-- En-tête de section -->
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-number">01</span>
+                <h2 class="section-title">
+                    <span class="title-icon"><i class="fas fa-user"></i></span>
+                    À Propos de Moi
+                </h2>
+                <p class="section-subtitle">Découvrez mon parcours et mes objectifs professionnels</p>
+            </div>
+            
+            <!-- Grille de profil -->
+            <div class="about-grid">
+                <!-- Carte de profil principale -->
+                <div class="profile-main-card" data-aos="fade-right">
+                    <div class="card-header-gradient"></div>
+                    
+                    <div class="profile-avatar-section">
+                        <div class="avatar-wrapper">
+                            <div class="avatar-bg-animation"></div>
+                            <div class="avatar-img">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <div class="avatar-badge">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-info">
+                        <h3 class="profile-name">SAHRAOUI TUDERT</h3>
+                        <p class="profile-role">
+                            <i class="fas fa-shield-alt"></i>
+                            Spécialiste en Administration & Sécurité des Réseaux
+                        </p>
+                        <p class="profile-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Raffour, Bouira, Algérie
+                        </p>
+                    </div>
+                    
+                    <!-- Informations de contact -->
+                    <div class="contact-info-grid">
+                        <div class="contact-info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="info-content">
+                                <span class="info-label">Email</span>
+                                <a href="mailto:tudertsahraoui@gmail.com" class="info-value">tudertsahraoui@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="info-content">
+                                <span class="info-label">Téléphone</span>
+                                <a href="tel:+213558857832" class="info-value">+213 558 857 832</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <div class="info-content">
+                                <span class="info-label">Statut</span>
+                                <span class="info-value status-available">
+                                    <span class="status-dot-small"></span>
+                                    Disponible
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="info-content">
+                                <span class="info-label">Formation</span>
+                                <span class="info-value">BTS ASRI</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Boutons d'action -->
+                    <div class="profile-actions">
+                        <a href="doc/SAHRAOUI TUDERT CV.pdf" download class="btn btn-primary btn-block">
+                            <i class="fas fa-download"></i>
+                            <span>Télécharger mon CV</span>
+                        </a>
+                        <button class="btn btn-outline btn-block" onclick="scrollToSection('contact')">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Me contacter</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Objectif et compétences clés -->
+                <div class="about-details" data-aos="fade-left">
+                    <!-- Objectif professionnel -->
+                    <div class="objective-card card-premium">
+                        <div class="card-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3 class="card-title">Objectif Professionnel</h3>
+                        <p class="card-text">
+                            Actuellement en recherche active d'un <strong>stage ou alternance</strong> en 
+                            Administration Réseau et Cybersécurité pour mettre en pratique mes compétences 
+                            techniques dans un environnement professionnel stimulant.
+                        </p>
+                        <div class="highlights-list">
+                            <div class="highlight-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Passionnée par la Cybersécurité et les nouvelles Technologies</span>
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Autonomie, Sens d'analyse et Apprentissage rapide</span>
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Expérience en développement web et administration système</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Valeurs et soft skills -->
+                    <div class="values-card card-premium">
+                        <div class="card-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3 class="card-title">Valeurs & Soft Skills</h3>
+                        <div class="values-grid">
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="fas fa-puzzle-piece"></i>
+                                </div>
+                                <span>Résolution de problèmes</span>
+                            </div>
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <span>Travail d'équipe</span>
+                            </div>
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                                <span>Rigueur & Organisation</span>
+                            </div>
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <span>Communication</span>
+                            </div>
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="fas fa-user-check"></i>
+                                </div>
+                                <span>Autonomie</span>
+                            </div>
+                            <div class="value-item">
+                                <div class="value-icon">
+                                    <i class="fas fa-sync-alt"></i>
+                                </div>
+                                <span>Adaptabilité</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Langues parlées -->
+                    <div class="languages-quick-card card-premium">
+                        <div class="card-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="card-title">Langues Maîtrisées</h3>
+                        <div class="languages-quick-list">
+                            <div class="language-quick-item">
+                                <span class="language-flag">🇩🇿</span>
+                                <div class="language-details">
+                                    <span class="language-name">Kabyle & Arabe</span>
+                                    <span class="language-level">Langue maternelle</span>
+                                </div>
+                            </div>
+                            <div class="language-quick-item">
+                                <span class="language-flag">🇫🇷</span>
+                                <div class="language-details">
+                                    <span class="language-name">Français</span>
+                                    <span class="language-level">C1 - TCF 566/699</span>
+                                </div>
+                            </div>
+                            <div class="language-quick-item">
+                                <span class="language-flag">🇬🇧</span>
+                                <div class="language-details">
+                                    <span class="language-name">Anglais</span>
+                                    <span class="language-level">B2 - BC 436/599</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section Compétences Améliorée -->
+    <section class="skills-section section section-dark" id="skills">
+        <div class="container">
+            <!-- En-tête -->
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-number">02</span>
+                <h2 class="section-title">
+                    <span class="title-icon"><i class="fas fa-code"></i></span>
+                    Compétences Techniques
+                </h2>
+                <p class="section-subtitle">Un aperçu de mes expertises et technologies maîtrisées</p>
+            </div>
+            
+            <!-- Grille de compétences -->
+            <div class="skills-grid">
+                <!-- Réseau & Infrastructure -->
+                <div class="skill-category-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3 class="category-title">Réseau & Infrastructure</h3>
+                    </div>
+                    
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Windows Server & Active Directory</span>
+                                <span class="skill-percentage">85%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="85"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">DNS, DHCP & GPO</span>
+                                <span class="skill-percentage">85%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="85"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Sécurité réseau (ACL, Firewall, Pfsense)</span>
+                                <span class="skill-percentage">80%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="80"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Cisco Packet Tracer</span>
+                                <span class="skill-percentage">82%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="82"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cybersécurité -->
+                <div class="skill-category-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="category-title">Cybersécurité</h3>
+                    </div>
+                    
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Kali Linux & Tests de vulnérabilités</span>
+                                <span class="skill-percentage">80%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="80"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Kibana & analyse de logs</span>
+                                <span class="skill-percentage">75%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="75"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Virtualisation (VirtualBox, VMware)</span>
+                                <span class="skill-percentage">85%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="85"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Administration Linux</span>
+                                <span class="skill-percentage">80%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="80"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Développement Web -->
+                <div class="skill-category-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="category-title">Développement & Outils</h3>
+                    </div>
+                    
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">HTML, CSS, JavaScript</span>
+                                <span class="skill-percentage">85%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="85"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Git & GitHub Pages</span>
+                                <span class="skill-percentage">82%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="82"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Outils IA pour le développement</span>
+                                <span class="skill-percentage">80%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="80"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Wireshark & Nmap</span>
+                                <span class="skill-percentage">75%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="75"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Technologies et outils (Tags cloud) -->
+            <div class="technologies-cloud" data-aos="fade-up" data-aos-delay="400">
+                <h3 class="cloud-title">
+                    <i class="fas fa-tools"></i>
+                    Technologies & Outils
+                </h3>
+                <div class="tech-tags">
+                    <span class="tech-tag">Windows Server</span>
+                    <span class="tech-tag">Active Directory</span>
+                    <span class="tech-tag">DNS</span>
+                    <span class="tech-tag">DHCP</span>
+                    <span class="tech-tag">GPO</span>
+                    <span class="tech-tag">RAID</span>
+                    <span class="tech-tag">VirtualBox</span>
+                    <span class="tech-tag">VMware</span>
+                    <span class="tech-tag">Linux</span>
+                    <span class="tech-tag">Pfsense</span>
+                    <span class="tech-tag">Cisco Packet Tracer</span>
+                    <span class="tech-tag">Kali Linux</span>
+                    <span class="tech-tag">Kibana</span>
+                    <span class="tech-tag">Snort</span>
+                    <span class="tech-tag">Security Onion</span>
+                    <span class="tech-tag">Wireshark</span>
+                    <span class="tech-tag">Nmap</span>
+                    <span class="tech-tag">HTML5</span>
+                    <span class="tech-tag">CSS3</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">Git</span>
+                    <span class="tech-tag">GitHub Pages</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <!-- Section Projets Améliorée -->
+    <section class="projects-section section" id="projects">
+        <div class="container">
+            <!-- En-tête -->
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-number">03</span>
+                <h2 class="section-title">
+                    <span class="title-icon"><i class="fas fa-project-diagram"></i></span>
+                    Mes Projets
+                </h2>
+                <p class="section-subtitle">Découvrez mes réalisations en cybersécurité, réseau et développement</p>
+            </div>
+            
+            <!-- Filtres de projets -->
+            <div class="project-filters" data-aos="fade-up" data-aos-delay="100">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fas fa-th"></i>
+                    <span>Tous les projets</span>
+                </button>
+                <button class="filter-btn" data-filter="security">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Cybersécurité</span>
+                </button>
+                <button class="filter-btn" data-filter="network">
+                    <i class="fas fa-network-wired"></i>
+                    <span>Réseau</span>
+                </button>
+                <button class="filter-btn" data-filter="development">
+                    <i class="fas fa-code"></i>
+                    <span>Développement</span>
+                </button>
+                <button class="filter-btn" data-filter="achievement">
+                    <i class="fas fa-trophy"></i>
+                    <span>Réalisations</span>
+                </button>
+            </div>
+            
+            <!-- Grille de projets -->
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Les projets seront injectés dynamiquement via JavaScript -->
+            </div>
+            
+            <!-- Bouton voir plus -->
+            <div class="load-more-container" data-aos="fade-up">
+                <button class="btn btn-outline btn-lg" id="loadMoreBtn">
+                    <i class="fas fa-plus"></i>
+                    <span>Charger plus de projets</span>
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section Formation -->
+    <section class="education-section section section-dark" id="education">
+        <div class="container">
+            <!-- En-tête -->
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-number">04</span>
+                <h2 class="section-title">
+                    <span class="title-icon"><i class="fas fa-graduation-cap"></i></span>
+                    Formation & Éducation
+                </h2>
+                <p class="section-subtitle">Mon parcours académique et mes certifications</p>
+            </div>
+            
+            <!-- Timeline de formation -->
+            <div class="education-timeline">
+                <!-- Item 1 -->
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+                    <div class="timeline-marker">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-connector"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-badge">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <div class="timeline-date">2024 - 2026</div>
+                        <h3 class="timeline-title">BTS Administration et Sécurité des Réseaux Informatiques</h3>
+                        <p class="timeline-institution">
+                            <i class="fas fa-university"></i>
+                            INSIM Bouira
+                        </p>
+                        <p class="timeline-description">
+                            Formation approfondie en administration système, sécurité réseau et infrastructure informatique. 
+                            Apprentissage des protocoles réseau, configuration de routeurs et switches, mise en place de politiques de sécurité.
+                        </p>
+                        <div class="timeline-skills">
+                            <span class="skill-tag-small">Cisco</span>
+                            <span class="skill-tag-small">Linux</span>
+                            <span class="skill-tag-small">Windows Server</span>
+                            <span class="skill-tag-small">Sécurité</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 2 -->
+                <div class="timeline-item" data-aos="fade-left" data-aos-delay="200">
+                    <div class="timeline-marker">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-connector"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-badge">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="timeline-date">2024 - 2026</div>
+                        <h3 class="timeline-title">AEC Gestion des Systèmes Réseau Informatique</h3>
+                        <p class="timeline-institution">
+                            <i class="fas fa-university"></i>
+                            HIMI Bouira / Sherbrooke Canada
+                        </p>
+                        <p class="timeline-description">
+                            Programme international axé sur la gestion des systèmes réseau avec une perspective globale. 
+                            Collaboration avec des institutions canadiennes pour une formation de qualité internationale.
+                        </p>
+                        <div class="timeline-skills">
+                            <span class="skill-tag-small">Gestion réseau</span>
+                            <span class="skill-tag-small">Virtualisation</span>
+                            <span class="skill-tag-small">Cloud</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 3 -->
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="300">
+                    <div class="timeline-marker">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-connector"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-badge">
+                            <i class="fas fa-drafting-compass"></i>
+                        </div>
+                        <div class="timeline-date">2021 - 2024</div>
+                        <h3 class="timeline-title">Licence en Architecture</h3>
+                        <p class="timeline-institution">
+                            <i class="fas fa-university"></i>
+                            Université de Béjaïa
+                        </p>
+                        <p class="timeline-description">
+                            Formation en conception architecturale développant la rigueur, le sens de l'organisation et la créativité. 
+                            Compétences transférables en gestion de projets complexes.
+                        </p>
+                        <div class="timeline-skills">
+                            <span class="skill-tag-small">Gestion de projet</span>
+                            <span class="skill-tag-small">Organisation</span>
+                            <span class="skill-tag-small">Créativité</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 4 -->
+                <div class="timeline-item" data-aos="fade-left" data-aos-delay="400">
+                    <div class="timeline-marker">
+                        <div class="timeline-dot"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-badge">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <div class="timeline-date">2018 - 2021</div>
+                        <h3 class="timeline-title">Baccalauréat Scientifique</h3>
+                        <p class="timeline-institution">
+                            <i class="fas fa-school"></i>
+                            Lycée Terrache Hcene
+                        </p>
+                        <p class="timeline-description">
+                            Formation scientifique avec spécialisation en mathématiques et physique. 
+                            Base solide pour les études techniques et scientifiques.
+                        </p>
+                        <div class="timeline-skills">
+                            <span class="skill-tag-small">Mathématiques</span>
+                            <span class="skill-tag-small">Physique</span>
+                            <span class="skill-tag-small">Sciences</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Certifications -->
+            <div class="certifications-section" data-aos="fade-up" data-aos-delay="500">
+                <h3 class="certifications-title">
+                    <i class="fas fa-award"></i>
+                    Certifications & Distinctions
+                </h3>
+                <div class="certifications-grid">
+                    <div class="certification-card">
+                        <div class="certification-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h4 class="certification-name">1ère Place Olympiades des Métiers</h4>
+                        <p class="certification-issuer">Phase Wilaya - 2025</p>
+                        <p class="certification-description">
+                            Qualification pour la phase nationale en Administration et Sécurité des Réseaux
+                        </p>
+                    </div>
+                    
+                    <div class="certification-card">
+                        <div class="certification-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h4 class="certification-name">TCF Français - C1</h4>
+                        <p class="certification-issuer">Score: 566/699</p>
+                        <p class="certification-description">
+                            Niveau avancé en langue française certifié
+                        </p>
+                    </div>
+                    
+                    <div class="certification-card">
+                        <div class="certification-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h4 class="certification-name">British Council Anglais - B2</h4>
+                        <p class="certification-issuer">Score: 436/599</p>
+                        <p class="certification-description">
+                            Niveau intermédiaire supérieur en anglais
+                        </p>
+                    </div>
+                    
+                    <div class="certification-card">
+                        <div class="certification-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h4 class="certification-name">Cisco Packet Tracer</h4>
+                        <p class="certification-issuer">Formation pratique</p>
+                        <p class="certification-description">
+                            Maîtrise de la simulation réseau Cisco
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section Témoignages -->
+    <section class="testimonials-section section" id="testimonials">
+        <div class="container">
+            <!-- En-tête -->
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-number">05</span>
+                <h2 class="section-title">
+                    <span class="title-icon"><i class="fas fa-star"></i></span>
+                    Témoignages
+                </h2>
+                <p class="section-subtitle">Ce que disent mes collaborateurs et formateurs</p>
+            </div>
+            
+            <!-- Slider de témoignages -->
+            <div class="testimonials-slider" data-aos="fade-up" data-aos-delay="100">
+                <div class="testimonials-container" id="testimonialsContainer">
+                    <!-- Témoignage 1 -->
+                    <div class="testimonial-card active">
+                        <div class="testimonial-quote">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "TUDERT fait preuve d'une excellente maîtrise technique et d'une grande curiosité intellectuelle. 
+                            Son travail lors des TP de sécurité réseau démontre une compréhension approfondie des concepts 
+                            et une capacité remarquable à résoudre des problèmes complexes."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="author-info">
+                                <h4 class="author-name">M. BENALI</h4>
+                                <p class="author-position">Formateur en Sécurité Réseau - INSIM Bouira</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Témoignage 2 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "Une étudiante brillante et investie. Sa participation aux Olympiades des Métiers 
+                            et sa première place démontrent son excellence technique et sa détermination. 
+                            Elle a un grand avenir dans le domaine de la cybersécurité."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <div class="author-info">
+                                <h4 class="author-name">Mme KACI</h4>
+                                <p class="author-position">Directrice Pédagogique - INSIM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Témoignage 3 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "TUDERT est une collègue de travail exceptionnelle. Son esprit d'équipe, 
+                            sa capacité à partager ses connaissances et son approche méthodique font d'elle 
+                            une personne avec qui il est agréable de collaborer sur des projets."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="author-info">
+                                <h4 class="author-name">Sarah M.</h4>
+                                <p class="author-position">Étudiante en Réseau - Promotion 2024-2026</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contrôles du slider -->
+                <div class="testimonials-controls">
+                    <button class="testimonial-btn prev-btn" id="prevTestimonial">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="testimonials-dots" id="testimonialsDots"></div>
+                    <button class="testimonial-btn next-btn" id="nextTestimonial">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section Contact -->
+ 
+    <!-- Section Contact -->
+    <section class="contact-section" id="contact">
+        <div class="section-container">
+            <!-- En-tête -->
+            <div class="section-header">
+                <div class="header-decoration">
+                    <span class="header-number">05</span>
+                    <div class="header-line"></div>
+                </div>
+                <h2 class="section-title">Contactez-moi</h2>
+                <p class="section-subtitle">Discutons de votre projet ou opportunité</p>
+            </div>
+ 
+            <div class="contact-grid">
+                <!-- Informations de contact -->
+                <div class="contact-info" data-aos="fade-right">
+                    <div class="info-card">
+                        <h3 class="card-title">Travaillons ensemble</h3>
+                        <p class="card-description">
+                            Je suis actuellement disponible pour des opportunités de stage ou alternance 
+                            en Administration Réseau et Cybersécurité. N'hésitez pas à me contacter pour 
+                            discuter de votre projet.
+                        </p>
+                        
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <div class="item-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="item-content">
+                                    <h4>Email</h4>
+                                    <a href="mailto:tudertsahraoui@gmail.com">tudertsahraoui@gmail.com</a>
+                                    <p class="item-note">Réponse sous 24h</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="item-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="item-content">
+                                    <h4>Téléphone</h4>
+                                    <a href="tel:+213558857832">+213 558 857 832</a>
+                                    <p class="item-note">Disponible 9h-18h</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="item-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="item-content">
+                                    <h4>Localisation</h4>
+                                    <p>Raffour, Bouira, Algérie</p>
+                                    <p class="item-note">Mobilité nationale</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="item-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="item-content">
+                                    <h4>Disponibilité</h4>
+                                    <p>Immédiate</p>
+                                    <p class="item-note">Stage/Alternance</p>
+                                </div>
+                            </div>
+                        </div>
+ 
+                        <!-- Réseaux sociaux -->
+                        <div class="contact-social">
+                            <h4>Suivez-moi</h4>
+                            <div class="social-links">
+                                <a href="https://www.linkedin.com/in/tudert-sahraoui-44982235b/" class="social-link" target="_blank" rel="noopener">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                                <a href="https://github.com/tudertshr" class="social-link" target="_blank" rel="noopener">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="mailto:tudertsahraoui@gmail.com" class="social-link">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                <a href="doc/SAHRAOUI TUDERT CV.pdf" download class="social-link" target="_blank" rel="noopener" title="Télécharger mon CV">
+                                    <i class="fas fa-file-pdf"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+ 
+                <!-- Formulaire -->
+                <div class="contact-form-container" data-aos="fade-left">
+                    <div class="form-card">
+                        <h3 class="form-title">Envoyez un message</h3>
+                        <p class="form-subtitle">Remplissez le formulaire ci-dessous</p>
+                        
+                        <form id="contactForm" class="contact-form" action="https://formspree.io/f/mojkgogw" method="POST">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" id="name" name="name"  placeholder=" " required>
+                                    <label for="name">Votre nom complet</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="email" id="email" name="email"  placeholder=" " required>
+                                    <label for="email">Adresse email</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" id="subject" name="subject"  placeholder=" " required>
+                                    <label for="subject">Sujet du message</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-tag"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select id="type" name="type" required>
+                                        <option value=""></option>
+                                        <option value="stage">Proposition de stage</option>
+                                        <option value="alternance">Proposition d'alternance</option>
+                                        <option value="collaboration">Collaboration sur projet</option>
+                                        <option value="question">Question technique</option>
+                                        <option value="autre">Autre</option>
+                                    </select>
+                                    <label for="type">Type de demande</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-list"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <textarea id="message" name="message" rows="5" placeholder=" " required></textarea>
+                                    <label for="message">Votre message</label>
+                                    <div class="input-icon">
+                                        <i class="fas fa-comment"></i>
+                                    </div>
+                                    <div class="char-count">
+                                        <span id="charCount">0</span>/500
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-large">
+                                    <span class="btn-text">Envoyer le message</span>
+                                    <span class="btn-loader">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                    </span>
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="form-message" id="formMessage"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+ 
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <!-- Logo + tagline + social -->
+                <div class="footer-logo-block">
+                    <div class="footer-logo">
+                        <div class="logo-symbol">ST</div>
+                        <div class="logo-text">
+                            <h3>SAHRAOUI TUDERT</h3>
+                            <p>Administration Réseau &amp; Cybersécurité</p>
+                        </div>
+                    </div>
+                    <p class="footer-tagline">Passionnée par la sécurité des systèmes et les solutions réseau innovantes. Disponible pour stage ou alternance.</p>
+                    <div class="footer-social">
+                        <a href="https://www.linkedin.com/in/tudert-sahraoui-44982235b/" class="social-icon" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/tudertshr" class="social-icon" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+                        <a href="mailto:tudertsahraoui@gmail.com" class="social-icon"><i class="fas fa-envelope"></i></a>
+                        <a href="doc/SAHRAOUI TUDERT CV.pdf.pdf" download class="social-icon" target="_blank" rel="noopener" title="Télécharger mon CV"><i class="fas fa-file-pdf"></i></a>
+                    </div>
+                </div>
+ 
+                <!-- Navigation rapide -->
+                <div class="footer-nav">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="#home">Accueil</a></li>
+                        <li><a href="#about">À propos</a></li>
+                        <li><a href="#skills">Compétences</a></li>
+                        <li><a href="#projects">Projets</a></li>
+                        <li><a href="#experience">Formation</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+ 
+                <!-- Services -->
+                <div class="footer-services">
+                    <h4>Services</h4>
+                    <ul>
+                        <li>Administration Réseau</li>
+                        <li>Sécurité Informatique</li>
+                        <li>Développement Web</li>
+                        <li>Consultation Technique</li>
+                    </ul>
+                </div>
+ 
+                <!-- Newsletter -->
+                <div class="footer-newsletter">
+                    <h4>Restons connectés</h4>
+                    <p>Suivez mes dernières réalisations</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Votre email">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+ 
+            <div class="footer-bottom">
+                <div class="copyright">&copy; 2024 SAHRAOUI TUDERT. Tous droits réservés.</div>
+                <div class="footer-credits">Conçu avec <i class="fas fa-heart"></i> en Algérie</div>
+            </div>
+        </div>
+ 
+        <button class="scroll-top" id="scrollTop">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+    </footer>
+    
+    <!-- Modal de projet -->
+    <div class="project-modal" id="projectModal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content-wrapper">
+            <button class="modal-close-btn" id="modalCloseBtn">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-content" id="modalContent">
+                <!-- Le contenu sera injecté dynamique
+            </div>
+        </div>
+    </div>
+    
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
