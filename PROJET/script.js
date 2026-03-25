@@ -21,33 +21,33 @@ const projectsSectionConfig = {
 const projectsData = [
     {
         id: 1,
-        title: 'Serveurs et Virtualisation',
+        title: 'Laboratoire de Virtualisation — Parc de Machines Virtuelles',
         category: 'network',
         icon: '💻',
-        image: 'assets/images/projects/project-1.jpg',
+        image: null,
         year: '2024',
         status: 'Terminé',
         featured: true,
-        shortDescription: 'Mise en place et configuration de machines virtuelles (Linux, Windows, Pfsense).',
-        description: 'Mise en place et configuration complète de machines virtuelles dans un environnement de test. Gestion et configuration de serveurs pour différents usages (DNS, DHCP, Web). Cette expérience a permis de renforcer les compétences en administration système.',
-        technologies: ['Linux', 'Windows Server', 'Pfsense', 'VirtualBox', 'VMware', 'Active Directory'],
+        shortDescription: 'Création d’un lab complet de virtualisation (Windows, Linux, pfSense) pour tester réseau, AD et sécurité.',
+        description: 'Conception d’un environnement de laboratoire virtualisé pour déployer et tester plusieurs systèmes (Windows Server/10, Ubuntu, Kali, Security Onion, pfSense) et des services d’entreprise (Active Directory, DNS, DHCP). Objectif : disposer d’une plateforme stable pour pratiquer l’administration, le réseau et la cybersécurité.',
+        technologies: ['VirtualBox', 'VMware', 'Windows Server', 'Windows 10', 'Ubuntu', 'Kali Linux', 'Security Onion', 'pfSense', 'Active Directory', 'DNS', 'DHCP'],
         role: 'Administratrice Systèmes Junior',
         duration: '3 mois',
         team: 'Projet solo',
         details: {
             context: 'Projet académique visant à maîtriser les environnements virtualisés et la configuration de serveurs.',
             objectives: [
-                'Créer un environnement virtualisé complet avec différents systèmes d\'exploitation',
-                'Configurer des services réseau essentiels (DNS, DHCP)',
-                'Sécuriser l\'environnement avec un firewall (Pfsense)',
-                'Documenter l\'architecture et les procédures de configuration'
+                'Construire un parc de machines virtuelles représentatif (clients, serveurs, sécurité)',
+                'Mettre en place un domaine Active Directory et les services de base (DNS/DHCP)',
+                'Segmenter et sécuriser le lab via pfSense (routage, filtrage, NAT)',
+                'Documenter l’architecture et les configurations pour réutilisation'
             ],
             achievements: [
-                'Installation et configuration de 5 machines virtuelles (2 Linux, 2 Windows Server, 1 Pfsense)',
-                'Mise en place d\'un contrôleur de domaine Active Directory',
-                'Configuration de services DNS et DHCP fonctionnels',
-                'Création de règles de pare-feu avancées sur Pfsense',
-                'Documentation technique complète de l\'architecture'
+                'Déploiement d’un parc de VM (Windows Server/10, Ubuntu, Kali, Security Onion, pfSense)',
+                'Mise en place d’un contrôleur de domaine Active Directory',
+                'Configuration DNS et DHCP opérationnels',
+                'Règles pare-feu, NAT et segmentation réseau sur pfSense',
+                'Environnement réutilisable comme base pour d’autres TP/projets'
             ],
             challenges: [
                 'Gestion des ressources limitées du système hôte',
@@ -62,19 +62,14 @@ const projectsData = [
             ]
         },
         links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
-        gallery: [
-            'assets/images/projects/project-1-1.jpg',
-            'assets/images/projects/project-1-2.jpg',
-            'assets/images/projects/project-1-3.jpg',
-            'assets/images/projects/project-1-4.jpg'
-        ]
+        gallery: []
     },
     {
         id: 2,
         title: 'Logiciel de Gestion de Stock',
         category: 'development',
         icon: '💰',
-        image: 'assets/images/projects/project-2.jpg',
+        image: null,
         year: '2023',
         status: 'Terminé',
         featured: true,
@@ -111,97 +106,128 @@ const projectsData = [
                 'Optimisation des performances'
             ]
         },
-        links: { demo: 'code/logiciel/index.html', github: null, documentation: null, pdf: null, photos: [] },
-        gallery: [
-            'assets/images/projects/project-2-1.jpg',
-            'assets/images/projects/project-2-2.jpg',
-            'assets/images/projects/project-2-3.jpg'
-        ]
+        links: { demo: 'code/index.html', github: null, documentation: null, pdf: null, photos: [] },
+        gallery: []
     },
     {
         id: 3,
-        title: 'Création de Sites Web (IA)',
+        title: 'Création de Sites Web — HTML/CSS/JS + IA',
         category: 'development',
         icon: '🤖',
-        image: 'assets/images/projects/project-3.jpg',
+        image: null,
         year: '2023',
         status: 'En cours',
         featured: false,
-        shortDescription: 'Développement de sites web avec intégration d\'outils IA.',
-        description: 'Projets personnels de conception et de développement de sites web en intégrant des outils basés sur l\'intelligence artificielle pour optimiser le contenu, le design et le SEO.',
-        technologies: ['HTML5', 'CSS3', 'JavaScript', 'Outils IA', 'SEO', 'Figma'],
+        shortDescription: 'Sites web réalisés en HTML/CSS/JS avec assistance IA (structure, contenu, itérations rapides).',
+        description: 'Création de plusieurs sites web statiques avec une approche simple et efficace : HTML, CSS et JavaScript, en s’appuyant sur des outils IA pour accélérer la production et améliorer la qualité (structure, textes, variantes de design).',
+        technologies: ['HTML5', 'CSS3', 'JavaScript', 'Outils IA', 'GitHub Pages'],
         role: 'Créatrice Digitale & Développeuse Frontend',
         duration: 'Continu',
         team: 'Projets personnels',
         details: {
             context: 'Exploration des possibilités offertes par l\'IA dans le domaine du développement web.',
-            objectives: ['Expérimenter avec des outils IA pour la génération de code', 'Optimiser le référencement (SEO)', 'Créer des designs innovants grâce à l\'IA générative'],
-            achievements: ['Développement de 3 sites web avec assistance IA', 'Optimisation SEO avancée', 'Benchmark des gains de productivité (réduction de 30%)'],
-            challenges: ['Intégration harmonieuse des outils IA', 'Maintien de la qualité du code généré'],
+            objectives: [
+                'Produire rapidement des sites web statiques propres et responsive',
+                'Utiliser l’IA comme assistant (itération, mise en page, contenu) sans complexifier le stack',
+                'Publier et maintenir des sites (ex. GitHub Pages)'
+            ],
+            achievements: [
+                'Développement de plusieurs pages/sites en HTML/CSS/JS avec assistance IA',
+                'Amélioration itérative du design et du contenu',
+                'Mise en ligne de sites statiques'
+            ],
+            challenges: ['Maintenir une bonne qualité et cohérence malgré la génération assistée', 'Itérer vite sans accumuler de dette technique'],
             results: 'Maîtrise des outils IA appliqués au développement web.',
-            learnings: ['Utilisation avancée d\'outils IA', 'Optimisation SEO moderne', 'Workflows de développement innovants']
+            learnings: ['HTML/CSS/JS côté front', 'Utilisation d’outils IA pour accélérer les itérations', 'Publication de sites statiques']
         },
-        links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
-        gallery: ['assets/images/projects/project-3-1.jpg', 'assets/images/projects/project-3-2.jpg']
+        links: {
+            demo: null,
+            github: null,
+            documentation: null,
+            pdf: null,
+            photos: [],
+            sites: [
+                { name: 'LINUX-serv', url: 'https://tudertshr.github.io/LINUX-serv/#top' },
+                { name: 'Boo-gie', url: 'https://tudertshr.github.io/boo-gie/#home' },
+                { name: 'Boo-gie (site)', url: 'https://boo-gie.github.io/web/' },
+                { name: 'Vulnérabilités — théorie', url: 'https://tudertshr.github.io/Vulnerabilites-theorie/#vulnerabilites' },
+                { name: 'TP vulnérabilités', url: 'https://tudertshr.github.io/TP-vulnerabilites/' },
+                { name: 'Vulnérabilités — résumé', url: 'https://tudertshr.github.io/Vul-resume/' },
+                { name: 'Cours', url: 'https://tudertshr.github.io/cours/' },
+                { name: 'Suite sécurité', url: 'https://tudertshr.github.io/suite-securite/' },
+                { name: 'Exam', url: 'https://tudertshr.github.io/exam/' },
+                { name: 'Tendances', url: 'https://tudertshr.github.io/tendances/#introduction' },
+                { name: 'Script', url: 'https://tudertshr.github.io/script/' }
+            ]
+        },
+        gallery: []
     },
     {
         id: 4,
         title: 'Mise en place de Sécurité Réseau',
         category: 'security',
         icon: '🛡️',
-        image: 'assets/images/projects/project-4.jpg',
+        image: null,
         year: '2024',
         status: 'Terminé',
         featured: true,
-        shortDescription: 'Configuration d\'ACL et règles de pare-feu pour sécuriser le réseau.',
-        description: 'Mise en place de politiques de sécurité réseau, incluant la configuration d\'Access Control Lists (ACL) et de règles de pare-feu pour sécuriser le réseau contre les menaces externes et internes.',
-        technologies: ['ACL', 'Firewall', 'Cisco IOS', 'Pfsense', 'IDS/IPS', 'VPN'],
+        shortDescription: 'Mise en place d’ACL, règles pfSense et segmentation pour sécuriser une infrastructure simulée.',
+        description: 'Mise en place de politiques de sécurité réseau : ACL (Cisco), règles pfSense (filtrage, NAT), segmentation et contrôle des flux. Le projet est documenté et illustré par des captures de configuration.',
+        technologies: ['ACL', 'Cisco IOS', 'pfSense', 'Firewall', 'Routage', 'NAT', 'Segmentation', 'VPN'],
         role: 'Technicienne Réseau et Sécurité',
         duration: '2 mois',
         team: 'Binôme académique',
         details: {
             context: 'Projet académique de sécurité réseau visant à protéger une infrastructure simulée.',
-            objectives: ['Comprendre et implémenter les politiques de sécurité réseau', 'Configurer des ACL', 'Définir des règles de pare-feu efficaces'],
-            achievements: ['Configuration d\'ACL sur routeurs Cisco', 'Mise en place de règles de pare-feu sur Pfsense', 'Segmentation du réseau en zones de sécurité'],
+            objectives: [
+                'Définir une politique de filtrage (flux autorisés/interdits)',
+                'Configurer des ACL et des règles pfSense',
+                'Segmenter le réseau et valider l’accès selon les besoins'
+            ],
+            achievements: [
+                'Configuration d’ACL sur routeurs Cisco',
+                'Création de règles pfSense (filtrage, NAT) et validation par tests',
+                'Segmentation du réseau en zones de sécurité'
+            ],
             challenges: ['Équilibre entre sécurité et accessibilité', 'Gestion des faux positifs'],
             results: 'Infrastructure réseau sécurisée avec trafic contrôlé.',
             learnings: ['Principes de sécurité réseau', 'Configuration avancée de pare-feu', 'Méthodologie de tests de sécurité']
         },
         links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
-        gallery: ['assets/images/projects/project-4-1.jpg', 'assets/images/projects/project-4-2.jpg', 'assets/images/projects/project-4-3.jpg']
+        gallery: []
     },
     {
         id: 5,
-        title: 'Simulation Réseaux',
+        title: 'Simulation Réseau — Topologies & Routage (Packet Tracer)',
         category: 'network',
         icon: '🌐',
-        image: 'assets/images/projects/project-5.jpg',
+        image: null,
         year: '2024',
         status: 'Terminé',
         featured: false,
-        shortDescription: 'Conception de topologies réseau complexes avec Packet Tracer.',
-        description: 'Conception et simulation de topologies de réseaux complexes (LAN/WAN) à l\'aide de Cisco Packet Tracer.',
-        technologies: ['Cisco Packet Tracer', 'Routeurs Cisco', 'Switches Cisco', 'TCP/IP', 'DNS', 'DHCP', 'VLAN'],
+        shortDescription: 'Conception et tests de topologies (LAN/WAN), VLAN, routage et services (DNS/DHCP).',
+        description: 'Conception et simulation de topologies réseau (LAN/WAN) avec Cisco Packet Tracer : VLAN, routage, adressage IP, et scénarios incluant des services (DNS/DHCP) et de la segmentation.',
+        technologies: ['Cisco Packet Tracer', 'Routage', 'VLAN', 'TCP/IP', 'DNS', 'DHCP', 'Switching'],
         role: 'Étudiante en Réseau',
         duration: '4 mois',
         team: 'Projets académiques',
         details: {
             context: 'Projet de simulation réseau dans le cadre de la formation en administration réseau.',
-            objectives: ['Maîtriser Cisco Packet Tracer', 'Configurer des topologies LAN/WAN complexes'],
-            achievements: ['Conception de 5 topologies réseau différentes', 'Configuration avancée de routeurs et switches Cisco'],
-            challenges: ['Compréhension des protocoles de routage', 'Debugging de configurations complexes'],
+            objectives: ['Maîtriser Cisco Packet Tracer', 'Configurer VLAN + routage et valider par tests', 'Mettre en place des scénarios réalistes (services et segmentation)'],
+            achievements: ['Conception de plusieurs topologies réseau', 'Configuration de VLAN, routage et switching', 'Scénarios de tests et validation de connectivité'],
+            challenges: ['Debugging de configurations', 'Cohérence d’adressage et de routage'],
             results: 'Expertise dans la simulation et la configuration réseau.',
             learnings: ['Maîtrise de Cisco Packet Tracer', 'Compréhension approfondie des protocoles réseau']
         },
         links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
-        gallery: ['assets/images/projects/project-5-1.jpg', 'assets/images/projects/project-5-2.jpg', 'assets/images/projects/project-5-3.jpg', 'assets/images/projects/project-5-4.jpg']
+        gallery: []
     },
     {
         id: 6,
         title: 'Olympiades des Métiers  2025 — Infrastructure SoummamTech',
         category: 'achievement',
         icon: '🏅',
-        image: 'assets/images/projects/project-13.jpg',
+        image: null,
         year: '2025',
         status: 'Terminé',
         featured: true,
@@ -251,53 +277,61 @@ const projectsData = [
         gallery: []
     },
     {
-        id: 7,
-        title: 'Infrastructure Windows Server Entreprise',
-        category: 'network',
-        icon: '🖥️',
-        image: 'assets/images/projects/project-7.jpg',
-        year: '2024',
-        status: 'Terminé',
-        featured: true,
-        shortDescription: 'Déploiement complet d\'une infrastructure réseau d\'entreprise sous Windows Server.',
-        description: 'Déploiement d\'une infrastructure réseau complète d\'entreprise sous Windows Server : Active Directory, DHCP, DNS, IIS, partage de fichiers, GPO.',
-        technologies: ['Windows Server', 'Active Directory', 'DHCP', 'DNS', 'IIS', 'GPO', 'VirtualBox'],
-        role: 'Administratrice Système',
-        duration: '3 mois',
-        team: 'Projet académique',
-        details: {
-            context: 'Projet de déploiement d\'une infrastructure réseau d\'entreprise complète en environnement virtualisé.',
-            objectives: ['Déployer un contrôleur de domaine Active Directory', 'Configurer les services DHCP et DNS'],
-            achievements: ['Déploiement complet d\'Active Directory', 'Configuration DHCP et DNS', 'Déploiement de stratégies GPO'],
-            challenges: ['Synchronisation des services dans l\'environnement virtualisé', 'Résolution des conflits DNS'],
-            results: 'Infrastructure d\'entreprise entièrement fonctionnelle et documentée.',
-            learnings: ['Administration Windows Server approfondie', 'Gestion des politiques de groupe (GPO)']
-        },
-        links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
-        gallery: []
-    },
-    {
         id: 8,
-        title: 'Tests de Sécurité en Laboratoire',
+        title: 'Sécurité en Laboratoire — SIEM, IDS/IPS & Vulnérabilités',
         category: 'security',
         icon: '🔍',
-        image: 'assets/images/projects/project-8.jpg',
+        image: null,
         year: '2025',
         status: 'Terminé',
         featured: true,
-        shortDescription: 'Simulation d\'attaques (phishing, brute force), analyse de vulnérabilités sur Kali Linux et Security Onion.',
-        description: 'Tests de sécurité en laboratoire : simulation d\'attaques, analyse de vulnérabilités (SQL Injection, CVE, CVSS, CWE).',
+        shortDescription: 'Mise en place d’outils SOC (Security Onion, Kibana/Sguil) + analyse de vulnérabilités (CVE/CVSS/CWE).',
+        description: 'Travaux en laboratoire orientés défense et analyse : déploiement et configuration d’outils de supervision (Security Onion, Snort, Sguil, Kibana), collecte/lecture de logs, et analyse de vulnérabilités (CVE, CVSS, CWE) avec des outils réseau (Wireshark, Nmap).',
         technologies: ['Kali Linux', 'Security Onion', 'Snort', 'pfSense', 'Wireshark', 'Nmap', 'Sguil', 'Kibana'],
         role: 'Analyste Sécurité Junior',
         duration: '4 mois',
         team: 'Projet académique',
         details: {
             context: 'Laboratoire de sécurité visant à comprendre les vecteurs d\'attaque et à mettre en place des contre-mesures.',
-            objectives: ['Simuler des attaques réelles', 'Analyser des vulnérabilités applicatives', 'Déployer un IDS/IPS'],
-            achievements: ['Simulation d\'attaques phishing et brute force', 'Configuration de Snort comme IDS/IPS', 'Monitoring via Sguil et Kibana'],
+            objectives: ['Déployer un IDS/IPS et une supervision type SOC', 'Analyser et corréler des événements sécurité', 'Analyser des vulnérabilités (CVE/CVSS/CWE)'],
+            achievements: ['Configuration de Snort comme IDS/IPS', 'Monitoring et analyse via Sguil et Kibana', 'Analyse de vulnérabilités et rédaction de synthèses'],
             challenges: ['Configuration fine de Snort pour minimiser les faux positifs', 'Corrélation des événements dans le SIEM'],
-            results: 'Maîtrise des outils offensifs et défensifs de cybersécurité.',
-            learnings: ['Techniques offensives et défensives', 'Utilisation des outils SIEM']
+            results: 'Mise en place et exploitation d’un mini-lab SOC pour l’analyse et la supervision sécurité.',
+            learnings: ['Supervision et analyse de logs', 'Utilisation d’outils SIEM/SOC', 'Analyse de vulnérabilités (CVE/CVSS/CWE)']
+        },
+        links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
+        gallery: ['img/SEC1.png','img/SEC2.png','img/SEC3.png','img/SEC4.png','img/SEC5.png','img/SEC6.png','img/SEC7.png','img/SEC8.png','img/SEC9.png','img/SEC10.png','img/SEC11.png','img/SEC12.png','img/SEC13.png','img/SEC14.png']
+    },
+    {
+        id: 13,
+        title: 'Simulations d’Attaques — Phishing, Brute Force, SQLi',
+        category: 'security',
+        icon: '🎯',
+        image: null,
+        year: '2025',
+        status: 'Terminé',
+        featured: false,
+        shortDescription: 'Simulations d’attaques en environnement de test pour comprendre les vecteurs et améliorer la détection.',
+        description: 'Projet séparé dédié aux simulations d’attaques en laboratoire (phishing, brute force, SQL injection, etc.) afin de comprendre les vecteurs, observer les traces, et améliorer la détection/mitigation.',
+        technologies: ['Kali Linux', 'Linux', 'Windows', 'Sécurité applicative', 'Phishing', 'Brute force', 'SQL Injection'],
+        role: 'Analyste Sécurité Junior',
+        duration: '—',
+        team: 'Projet académique',
+        details: {
+            context: 'Séparer clairement la partie “analyse/défense” (SOC, logs, vulnérabilités) de la partie “simulations d’attaques”.',
+            objectives: [
+                'Réaliser des simulations contrôlées pour apprendre les étapes et les indicateurs',
+                'Documenter les résultats (captures, traces, points d’amélioration)',
+                'Relier chaque simulation à des mesures de mitigation'
+            ],
+            achievements: [
+                'Simulations de scénarios (phishing, brute force, SQLi) en environnement de test',
+                'Collecte de traces et captures pour documentation',
+                'Synthèse des mesures de mitigation'
+            ],
+            challenges: ['Garder un cadre 100% laboratoire/éthique', 'Rendre les scénarios reproductibles et documentés'],
+            results: 'Meilleure compréhension des vecteurs d’attaque et des traces observables côté défense.',
+            learnings: ['Méthodologie de simulation en lab', 'Indicateurs/IoC de base', 'Lien attaque → détection → mitigation']
         },
         links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
         gallery: []
@@ -307,7 +341,7 @@ const projectsData = [
         title: 'Haute Disponibilité — Cluster de Serveurs',
         category: 'network',
         icon: '⚡',
-        image: 'assets/images/projects/project-9.jpg',
+        image: null,
         year: '2025',
         status: 'Terminé',
         featured: false,
@@ -333,7 +367,7 @@ const projectsData = [
         title: 'Infrastructure Windows Server – Nova-Pharm',
         category: 'network',
         icon: '🖥️',
-        image: 'assets/images/projects/project-10.jpg',
+        image: null,
         year: '2025',
         status: 'Terminé',
         featured: true,
@@ -351,41 +385,15 @@ const projectsData = [
             results: 'Infrastructure entièrement fonctionnelle et documentée.',
             learnings: ['Maîtrise du RAID matériel', 'Gestion complète d\'Active Directory et des stratégies de groupe']
         },
-        links: { demo: null, github: null, documentation: null, pdf: 'assets/documents/windows-server-nova-pharm.pdf', photos: [] },
+        links: { demo: null, github: null, documentation: null, pdf: 'doc/infrastructure-entreprise.pdf', photos: [] },
         gallery: []
     },
     {
         id: 11,
-        title: 'Collection de ressources techniques',
-        category: 'development',
-        icon: '📚',
-        image: 'assets/images/projects/project-11.jpg',
-        year: '2025',
-        status: 'En cours',
-        featured: false,
-        shortDescription: 'Ensemble de pages web créées pour documenter mes travaux en administration système et sécurité réseau.',
-        description: 'Cette collection regroupe plusieurs mini-projets sous forme de sites statiques hébergés sur GitHub Pages.',
-        technologies: ['HTML', 'CSS', 'JavaScript', 'GitHub Pages'],
-        role: 'Créatrice de contenu & développeuse web',
-        duration: 'Continu',
-        team: 'Projet personnel',
-        details: {
-            context: 'Création d\'un portfolio de connaissances techniques pour partager mes travaux.',
-            objectives: ['Synthétiser mes cours sous forme de sites web', 'Apprendre à publier sur GitHub Pages'],
-            achievements: ['Publication de 10 pages thématiques', 'Utilisation de styles modernes et navigation cohérente'],
-            challenges: ['Organiser une grande quantité d\'informations', 'Maintenir la cohérence visuelle'],
-            results: 'Un ensemble cohérent de ressources consultables en ligne.',
-            learnings: ['Maîtrise de GitHub Pages et Git', 'Structuration de contenu technique pour le web']
-        },
-        links: { demo: 'https://tudertshr.github.io/', github: null, documentation: null, pdf: null, photos: [] },
-        gallery: []
-    },
-    {
-        id: 12,
         title: 'Installation OpenLDAP & phpLDAPadmin sur Ubuntu',
         category: 'network',
         icon: '📂',
-        image: 'assets/images/projects/project-12.jpg',
+        image: null,
         year: '2025',
         status: 'Terminé',
         featured: true,
@@ -426,7 +434,7 @@ const projectsData = [
             ]
         },
         links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
-        gallery: []
+        gallery: ['img/1.png','img/2.png','img/3.png','img/4.png','img/5.png']
     },
 
     /* Pour ajouter un projet : copiez un bloc ci-dessus, changez l'id et les champs.
