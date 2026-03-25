@@ -751,6 +751,13 @@ function renderCertifications() {
                 <h4 class="cert-title">${cert.title}</h4>
                 <p class="cert-issuer">${cert.issuer}</p>
                 <span class="cert-date"><i class="far fa-calendar-alt"></i> ${cert.date}</span>
+                ${cert.pdf ? `
+                    <div class="cert-attachments" style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                        <a href="${cert.pdf}" target="_blank" class="modal-link-btn" style="text-decoration:none;">
+                            <i class="fas fa-file-pdf"></i> Voir le PDF
+                        </a>
+                    </div>
+                ` : ''}
             </div>
         </div>
     `).join('');
@@ -811,6 +818,30 @@ function createProjectCard(project, index) {
     card.setAttribute('data-aos', 'fade-up');
     card.setAttribute('data-aos-delay', (index % 3) * 100);
     card.setAttribute('data-category', project.category);
+
+    const resolveAssetUrl = (src) => {
+        if (!src) return '';
+        // Garde tel quel: http(s), data:, blob:, ou chemins absolus
+        if (/^(https?:|data:|blob:)/i.test(src) || src.startsWith('/')) return src;
+        try {
+            return new URL(src, document.baseURI).toString();
+        } catch {
+            return src;
+        }
+    };
+
+    const projectImageHtml = project.image
+        ? `
+                <img
+                    class="project-image"
+                    src="${resolveAssetUrl(project.image)}"
+                    alt="${project.title}"
+                    loading="lazy"
+                    decoding="async"
+                    onerror="this.style.display='none'; this.closest('.project-image-container')?.classList.add('no-image');"
+                >
+        `
+        : '';
     
     const featuredBadge = project.featured 
         ? '<span class="project-featured-badge"><i class="fas fa-star"></i> Projet phare</span>' 
@@ -838,6 +869,7 @@ function createProjectCard(project, index) {
     card.innerHTML = `
         <div class="project-card-header">
             <div class="project-image-container">
+                ${projectImageHtml}
                 <div class="project-image-placeholder" style="background: ${gradient}">
                     <div class="project-icon"><i class="${faIcon}" style="color:#fff;font-size:1.7rem"></i></div>
                 </div>
@@ -1003,6 +1035,60 @@ function createModalContent(project) {
     };
     const gradient = categoryGradients[project.category] || categoryGradients.default;
     const faIcon = categoryFAIcons[project.category] || categoryFAIcons.default;
+
+    const resolveAssetUrl = (src) => {
+        if (!src) return '';
+        if (/^(https?:|data:|blob:)/i.test(src) || src.startsWith('/')) return src;
+        try {
+            return new URL(src, document.baseURI).toString();
+        } catch {
+            return src;
+        }
+    };
+
+    const modalHeroImage = project.image
+        ? `
+            <div class="modal-section">
+                <div class="project-hero-image" style="border-radius:16px; overflow:hidden;">
+                    <img
+                        src="${resolveAssetUrl(project.image)}"
+                        alt="${project.title}"
+                        style="width:100%; height:auto; display:block;"
+                        loading="lazy"
+                        decoding="async"
+                        onerror="this.closest('.modal-section')?.remove();"
+                    >
+                </div>
+            </div>
+        `
+        : '';
+
+    const gallerySources = Array.isArray(project.gallery) ? project.gallery : [];
+    const modalGallery = gallerySources.length > 0
+        ? `
+            <div class="modal-section">
+                <h3 class="modal-section-title">
+                    <i class="fas fa-images"></i>
+                    Galerie
+                </h3>
+                <div class="project-gallery">
+                    ${gallerySources.map((src, i) => `
+                        <div class="gallery-item" onclick="openLightbox('${resolveAssetUrl(src).replace(/'/g, "\\'")}')">
+                            <img
+                                src="${resolveAssetUrl(src)}"
+                                alt="Image ${i + 1} — ${project.title}"
+                                style="width:100%;height:100%;object-fit:cover;border-radius:8px;"
+                                loading="lazy"
+                                decoding="async"
+                                onerror="this.closest('.gallery-item')?.remove();"
+                            >
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `
+        : '';
+
     return `
         <div class="modal-header">
             <div class="modal-header-content">
@@ -1028,6 +1114,7 @@ function createModalContent(project) {
         </div>
         
         <div class="modal-body">
+            ${modalHeroImage}
             <!-- Informations générales -->
             <div class="modal-section">
                 <h3 class="modal-section-title">
@@ -1159,6 +1246,8 @@ function createModalContent(project) {
                 </ul>
             </div>
             ` : ''}
+
+            ${modalGallery}
             
             <!-- ===== GALERIE PHOTOS ===== -->
             ${(project.links.photos && project.links.photos.length > 0) ? `
