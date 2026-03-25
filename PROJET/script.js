@@ -111,7 +111,7 @@ const projectsData = [
                 'Optimisation des performances'
             ]
         },
-        links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
+        links: { demo: 'code/logiciel/index.html', github: null, documentation: null, pdf: null, photos: [] },
         gallery: [
             'assets/images/projects/project-2-1.jpg',
             'assets/images/projects/project-2-2.jpg',
@@ -198,29 +198,57 @@ const projectsData = [
     },
     {
         id: 6,
-        title: 'Olympiades des Métiers 2025',
+        title: 'Olympiades des Métiers  2025 — Infrastructure SoummamTech',
         category: 'achievement',
-        icon: '🏆',
-        image: 'assets/images/projects/project-6.jpg',
+        icon: '🏅',
+        image: 'assets/images/projects/project-13.jpg',
         year: '2025',
-        status: 'En cours',
+        status: 'Terminé',
         featured: true,
-        shortDescription: '1ère place phase Wilaya - Qualification pour la phase nationale.',
-        description: 'Participation aux Olympiades des Métiers. Qualification obtenue à la première place de la phase Wilaya.',
-        technologies: ['Administration Réseau', 'Cybersécurité', 'Résolution de problèmes'],
-        role: 'Compétitrice & Représentante',
-        duration: '6 mois de préparation',
+        shortDescription: '1ère place phase Wilaya — Infrastructure réseau complète d\'entreprise déployée en ~5h avec rapport final. Éliminée pour dépassement d\'âge (22 ans).',
+        description: 'Dans le cadre des Olympiades des Métiers (phase Wilaya), j\'ai conçu et déployé en environ 5 heures une infrastructure réseau d\'entreprise complète pour la société fictive SoummamTech Solutions. Le travail comprenait la configuration d\'Active Directory (AD DS), DNS, DHCP, la création d\'unités d\'organisation (UO), de groupes de sécurité, d\'utilisateurs, les droits NTFS + partage SMB différenciés, les GPO, et les mesures de sécurité. Un rapport de configuration complet a été produit à la fin de l\'épreuve. Classée 1ère place à la phase Wilaya, mais éliminée pour dépassement d\'âge (22 ans).',
+        technologies: ['Windows Server 2019', 'Active Directory (AD DS)', 'DNS', 'DHCP', 'GPO', 'NTFS', 'SMB', 'VMware', 'Windows Defender'],
+        role: 'Compétitrice — Administration & Sécurité des Réseaux',
+        duration: '~5 heures (épreuve compétition)',
         team: 'Compétition individuelle',
         details: {
-            context: 'Compétition régionale des métiers dans la catégorie Administration et Sécurité des Réseaux.',
-            objectives: ['Représenter mon établissement avec excellence', 'Obtenir une qualification pour la phase nationale'],
-            achievements: ['Première place à la phase Wilaya', 'Qualification pour la phase nationale'],
-            challenges: ['Gestion du stress en compétition', 'Contraintes de temps strictes'],
-            results: 'Qualification pour la phase nationale.',
-            learnings: ['Gestion du stress et des délais', 'Excellence technique sous pression']
+            context: 'Épreuve des Olympiades des Métiers, phase Wilaya. Objectif : déployer en temps limité une infrastructure réseau complète pour l\'entreprise fictive SoummamTech Solutions, incluant serveur, clients, services et sécurité, puis remettre un rapport de configuration.',
+            objectives: [
+                'Déployer le rôle AD DS et promouvoir le serveur en contrôleur de domaine (DOM10.dz)',
+                'Configurer DNS (zones directe et inversée) et DHCP (plage 192.168.0.33–192.168.0.63)',
+                'Créer les UO : Service Commercial, Service Technique, Direction',
+                'Créer les groupes de sécurité et utilisateurs (com1, com2, tech1, tech2)',
+                'Configurer les droits NTFS et partages SMB différenciés',
+                'Appliquer des GPO et restrictions horaires',
+                'Activer les mesures de sécurité (pare-feu, Windows Defender)',
+                'Rédiger un rapport de configuration complet'
+            ],
+            achievements: [
+                '1ère place à la phase Wilaya des Olympiades des Métiers',
+                'Infrastructure AD DS complète déployée en ~5h',
+                'DNS avec zones directe et inversée configurées',
+                'DHCP autorisé avec étendue activée',
+                'Partage Commercial : accès total pour G_Service_Commercial, lecture/écriture pour G_Service_Technique',
+                'Partage Technique : accès total pour G_Service_Technique, aucun accès pour G_Service_Commercial',
+                'Restrictions horaires sur les comptes utilisateurs',
+                'Rapport de configuration remis à la fin de l\'épreuve'
+            ],
+            challenges: [
+                'Respecter les contraintes de temps strictes (~5 heures)',
+                'Gérer simultanément plusieurs services (AD, DNS, DHCP, GPO)',
+                'Configurer correctement les droits NTFS + partage SMB',
+                'Rédiger un rapport détaillé sous pression'
+            ],
+            results: '1ère place phase Wilaya. Infrastructure entièrement fonctionnelle livrée avec rapport. Éliminée de la phase suivante en raison du dépassement de la limite d\'âge (22 ans).',
+            learnings: [
+                'Gestion du stress et des délais en compétition',
+                'Déploiement rapide d\'une infrastructure Windows Server',
+                'Maîtrise d\'Active Directory, DNS, DHCP et GPO sous pression',
+                'Rédaction de rapport technique en temps limité'
+            ]
         },
-        links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
-        gallery: ['assets/images/projects/project-6-1.jpg', 'assets/images/projects/project-6-2.jpg', 'assets/images/projects/project-6-3.jpg']
+        links: { demo: null, github: null, documentation: null, pdf: 'doc/RAPPORT-olampiyades-des-métiers.pdf', photos: [] },
+        gallery: []
     },
     {
         id: 7,
@@ -351,7 +379,56 @@ const projectsData = [
         },
         links: { demo: 'https://tudertshr.github.io/', github: null, documentation: null, pdf: null, photos: [] },
         gallery: []
-    }
+    },
+    {
+        id: 12,
+        title: 'Installation OpenLDAP & phpLDAPadmin sur Ubuntu',
+        category: 'network',
+        icon: '📂',
+        image: 'assets/images/projects/project-12.jpg',
+        year: '2025',
+        status: 'Terminé',
+        featured: true,
+        shortDescription: 'Déploiement et configuration d\'un serveur OpenLDAP avec interface web phpLDAPadmin sur Ubuntu/Debian.',
+        description: 'Mise en place complète d\'un serveur d\'annuaire LDAP sous Ubuntu à l\'aide d\'OpenLDAP (slapd), couplé à l\'interface web phpLDAPadmin pour l\'administration graphique. Le projet couvre la configuration du nom d\'hôte, l\'installation et la reconfiguration du serveur LDAP, la définition du domaine DNS de base, la gestion des mots de passe administrateur, ainsi que l\'intégration avec Apache pour exposer phpLDAPadmin via navigateur.',
+        technologies: ['OpenLDAP', 'phpLDAPadmin', 'Ubuntu', 'Debian', 'Apache2', 'LDAP', 'slapd', 'ldap-utils'],
+        role: 'Administratrice Système Linux',
+        duration: '1 semaine',
+        team: 'Projet personnel',
+        details: {
+            context: 'Projet d\'apprentissage visant à maîtriser la gestion centralisée des utilisateurs via un annuaire LDAP sous Linux.',
+            objectives: [
+                'Configurer le nom d\'hôte du serveur LDAP',
+                'Installer et configurer OpenLDAP (slapd) sur Ubuntu',
+                'Reconfigurer le domaine DNS de base avec dpkg-reconfigure',
+                'Installer et connecter phpLDAPadmin à OpenLDAP',
+                'Configurer Apache pour exposer l\'interface web phpLDAPadmin',
+                'Tester la connexion via navigateur avec le compte admin LDAP'
+            ],
+            achievements: [
+                'Serveur OpenLDAP opérationnel avec domaine personnalisé',
+                'Interface web phpLDAPadmin accessible via navigateur',
+                'Configuration Apache réussie (alias, droits d\'accès)',
+                'Authentification admin LDAP fonctionnelle (cn=admin,dc=...)',
+                'Documentation des étapes avec captures d\'écran'
+            ],
+            challenges: [
+                'Bonne compréhension de la structure DN (Distinguished Name)',
+                'Configuration correcte du fichier ldap.conf (BASE, URI)',
+                'Paramétrage du type d\'authentification (cookie → session) dans phpLDAPadmin'
+            ],
+            results: 'Annuaire LDAP entièrement fonctionnel, administrable via l\'interface web phpLDAPadmin. Maîtrise des commandes slapd et des fichiers de configuration LDAP sous Linux.',
+            learnings: [
+                'Protocole LDAP et structure des annuaires (DN, OU, DC)',
+                'Administration OpenLDAP sous Ubuntu/Debian',
+                'Configuration d\'Apache pour une application web',
+                'Gestion des paquets et reconfiguration avec dpkg-reconfigure'
+            ]
+        },
+        links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
+        gallery: []
+    },
+
     /* Pour ajouter un projet : copiez un bloc ci-dessus, changez l'id et les champs.
        Catégories : security | network | development | achievement
        Pour supprimer un projet : supprimez tout le bloc { id: X, ... }, */
