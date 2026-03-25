@@ -1,0 +1,2557 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gestionnaire Stock & Coûts</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* ------------------------------------------------------------------- */
+    /* CSS VARIABLES (default theme: pastel-rose - will be overridden by JS loadTheme) */
+    /* ------------------------------------------------------------------- */
+    :root{
+      /* Default Pastel Rose */
+      --bg: #fff3f9;
+      --card: rgba(255,255,255,0.85);
+      --accent: #FAD1E8;
+      --secondary-accent: #E6C8F2;
+      --muted: #7b6b74;
+      --text: #31232f;
+      --card-contrast: rgba(255,255,255,0.6);
+      --pattern: repeating-linear-gradient(45deg, rgba(255,255,255,0.06) 0 10px, transparent 10px 20px);
+    }
+    
+    /* ------------------------------------------------------------------- */
+    /* GLOBAL STYLES - Corrected to use theme variables */
+    /* ------------------------------------------------------------------- */
+    html,body{
+        height:100%;
+        margin:0;
+        font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;
+        background:var(--bg); /* Utilise la variable theme */
+        color:var(--text); /* Utilise la variable theme */
+    }
+    /* Correction: The background should use the --bg variable from the theme */
+    body {
+        /* If --bg is a linear gradient, it covers the whole viewport */
+        background: var(--bg);
+        color: var(--text); 
+    }
+    .wrap{max-width:1100px;margin:24px auto;padding:20px}
+    header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    h1{margin:0;font-size:20px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:16px}
+    .card{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.1); color:var(--text);}
+    .small{font-size:13px;color:var(--muted)}
+    label{display:block;margin-top:8px;font-size:13px; color:var(--text);}
+    /* Inputs now rely on theme variables */
+    input,select,textarea{
+        width:100%;
+        padding:8px;
+        border-radius:6px;
+        background:rgba(0,0,0,0.05); /* Lighter background for inputs in light themes */
+        border:1px solid var(--secondary-accent);
+        color:var(--text);
+        box-sizing: border-box;
+    }
+    button{
+        margin-top:8px;
+        padding:8px 12px;
+        border-radius:8px;
+        border:none;
+        background:var(--accent);
+        color:var(--bg); /* Use background color as text color for high contrast */
+        font-weight:600;
+        cursor:pointer;
+        transition:background 0.2s;
+    }
+    button:hover{background:var(--secondary-accent);color:var(--text)}
+    .btn-delete{background:#dc2626;color:#fff}
+    .btn-delete:hover{background:#b91c1c}
+    .btn-edit{background:#d97706;color:#fff}
+    .btn-edit-stock{background:#3b82f6;color:#fff}
+    .btn-edit-stock:hover{background:#2563eb}
+    .btn-edit:hover{background:#b45309}
+    table{width:100%;border-collapse:collapse;font-size:13px; color:var(--text);}
+    th,td{padding:6px 8px;border-bottom:1px solid rgba(0,0,0,0.05);text-align:left; border-color:var(--secondary-accent);}
+    .row-actions{display:flex;gap:6px}
+    .muted{color:var(--muted)}
+    footer{margin-top:12px;font-size:12px;color:var(--muted)}
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    .charts canvas{max-height:240px}
+    .panel-edit{border: 2px solid var(--accent); padding: 10px; margin-bottom: 15px; border-radius: 8px;}
+    .recipe-row-edit{display:flex;gap:8px;margin-bottom:4px;align-items:center;}
+    /* Style ajouté pour l'affichage de la recette */
+    .recipe-row, .pack-component-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;}
+    .recipe-row div:first-child, .pack-component-row div:first-child {flex-grow: 1;}
+
+    /* THEME STYLES */
+    .theme-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+    .theme-circle{width:40px;height:40px;border-radius:50%;display:inline-block;cursor:pointer;border:2px solid var(--muted);position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.15)}
+    .theme-circle.selected{outline:3px solid var(--accent);transform:scale(1.06)}
+    .theme-circle .pattern{position:absolute;inset:0;opacity:.18;pointer-events:none;background-repeat:repeat;background-size:80px 80px}
+
+    /* small aesthetic animations */
+    .fade-in { animation: fadeIn .35s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px)} to {opacity:1; transform:none} }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--secondary-accent));display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--bg)">B</div>
+      <div>
+        <h1>Gestionnaire de Stock & Coûts</h1>
+        <div class="small">Bougies & Cosmétiques: Achats, Recettes, Stock, Ventes & Marges. Sauvegarde locale (MVP).</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div>
+        <div class="card" id="main-area">
+          <nav style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+            <button onclick="show('dashboard')">Tableau de bord</button>
+            <button onclick="show('achats')">Achats & Frais</button>
+            <button onclick="show('produits')">Produits</button>
+            <button onclick="show('packs')">Packs</button> 
+            <button onclick="show('ventes')">Ventes</button>
+            <button onclick="show('stock')">Stock</button>
+            <button onclick="show('charts')">Graphiques</button>
+            <button onclick="show('param')">Sauvegarde</button>
+          </nav>
+
+          <div id="edit-area"></div>
+
+          <section id="dashboard" class="panel">
+            <h3>Tableau de bord</h3>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <div style="flex:1;min-width:160px;background:rgba(0,0,0,0.02);padding:10px;border-radius:8px">
+                <div class="small">Chiffre d'affaires</div>
+                <div id="stat-ca" style="font-size:18px;font-weight:700">0 DA</div>
+              </div>
+              <div style="flex:1;min-width:160px;background:rgba(0,0,0,0.02);padding:10px;border-radius:8px">
+                <div class="small">Bénéfice net</div>
+                <div id="stat-profit" style="font-size:18px;font-weight:700">0 DA</div>
+              </div>
+              <div style="flex:1;min-width:160px;background:rgba(0,0,0,0.02);padding:10px;border-radius:8px">
+                <div class="small">Marge moyenne</div>
+                <div id="stat-margin" style="font-size:18px;font-weight:700">0%</div>
+              </div>
+              <div style="flex:1;min-width:160px;background:rgba(0,0,0,0.02);padding:10px;border-radius:8px">
+                <div class="small">Bougies vendues (Total unités)</div>
+                <div id="stat-products-sold" style="font-size:18px;font-weight:700">0 unités</div>
+              </div>
+            </div>
+
+            <h4 style="margin-top:14px">Ventes récentes</h4>
+            <div id="recent-sales"></div>
+          </section>
+
+          <section id="achats" class="panel" style="display:none">
+            
+            <h3>Nouvel achat de Matière Première / Fourniture (Stock / CUMP)</h3>
+            <label>Catégorie de la matière</label>
+            <select id="achat-category">
+                <option value="matiere_premiere">1. Matière Première (Cire, Parfum, Mèche...)</option>
+                <option value="packaging">2. Packaging & Emballage (Récipients, Étiquettes, Cartons d'expédition...)</option>
+            </select>
+            <label>Nom de la matière (ex: Cire d'abeille)</label>
+            <input id="achat-name" placeholder="Cire d'abeille" />
+            <label>Quantité achetée (nombre)</label>
+            <input id="achat-qty" type="number" step="0.01" value="1" />
+            <label>Unité (g, kg, ml, unité)</label>
+            <input id="achat-unit" placeholder="g" />
+            <label>Coût de la matière seule (DA)</label>
+            <input id="achat-cost" type="number" step="0.01" value="0" />
+            <label>Frais supplémentaires sur cet achat (DA) - Ex: Livraison spécifique à cette commande</label>
+            <input id="achat-extra-cost" type="number" step="0.01" value="0" />
+            <label>Date</label>
+            <input id="achat-date" type="date" />
+            <button onclick="addAchat('matiere')">Ajouter achat de Matière/Fourniture</button>
+
+            <h3 style="margin-top:20px;">Ajouter des Frais Supplémentaires (non-matière)</h3>
+            <p class="small muted">Ces frais (livraison, moules, outils) n'alimentent pas le stock de matières et n'apparaissent pas dans les recettes, mais sont comptabilisés dans les dépenses totales.</p>
+            
+            <label>Type de Frais</label>
+            <select id="frais-template-select" onchange="updateFraisInputs()"></select>
+            
+            <div id="frais-new-input-area">
+                <label>Description du frais (ex: Moules, Thermomètres)</label>
+                <input id="frais-description" placeholder="Frais de livraison standard, Moules" />
+                <label>Montant unitaire du Frais (DA) - Coût par unité/fois</label>
+                <input id="frais-unit-amount" type="number" step="0.01" value="0" />
+            </div>
+            
+            <label>Nombre de fois / Quantité concernée</label>
+            <input id="frais-count" type="number" step="1" value="1" />
+            
+            <label>Date</label>
+            <input id="frais-date" type="date" />
+            <button onclick="addAchat('frais')">Ajouter Frais Supplémentaires</button>
+
+            <div id="achats-list"></div>
+          </section>
+
+          <section id="produits" class="panel" style="display:none">
+            <h3>Créer un produit fini (bougie)</h3>
+            <label>Nom du produit</label>
+            <input id="prod-name" placeholder="Bougie Vanille 250g" />
+            <label>Prix de vente unitaire (DA)</label>
+            <input id="prod-price" type="number" step="0.01" value="0" />
+            
+            <label>Recette (matière consommée par unité)</label>
+            <div id="recipe-rows"></div>
+            
+            <label style="margin-top:8px">Ajouter ingrédient (Sélectionner pour auto-unité)</label>
+            <div id="recipe-input-area" style="display:flex;gap:8px;margin-top:8px">
+            </div>
+            
+            <button onclick="saveProduct()">Enregistrer produit</button>
+
+            <h4 style="margin-top:12px">Produits existants</h4>
+            <div id="produits-list"></div>
+          </section>
+          
+          <section id="packs" class="panel" style="display:none">
+            <h3>Créer un Pack</h3>
+            <label>Nom du Pack</label>
+            <input id="pack-name" placeholder="Coffret Cadeau 3 Bougies" />
+            <label>Prix de vente unitaire (DA)</label>
+            <input id="pack-price" type="number" step="0.01" value="0" />
+            
+            <label>Composition du Pack</label>
+            <div id="pack-composition-rows"></div>
+            
+            <label style="margin-top:8px">Ajouter Composant</label>
+            <div id="pack-input-area">
+            </div>
+            
+            <button onclick="savePack()">Enregistrer Pack</button>
+
+            <h4 style="margin-top:12px">Packs existants</h4>
+            <div id="packs-list"></div>
+          </section>
+          <section id="ventes" class="panel" style="display:none">
+            <h3>Enregistrer une vente</h3>
+            <label>Produit ou Pack</label>
+            <select id="sale-prod"></select>
+            
+            <div id="extra-packaging-area" style="display:none; margin-top: 12px; border: 1px dashed rgba(0,0,0,0.1); padding: 10px; border-radius: 6px;">
+                <h4 style="margin-top: 0; margin-bottom: 8px;">Ajouter Packaging Supplémentaire (Optionnel)</h4>
+                <div id="sale-extra-packaging-rows"></div>
+                <label style="margin-top:8px">Ajouter Packaging</label>
+                <div id="sale-extra-packaging-input-area" style="display:flex;gap:8px;margin-top:8px;align-items:flex-end;">
+                </div>
+            </div>
+            <label style="margin-top:12px">Quantité vendue</label>
+            <input id="sale-qty" type="number" step="1" value="1" />
+            <label>Prix de vente unitaire (DA) — laisser vide pour utiliser le prix par défaut</label>
+            <input id="sale-price" type="number" step="0.01" />
+            <label>Date</label>
+            <input id="sale-date" type="date" />
+            <button onclick="addSale()">Ajouter vente</button>
+
+            <h4 style="margin-top:12px">Historique ventes</h4>
+            <div id="sales-list"></div>
+          </section>
+
+          <section id="stock" class="panel" style="display:none">
+            <h3>Stock par matière & produits</h3>
+            <div id="stock-area"></div>
+            <button class="btn-edit-stock" onclick="editStockManually()" style="margin-top:12px;">Modifier le Stock Matière</button>
+          </section>
+
+          <section id="charts" class="panel" style="display:none">
+            <h3>Graphiques</h3>
+            <div class="charts" id="charts-panel">
+              <canvas id="chart-sales-by-product" width="400" height="200"></canvas>
+              <hr style="margin: 15px 0;">
+              <canvas id="chart-finances" width="400" height="200"></canvas>
+            </div>
+          </section>
+
+          <section id="param" class="panel" style="display:none">
+            <h3>Sauvegarde & import/export</h3>
+            <div class="controls">
+              <button onclick="exportJSON()">Exporter JSON</button>
+              <button onclick="importJSON()">Importer JSON (remplace tout)</button>
+              <button onclick="exportCSV()">Exporter ventes en CSV</button>
+              <button onclick="clearAll()">Réinitialiser tout</button>
+            </div>
+            <p class="small muted">Important : l'app utilise localStorage. Sauvegardez votre JSON ailleurs pour ne rien perdre.</p>
+          </section>
+
+        </div>
+      </div>
+
+        <aside>
+        <div class="card fade-in">
+          <h4>Apparence / Thèmes</h4>
+          <div class="small">Choisis un thème — le choix est sauvegardé.</div>
+          <div class="theme-row" id="theme-selector"></div>
+          <hr style="margin:8px 0;border:none;border-top:1px solid rgba(0,0,0,0.08)" />
+          <h4>Raccourcis</h4>
+          <div class="small">Ajouter achats → créer produits → créer packs → enregistrer ventes.</div>
+          <hr style="margin:8px 0;border:none;border-top:1px solid rgba(0,0,0,0.08)" />
+          <div style="display:flex;gap:8px;flex-direction:column">
+            <button onclick="show('achats')">Ajouter achat / frais</button>
+            <button onclick="show('produits')">Créer produit</button>
+            <button onclick="show('packs')">Créer pack</button>
+            <button onclick="show('ventes')">Enregistrer vente</button>
+          </div>
+        </div>
+
+        <div class="card fade-in" style="margin-top:12px">
+          <h4>Glossaire rapide</h4>
+          <div class="small"><strong>Coût unitaire moyen (CUMP)</strong> = coût total lot / quantité totale du lot.</div>
+          <div class="small">Dépense totale = coût matière + frais.</div>
+          <div class="small"><strong>Marge</strong> = (Prix - Coût) / Prix.</div>
+        </div>
+
+      </aside>
+    </div>
+
+    <footer class="small muted">Tip: exportez régulièrement. Cette app est un MVP local pour t'aider à démarrer.</footer>
+  </div>
+
+  <script>
+    // --- données initiales et helpers ---
+    const STORAGE_KEY = 'candlemgr_v1';
+    const THEME_STORAGE_KEY = 'candlemgr_theme';
+    let state = { achats: [], produits: [], packs: [], ventes: [] , recipeBuffer: [], packRecipeBuffer: [] };
+    
+    // ---------- THEMES (10 thèmes, motifs & fonds colorés doux) ----------
+  const THEMES = {
+
+  'bling-holographic': {
+    '--bg':'linear-gradient(135deg,#ffe3ff 0%,#d4fcff 50%,#e4e0ff 100%)',
+    '--card':'rgba(255,255,255,0.7)',
+    '--accent':'#c79aff',
+    '--secondary-accent':'#a0eaff',
+    '--muted':'#8f8aa4',
+    '--text':'#2e2840',
+    '--pattern':'repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0 10px, transparent 10px 20px)'
+  },
+  
+  'pink-diamond': {
+    '--bg':'linear-gradient(180deg,#ffe4ef 0%,#ffd8e8 100%)',
+    '--card':'rgba(255,255,255,0.8)',
+    '--accent':'#ff71c4',
+    '--secondary-accent':'#e555ae',
+    '--muted':'#a16d8f',
+    '--text':'#2c1423',
+    '--pattern':'repeating-linear-gradient(45deg, rgba(255,255,255,0.12) 0 10px, transparent 10px 20px)'
+  },
+
+
+  'gold-diamond': {
+    '--bg':'linear-gradient(180deg,#fff7d1 0%,#ffefb3 100%)',
+    '--card':'rgba(255,255,255,0.75)',
+    '--accent':'#d4af37',
+    '--secondary-accent':'#b9962e',
+    '--muted':'#7a6a32',
+    '--text':'#2d260f',
+    '--pattern':'repeating-linear-gradient(45deg, rgba(255,255,255,0.15) 0 8px, transparent 8px 16px)'
+  },
+
+  'neon-royal': {
+    '--bg':'linear-gradient(180deg,#0f0024 0%,#22004a 100%)',
+    '--card':'rgba(10,0,30,0.85)',
+    '--accent':'#b95bff',
+    '--secondary-accent':'#ff00d4',
+    '--muted':'#a883bf',
+    '--text':'#fbeaff',
+    '--pattern':'repeating-linear-gradient(90deg, rgba(255,0,255,0.06) 0 10px, transparent 10px 20px)'
+  },
+
+};
+
+
+    
+    // NOUVELLES FONCTIONS DE GESTION DE THÈME
+    
+    function applyTheme(themeName) {
+        const theme = THEMES[themeName];
+        if (!theme) return;
+        
+        for (const [key, value] of Object.entries(theme)) {
+            document.documentElement.style.setProperty(key, value);
+        }
+        
+        // Update the selected state of the theme circles
+        document.querySelectorAll('.theme-circle').forEach(circle => {
+            circle.classList.remove('selected');
+            if (circle.dataset.theme === themeName) {
+                circle.classList.add('selected');
+            }
+        });
+        
+        // Save the selected theme to localStorage
+        localStorage.setItem(THEME_STORAGE_KEY, themeName);
+    }
+    
+    function loadTheme() {
+        // Load stored theme or use default ('pastel-rose')
+        const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'pastel-rose';
+        applyTheme(savedTheme);
+    }
+
+    function selectTheme(themeName) {
+        applyTheme(themeName);
+        // Re-render charts to pick up new colors
+        renderCharts();
+    }
+    
+    function renderThemeSelector() {
+        const el = document.getElementById('theme-selector');
+        if (!el) return;
+        
+        let html = '';
+        const currentThemeName = localStorage.getItem(THEME_STORAGE_KEY) || 'pastel-rose';
+
+        for (const name in THEMES) {
+            const theme = THEMES[name];
+            const isSelected = name === currentThemeName ? ' selected' : '';
+            
+            // Apply the theme colors directly to the circle for preview
+            let style = `background:${theme['--bg']}; border-color:${theme['--accent']};`;
+            
+            // If the pattern uses special characters, escape them
+            const patternStyle = `background-image: ${theme['--pattern']};`;
+            
+            html += `
+                <div 
+                    class="theme-circle${isSelected}" 
+                    style="${style}" 
+                    data-theme="${name}" 
+                    onclick="selectTheme('${name}')"
+                    title="${name.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}"
+                >
+                    <div class="pattern" style="${patternStyle}"></div>
+                </div>
+            `;
+        }
+        el.innerHTML = html;
+        // Ensure the current theme is applied again after rendering the circles
+        applyTheme(currentThemeName);
+    }
+
+    // FIN NOUVELLES FONCTIONS DE GESTION DE THÈME
+
+    function load(){
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(raw){ 
+            try { 
+                state = JSON.parse(raw); 
+                
+                // Sécurisation des nouvelles structures
+                if (!state.packs) state.packs = [];
+                if (!state.recipeBuffer) state.recipeBuffer = [];
+                if (!state.packRecipeBuffer) state.packRecipeBuffer = [];
+                if (!state.salePackagingBuffer) state.salePackagingBuffer = []; // NOUVEAU: Buffer pour packaging de vente
+                
+                // 4) Achats : migration pour les anciens formats
+                state.achats.forEach(a => {
+                    if (typeof a.originalQty === 'undefined') {
+                        a.originalQty = a.qty; 
+                    }
+                    if (typeof a.extraCost === 'undefined') {
+                        a.extraCost = 0;
+                    }
+                    // Migration du type
+                    if (typeof a.type === 'undefined') {
+                        a.type = a.originalQty > 0 ? 'matiere' : 'frais'; 
+                    }
+                    
+                    // Migration de catégorie (M.P. par défaut)
+                    if (a.type === 'matiere' && typeof a.category === 'undefined') {
+                        a.category = 'matiere_premiere';
+                    }
+                    
+                    // Migration EMBA-to-PKG (FUSION DEMANDÉE)
+                    if (a.type === 'matiere' && a.category === 'emballage') {
+                        a.category = 'packaging';
+                    }
+
+                    // Migration pour Frais (New: unitExtraCost/count)
+                    if (a.type === 'frais' && typeof a.unitExtraCost === 'undefined') {
+                        a.name = a.name || "Frais/Fourniture (Ancien)";
+                        // Si l'ancien extraCost est > 0, on suppose que c'était le coût unitaire pour 1 fois
+                        a.unitExtraCost = a.extraCost > 0 ? a.extraCost : 0; 
+                        a.count = a.extraCost > 0 ? 1 : 0; 
+                    }
+                    // S'assurer que le nom est défini pour les anciens frais
+                    if (a.type === 'frais' && !a.name) {
+                        a.name = "Frais/Fourniture (Ancien)";
+                    }
+                });
+
+            } catch(e){ 
+                console.error(e); 
+            }
+        }
+    }
+    
+    // NOTE: Les fonctions de calcul et de logique (save, uid, compute*, addAchat, render*, etc.)
+    // sont conservées *INTACTES* à partir d'ici, selon votre demande.
+    
+    // J'ai omis le reste des fonctions ici pour la concision (elles sont déjà dans votre code),
+    // mais elles DOIVENT être incluses dans le fichier final.
+    
+    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); renderAll(); }
+    function uid(prefix='id'){return prefix+Math.random().toString(36).slice(2,9)}
+    function clearEditArea(){ document.getElementById('edit-area').innerHTML = ''; }
+    
+    function getUniqueMaterials(){
+        const unique = {};
+        state.achats.forEach(a => {
+            if (a.type === 'matiere' && a.originalQty > 0) {
+              const category = (a.category === 'emballage') ? 'packaging' : (a.category || 'matiere_premiere');
+              unique[a.name] = { unit: a.unit, category: category }; 
+            }
+        });
+        return Object.keys(unique).map(name => ({
+            name: name,
+            unit: unique[name].unit,
+            category: unique[name].category
+        })).sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    function getFraisTemplates(){
+        const unique = {};
+        state.achats.filter(a => a.type === 'frais' && a.unitExtraCost > 0).forEach(a => {
+            if (!unique[a.name] || new Date(a.date) > new Date(unique[a.name].date)) {
+                unique[a.name] = { 
+                    name: a.name, 
+                    unitExtraCost: a.unitExtraCost, 
+                    date: a.date 
+                };
+            }
+        });
+        return Object.values(unique).sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+
+    function addAchat(type){
+        if (type === 'matiere') {
+            const category = document.getElementById('achat-category').value;
+            const name = document.getElementById('achat-name').value.trim();
+            const qty = parseFloat(document.getElementById('achat-qty').value)||0;
+            const unit = document.getElementById('achat-unit').value.trim()||'u';
+            const cost = parseFloat(document.getElementById('achat-cost').value)||0;
+            const extraCost = parseFloat(document.getElementById('achat-extra-cost').value)||0;
+            const date = document.getElementById('achat-date').value||new Date().toISOString().slice(0,10);
+            
+            if(!name || qty<=0) return alert('Nom et Quantité de matière requis pour un achat de matière.');
+            if(cost<=0 && extraCost<=0) return alert('Coût matière ou frais supplémentaires doit être positif.');
+            
+            state.achats.push({id:uid('a'),type:'matiere',category,name,qty,unit,cost,extraCost,date, originalQty: qty}); 
+            document.getElementById('achat-name').value=''; 
+            document.getElementById('achat-qty').value=1; 
+            document.getElementById('achat-unit').value=''; 
+            document.getElementById('achat-cost').value=0; 
+            document.getElementById('achat-extra-cost').value=0;
+
+        } else if (type === 'frais') {
+            const templateValue = document.getElementById('frais-template-select').value;
+            const isNewFrais = templateValue === 'NEW_FRAIS';
+            const date = document.getElementById('frais-date').value||new Date().toISOString().slice(0,10);
+            
+            let name, count, unitExtraCost, extraCost;
+
+            if (isNewFrais) {
+                name = document.getElementById('frais-description').value.trim();
+                unitExtraCost = parseFloat(document.getElementById('frais-unit-amount').value)||0;
+                count = parseFloat(document.getElementById('frais-count').value)||1;
+                
+                if(!name) return alert('Description des frais requise.');
+                if(unitExtraCost<=0) return alert('Montant unitaire des frais doit être positif.');
+                if(count <= 0) return alert('Le nombre de fois doit être positif.');
+
+                extraCost = unitExtraCost * count;
+                
+            } else {
+                const [templateName, templateUnitExtraCostStr] = templateValue.split('|');
+                name = templateName;
+                unitExtraCost = parseFloat(templateUnitExtraCostStr);
+                count = parseFloat(document.getElementById('frais-count').value)||1;
+                
+                if (count <= 0) return alert('Le nombre de fois doit être positif.');
+                extraCost = unitExtraCost * count;
+            }
+
+            state.achats.push({ 
+                id: uid('a'), 
+                type: 'frais', 
+                name, 
+                qty: 0, 
+                unit: 'u', 
+                cost: 0, 
+                extraCost: extraCost, 
+                date, 
+                originalQty: 0, 
+                count: count, 
+                unitExtraCost: unitExtraCost 
+            }); 
+            document.getElementById('frais-template-select').value='NEW_FRAIS';
+            updateFraisInputs();
+            document.getElementById('frais-description').value='';
+            document.getElementById('frais-unit-amount').value=0;
+            document.getElementById('frais-count').value=1;
+        }
+        save();
+    }
+
+    function updateFraisInputs() {
+        const select = document.getElementById('frais-template-select');
+        const newArea = document.getElementById('frais-new-input-area');
+        if (!select || !newArea) return;
+        
+        if (select.value === 'NEW_FRAIS') {
+            newArea.style.display = 'block';
+        } else {
+            newArea.style.display = 'none';
+        }
+        document.getElementById('frais-count').value = 1;
+    }
+
+    function renderFraisTemplateSelect() {
+        const select = document.getElementById('frais-template-select');
+        if (!select) return;
+        const templates = getFraisTemplates();
+        let options = '<option value="NEW_FRAIS">-- Nouveau frais (Définir le coût unitaire) --</option>';
+        templates.forEach(t => {
+            options += `<option value="${t.name}|${t.unitExtraCost}">${t.name} (${t.unitExtraCost.toFixed(2)} DA / fois)</option>`;
+        });
+        select.innerHTML = options;
+        updateFraisInputs(); 
+    }
+
+    function deleteAchat(id){
+        console.log('deleteAchat called for ID:', id);
+        const achat = state.achats.find(a=>a.id===id);
+        if(!achat) return;
+        
+        let confirmMsg = `Supprimer cet achat de ${achat.name} (${achat.type === 'matiere' ? achat.originalQty : achat.extraCost.toFixed(2)} DA)?`;
+        
+        if (achat.type === 'matiere') {
+            confirmMsg += " ATTENTION: Ceci réajustera la quantité totale initiale et pourrait impacter le CUMP de toutes les recettes existantes et le stock actuel.";
+        } else {
+            confirmMsg += " Ceci n'impacte pas le stock mais diminue la dépense totale.";
+        }
+
+        if(!confirm(confirmMsg)) return;
+
+        state.achats = state.achats.filter(a=>a.id!==id);
+        
+        if (achat.type === 'matiere') {
+            recalculateStockAndSave();
+        } else {
+            save();
+        }
+    }
+
+    function editAchat(id){
+        console.log('editAchat called for ID:', id);
+        clearEditArea();
+        show('achats');
+        const achat = state.achats.find(a=>a.id===id);
+        if(!achat) return alert('Achat non trouvé');
+
+        let html = `
+            <div class="panel-edit">
+                <h4>Modifier Achat: ${achat.name}</h4>
+        `;
+
+        if (achat.type === 'matiere') {
+            html += `
+                <label>Nom de la matière</label>
+                <input id="edit-achat-name" value="${achat.name}" />
+                <label>Catégorie</label>
+                <select id="edit-achat-category">
+                    <option value="matiere_premiere" ${achat.category === 'matiere_premiere' ? 'selected' : ''}>Matière Première</option>
+                    <option value="packaging" ${achat.category === 'packaging' ? 'selected' : ''}>Packaging & Emballage</option>
+                </select>
+                <label>Quantité Achetée (Initial/Total)</label>
+                <input id="edit-achat-original-qty" type="number" step="0.01" value="${achat.originalQty}" />
+                <label>Unité</label>
+                <input id="edit-achat-unit" value="${achat.unit}" />
+                <label>Coût de la matière seule (DA)</label>
+                <input id="edit-achat-cost" type="number" step="0.01" value="${achat.cost}" />
+                <label>Frais supplémentaires sur cet achat (DA)</label>
+                <input id="edit-achat-extra-cost" type="number" step="0.01" value="${achat.extraCost}" />
+                <label>Quantité Actuellement Restante</label>
+                <input id="edit-achat-remaining-qty" type="number" step="0.01" value="${achat.qty}" />
+                <p class="small muted">ATTENTION: La modification réajuste le stock restant. Soyez sûr de corriger le montant initial.</p>
+            `;
+        } else { 
+             const currentCount = achat.count || 1;
+             const currentUnitExtraCost = achat.unitExtraCost || 0;
+             const calculatedTotal = currentUnitExtraCost * currentCount;
+
+            html += `
+                <label>Description du frais</label>
+                <input id="edit-frais-description" value="${achat.name}" />
+                <label>Montant unitaire du Frais (DA)</label>
+                <input id="edit-frais-unit-amount" type="number" step="0.01" value="${currentUnitExtraCost}" />
+                <label>Nombre de fois / Quantité</label>
+                <input id="edit-frais-count" type="number" step="1" value="${currentCount}" />
+                <label>Total des Frais (Calculé)</label>
+                <p style="font-weight:700">${calculatedTotal.toFixed(2)} DA</p>
+            `;
+        }
+
+        html += `
+                <label>Date de l'achat/frais</label>
+                <input id="edit-achat-date" type="date" value="${achat.date}" />
+                <div style="display:flex;gap:8px;margin-top:12px">
+                    <button onclick="saveEditAchat('${achat.id}')">Sauvegarder les modifications</button>
+                    <button onclick="clearEditArea()" style="background:none; color:var(--muted)">Annuler</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('edit-area').innerHTML = html;
+    }
+
+    function saveEditAchat(id){
+        const achat = state.achats.find(a=>a.id===id);
+        if(!achat) return;
+
+        if (achat.type === 'matiere') {
+            const newName = document.getElementById('edit-achat-name').value.trim();
+            const newCategory = document.getElementById('edit-achat-category').value;
+            const newOriginalQty = parseFloat(document.getElementById('edit-achat-original-qty').value)||0;
+            const newUnit = document.getElementById('edit-achat-unit').value.trim()||'u';
+            const newCost = parseFloat(document.getElementById('edit-achat-cost').value)||0;
+            const newExtraCost = parseFloat(document.getElementById('edit-achat-extra-cost').value)||0;
+            const newRemainingQty = parseFloat(document.getElementById('edit-achat-remaining-qty').value)||0;
+            
+            if(!newName || newOriginalQty<=0) return alert('Nom et Quantité initiale requis.');
+            if(newCost<=0 && newExtraCost<=0) return alert('Coût matière ou frais supplémentaires doit être positif.');
+            if(newRemainingQty > newOriginalQty) return alert('La quantité restante ne peut être supérieure à la quantité achetée initiale.');
+            
+            achat.name = newName;
+            achat.category = newCategory;
+            achat.originalQty = newOriginalQty;
+            achat.unit = newUnit;
+            achat.cost = newCost;
+            achat.extraCost = newExtraCost;
+            achat.qty = newRemainingQty; 
+            
+            recalculateStockAndSave();
+        } else if (achat.type === 'frais') {
+            const newName = document.getElementById('edit-frais-description').value.trim();
+            const newUnitExtraCost = parseFloat(document.getElementById('edit-frais-unit-amount').value)||0;
+            const newCount = parseFloat(document.getElementById('edit-frais-count').value)||1;
+            
+            if(!newName) return alert('Description des frais requise.');
+            if(newUnitExtraCost<=0) return alert('Montant unitaire des frais doit être positif.');
+            if(newCount <= 0) return alert('Le nombre de fois doit être positif.');
+            
+            achat.name = newName;
+            achat.unitExtraCost = newUnitExtraCost;
+            achat.count = newCount;
+            achat.extraCost = newUnitExtraCost * newCount; 
+            
+            save();
+        }
+        achat.date = document.getElementById('edit-achat-date').value||new Date().toISOString().slice(0,10);
+        clearEditArea();
+    }
+
+    function computeMaterialCosts(){
+        // {name: 'Cire', totalCost: 1000, totalQty: 1000, cump: 1}
+        const costs = {};
+        state.achats.forEach(a => {
+            if (a.type === 'matiere') {
+                if(!costs[a.name]){
+                    costs[a.name] = { totalCost: 0, totalQty: 0 };
+                }
+                costs[a.name].totalCost += (a.cost + a.extraCost);
+                costs[a.name].totalQty += a.originalQty;
+            }
+        });
+
+        // Compute CUMP (Coût Unitaire Moyen Pondéré)
+        return Object.keys(costs).map(name => {
+            const data = costs[name];
+            const cump = data.totalQty > 0 ? data.totalCost / data.totalQty : 0;
+            return { name, cump };
+        });
+    }
+
+    function computeTotalExpenses(){
+        let total = 0;
+        state.achats.forEach(a => {
+            if (a.type === 'matiere') {
+                total += a.cost + a.extraCost; // Coût matière + frais spécifiques à l'achat
+            } else if (a.type === 'frais') {
+                total += a.extraCost; // Frais supplémentaires (livraison, moules, etc.)
+            }
+        });
+        return total;
+    }
+
+    function computeMaterialStock(){
+        // Stock initial de la matière/packaging
+        const stock = {};
+        const cumpData = computeMaterialCosts();
+        
+        state.achats.forEach(a => {
+            if (a.type === 'matiere') {
+                // Initialiser le stock si c'est le premier achat de cette matière
+                if(!stock[a.name]){
+                    stock[a.name] = { 
+                        qty: 0, 
+                        unit: a.unit, 
+                        category: a.category || 'matiere_premiere',
+                        cump: cumpData.find(c => c.name === a.name)?.cump || 0
+                    };
+                }
+                // Si la quantité restante est définie (edit manuel), l'utiliser, sinon calculer.
+                // NOTE: L'objet 'a' dans state.achats est MUABLE et représente l'état d'un LOT,
+                // il contient 'qty' qui est le stock RESTANT de ce lot.
+                stock[a.name].qty += a.qty; 
+                stock[a.name].unit = a.unit; 
+                stock[a.name].category = a.category || 'matiere_premiere';
+                stock[a.name].cump = cumpData.find(c => c.name === a.name)?.cump || 0; 
+            }
+        });
+        
+        // Convertir en tableau pour le rendu
+        return Object.keys(stock).map(name => ({
+            name, 
+            qty: stock[name].qty, 
+            unit: stock[name].unit,
+            category: stock[name].category,
+            cump: stock[name].cump
+        }));
+    }
+
+    function getProductCost(product){
+        const cumpData = computeMaterialCosts();
+        let totalCost = 0;
+        
+        product.recipe?.forEach(r => {
+            const cump = cumpData.find(c => c.name === r.name)?.cump || 0;
+            totalCost += r.qty * cump;
+        });
+        
+        return totalCost;
+    }
+
+    function getPackCost(pack){
+        let totalCost = 0;
+        
+        pack.composition?.forEach(c => {
+            if(c.type === 'produit'){
+                const prod = state.produits.find(p => p.id === c.id);
+                if(prod){
+                    totalCost += getProductCost(prod) * c.qty;
+                }
+            } else if (c.type === 'matiere') {
+                const cumpData = computeMaterialCosts();
+                const cump = cumpData.find(m => m.name === c.name)?.cump || 0;
+                totalCost += c.qty * cump;
+            }
+        });
+        return totalCost;
+    }
+
+    function getSaleItemDetails(sale){
+        const prod = state.produits.find(p => p.id === sale.itemId);
+        if(prod) return {
+            name: prod.name,
+            price: prod.price,
+            cost: getProductCost(prod),
+            type: 'produit'
+        };
+        const pack = state.packs.find(p => p.id === sale.itemId);
+        if(pack) return {
+            name: pack.name,
+            price: pack.price,
+            cost: getPackCost(pack),
+            type: 'pack'
+        };
+        return { name: 'Inconnu', price: 0, cost: 0, type: 'unknown' };
+    }
+
+    function computeStats(){
+        let totalCA = 0; // Chiffre d'Affaires
+        let totalCMV = 0; // Coût des Marchandises Vendues
+        let totalProductsSold = 0;
+
+        // 1. Calculer le CMV et le CA (Produits et Packs)
+        state.ventes.forEach(s => {
+            const itemDetails = getSaleItemDetails(s);
+            const finalPriceUnit = s.price || itemDetails.price;
+            
+            const cost = itemDetails.cost;
+            
+            const revenue = finalPriceUnit * s.qty;
+            const totalCost = cost * s.qty; 
+            
+            totalCA += revenue;
+            totalCMV += totalCost;
+            
+            // Compter les produits individuels (même si vendus en packs)
+            const individualQuantities = getIndividualProductQuantitiesFromSale(s);
+            Object.values(individualQuantities).forEach(q => totalProductsSold += q);
+        });
+        
+        // 2. Coût du packaging supplémentaire vendu
+        state.ventes.forEach(s => {
+            s.extraPackaging?.forEach(pkg => {
+                const cump = computeMaterialCosts().find(c => c.name === pkg.name)?.cump || 0;
+                totalCMV += pkg.qty * cump;
+            });
+        });
+
+        // 3. Total des dépenses (Achats de matières/packaging + Frais)
+        const totalExpenses = computeTotalExpenses();
+        
+        // 4. Bénéfice Net (CA - CMV - Frais non-CMV)
+        // Note: totalExpenses englobe les frais spécifiques aux achats (CMV) et les frais généraux (non-CMV).
+        // Le CMV est déjà calculé en utilisant le CUMP qui inclut les frais spécifiques aux achats.
+        // On considère ici: Bénéfice = CA - (Coût Total Matières VENDUES) - (Total Frais SANS Matières VENDUES)
+        // Simplification: Bénéfice = CA - CMV - Frais Généraux (Ceux qui n'ont pas alimenté un CUMP)
+        // L'approche "Marge Brute (CA-CMV) - Frais Généraux = Bénéfice Net" est plus complexe car nos Achats mixent les deux.
+        
+        // Nouvelle approche simple: Bénéfice = CA - CMV - (Frais non intégrés au CUMP/CMV)
+        // Ici, on va utiliser une approche plus comptable pour l'affichage : Profit = CA - Coût Total de TOUT ce qui est DÉPENSÉ (CMV + Frais)
+        // C'est moins précis mais plus facile à comprendre comme 'flux de trésorerie' dans un MVP.
+        const profit = totalCA - totalCMV - (totalExpenses - totalCMV);
+        
+        // Marge moyenne (Marge sur CA)
+        const netProfit = totalCA - totalCMV - computeNonCMVExpenses(); // Bénéfice = CA - Coût des ventes - Frais généraux
+        const averageMargin = totalCA > 0 ? (netProfit / totalCA) * 100 : 0;
+        
+        return {
+            ca: totalCA,
+            cmv: totalCMV,
+            totalExpenses: totalExpenses,
+            profit: netProfit, // Bénéfice Net
+            margin: averageMargin,
+            totalProductsSold: totalProductsSold
+        };
+    }
+    
+    function computeNonCMVExpenses(){
+        let totalFrais = 0;
+        state.achats.forEach(a => {
+            if(a.type === 'frais'){
+                totalFrais += a.extraCost;
+            }
+        });
+        return totalFrais;
+    }
+
+    function renderStats(){
+        const stats = computeStats();
+        
+        document.getElementById('stat-ca').textContent = `${stats.ca.toFixed(2)} DA`;
+        document.getElementById('stat-profit').textContent = `${stats.profit.toFixed(2)} DA`;
+        document.getElementById('stat-margin').textContent = `${stats.margin.toFixed(2)}%`;
+        document.getElementById('stat-products-sold').textContent = `${stats.totalProductsSold.toFixed(0)} unités`;
+        
+        const profitColor = stats.profit > 0 ? 'color:lime' : 'color:red';
+        document.getElementById('stat-profit').style.color = profitColor;
+        document.getElementById('stat-margin').style.color = profitColor;
+    }
+
+    function renderAchatList(){
+        const el = document.getElementById('achats-list');
+        if(!el) return;
+        
+        const cumpData = computeMaterialCosts();
+        const materialStock = computeMaterialStock();
+        
+        // 1. Trier les achats du plus récent au plus ancien
+        const sortedAchats = state.achats.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        // 2. Grouper par type/catégorie pour un meilleur affichage
+        const achatsByType = {
+            matiere_premiere: sortedAchats.filter(a => a.type === 'matiere' && a.category === 'matiere_premiere'),
+            packaging: sortedAchats.filter(a => a.type === 'matiere' && (a.category === 'packaging' || a.category === 'emballage')),
+            frais: sortedAchats.filter(a => a.type === 'frais'),
+        };
+        
+        // 3. Calculer les totaux pour l'affichage
+        const totalExpenses = computeTotalExpenses();
+        const materialValue = materialStock.reduce((acc, m) => acc + (m.qty * m.cump), 0);
+        
+        const totalDisplay = `
+            <h4 style="margin-top:20px;">Historique des Dépenses</h4>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+              <div style="flex:1;min-width:160px;background:rgba(0,0,0,0.02);padding:8px;border-radius:6px">
+                <div class="small">Total Dépenses</div>
+                <div style="font-size:16px;font-weight:700">${totalExpenses.toFixed(2)} DA</div>
+              </div>
+              <div style="flex:1;min-width:160px;background:rgba(0,0,0,0.02);padding:8px;border-radius:6px">
+                <div class="small">Valeur Stock Actuel</div>
+                <div style="font-size:16px;font-weight:700">${materialValue.toFixed(2)} DA</div>
+              </div>
+            </div>
+        `;
+        
+        const categoryTitles = {
+            matiere_premiere: 'Matières Premières',
+            packaging: 'Packaging & Emballage',
+            frais: 'Frais Supplémentaires (Livraison, outils, etc.)',
+        };
+        
+        const categoryOrder = ['matiere_premiere', 'packaging', 'frais']; 
+        let html = totalDisplay;
+
+        // 4. Render each section
+        for (const category of categoryOrder) {
+            const currentAchats = achatsByType[category];
+            html += `<h4 style="margin-top:16px;">${categoryTitles[category]}</h4>`;
+            
+            if (currentAchats.length === 0) {
+                html += '<div class="small muted">Aucun achat enregistré dans cette catégorie.</div>';
+                continue;
+            }
+            
+            html += '<table><thead><tr><th>Date</th><th>Nom</th>';
+            if (category !== 'frais') {
+                html += '<th>Qté Initiale</th><th>Qté Restante</th><th>Coût Matière</th><th>Frais Suppl.</th><th>Coût Total</th><th>CUMP Actuel</th>';
+            } else {
+                html += '<th>Qté / Fois</th><th>Coût Unitaire</th><th>Coût Total</th>';
+            }
+            html += '<th>Actions</th></tr></thead><tbody>';
+
+            currentAchats.forEach(a => {
+                const totalCost = a.cost + a.extraCost;
+                const cump = cumpData.find(c => c.name === a.name)?.cump || 0;
+                const cumpDisplay = cump.toFixed(4); // 4 décimales pour la précision
+
+                html += `<tr>`;
+                html += `<td>${new Date(a.date).toLocaleDateString('fr-FR')}</td>`;
+                html += `<td>${a.name}</td>`;
+                
+                if (a.type === 'matiere') {
+                    const stock = materialStock.find(m => m.name === a.name) || { qty: 0 };
+                    const qteColor = a.qty <= 0 ? 'color:red' : '';
+                    html += `<td>${a.originalQty.toFixed(2)} ${a.unit}</td>`;
+                    html += `<td style="${qteColor}">${a.qty.toFixed(2)} ${a.unit}</td>`;
+                    html += `<td>${a.cost.toFixed(2)} DA</td>`;
+                    html += `<td>${a.extraCost.toFixed(2)} DA</td>`;
+                    html += `<td>${totalCost.toFixed(2)} DA</td>`;
+                    html += `<td>${cumpDisplay} DA / ${a.unit}</td>`;
+                } else { // Frais
+                    const countDisplay = a.count ? a.count.toFixed(0) : 1;
+                    const unitExtraCostDisplay = a.unitExtraCost ? a.unitExtraCost.toFixed(2) : a.extraCost.toFixed(2);
+                    html += `<td>${countDisplay}</td>`;
+                    html += `<td>${unitExtraCostDisplay} DA</td>`;
+                    html += `<td>${a.extraCost.toFixed(2)} DA</td>`;
+                }
+                
+                html += `<td class="row-actions">
+                            <button class="btn-edit" onclick="editAchat('${a.id}')" style="margin:0; padding:4px 8px;">Modifier</button>
+                            <button class="btn-delete" onclick="deleteAchat('${a.id}')" style="margin:0; padding:4px 8px;">X</button>
+                         </td>`;
+                html += `</tr>`;
+            });
+            html += '</tbody></table>';
+        }
+        el.innerHTML = html;
+    }
+
+
+    function renderRecipe(prodId = null){
+        const isEdit = prodId !== null;
+        const currentRecipe = isEdit ? state.produits.find(p=>p.id===prodId)?.recipe : state.recipeBuffer;
+        const el = isEdit ? document.getElementById('edit-recipe-rows') : document.getElementById('recipe-rows');
+        if(!el || !currentRecipe) return;
+
+        let html = '<table><thead><tr><th>Ingrédient</th><th>Quantité</th><th>Coût CUMP</th><th>Actions</th></tr></thead><tbody>';
+
+        currentRecipe.forEach((r, index) => {
+            const cumpData = computeMaterialCosts();
+            const cump = cumpData.find(c => c.name === r.name)?.cump || 0;
+            const cost = r.qty * cump;
+            
+            html += `
+                <tr class="recipe-row">
+                    <td>${r.name}</td>
+                    <td>${r.qty} ${r.unit}</td>
+                    <td>${cost.toFixed(4)} DA</td>
+                    <td class="row-actions">
+                        <button class="btn-delete" onclick="removeRecipeRow(${index}, ${isEdit}, '${prodId}')" style="margin:0; padding:4px 8px;">X</button>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        el.innerHTML = html;
+        
+        // Update product cost in edit mode
+        if (isEdit) {
+            const prod = state.produits.find(p => p.id === prodId);
+            if (prod) {
+                const cost = getProductCost(prod);
+                document.getElementById('edit-prod-cost-display').textContent = `${cost.toFixed(4)} DA`;
+            }
+        }
+    }
+
+    function renderRecipeInputArea(prodId = null){
+        const isEdit = prodId !== null;
+        const prefix = isEdit ? 'edit-' : '';
+        const el = isEdit ? document.getElementById('edit-recipe-input-area') : document.getElementById('recipe-input-area');
+        if(!el) return;
+
+        const uniqueMaterials = getUniqueMaterials();
+        let options = '<option value="">-- Sélectionner une matière --</option>';
+        options += '<optgroup label="Matières Premières">';
+        uniqueMaterials.filter(m => m.category === 'matiere_premiere').forEach(m => {
+            options += `<option value="${m.name}|${m.unit}|${m.category}">${m.name} (${m.unit})</option>`;
+        });
+        options += '</optgroup>';
+        options += '<optgroup label="Packaging & Emballage">';
+        uniqueMaterials.filter(m => m.category === 'packaging').forEach(m => {
+            options += `<option value="${m.name}|${m.unit}|${m.category}">${m.name} (${m.unit})</option>`;
+        });
+        options += '</optgroup>';
+
+
+        el.innerHTML = `
+            <select id="${prefix}recipe-mat" onchange="updateRecipeUnit('${prefix}')" style="flex:2">
+                ${options}
+            </select>
+            <input id="${prefix}recipe-qty" type="number" step="0.01" placeholder="Quantité" style="flex:1" />
+            <input id="${prefix}recipe-unit" placeholder="unité" style="flex:1" disabled />
+            <button onclick="addRecipeRow('${prefix}', ${isEdit}, '${prodId}')" style="flex:none; margin:0; width:120px;">Ajouter</button>
+        `;
+    }
+
+    function updateRecipeUnit(prefix){
+        const select = document.getElementById(prefix + 'recipe-mat');
+        const unitInput = document.getElementById(prefix + 'recipe-unit');
+        
+        const value = select.value;
+        if(value){
+            const parts = value.split('|');
+            unitInput.value = parts[1];
+        } else {
+            unitInput.value = '';
+        }
+    }
+
+    function addRecipeRow(prefix, isEdit = false, prodId = null){
+        const matSelect = document.getElementById(prefix + 'recipe-mat');
+        const qtyInput = document.getElementById(prefix + 'recipe-qty');
+        const unitInput = document.getElementById(prefix + 'recipe-unit');
+        
+        const selectedValue = matSelect.value;
+        const qty = parseFloat(qtyInput.value) || 0;
+        
+        if (!selectedValue || qty <= 0) return alert('Sélectionner une matière et une quantité positive.');
+        
+        const [name, unit, category] = selectedValue.split('|');
+        
+        const newItem = { name, qty, unit, category };
+
+        const currentRecipe = isEdit ? state.produits.find(p=>p.id===prodId)?.recipe : state.recipeBuffer;
+        if(!currentRecipe) return;
+        
+        // Check if the material already exists in the recipe
+        let existingIndex = currentRecipe.findIndex(r => r.name === newItem.name);
+        
+        if (existingIndex !== -1) {
+            currentRecipe[existingIndex].qty = newItem.qty; // Replace quantity
+        } else {
+            currentRecipe.push(newItem);
+        }
+
+        matSelect.value = ''; // Clear selection
+        qtyInput.value = ''; // Clear quantity
+        document.getElementById(prefix + 'recipe-unit').value = ''; // Clear unit
+        
+        renderRecipe(prodId);
+        
+        if (!isEdit) save(); // Sauvegarder uniquement si on est sur le buffer principal (nouveau produit)
+    }
+
+    function removeRecipeRow(index, isEdit = false, prodId = null){
+        const currentRecipe = isEdit ? state.produits.find(p=>p.id===prodId)?.recipe : state.recipeBuffer;
+        if(!currentRecipe) return;
+        
+        currentRecipe.splice(index, 1);
+        
+        renderRecipe(prodId);
+        
+        if(isEdit){
+            save(); // Sauvegarde l'état du produit modifié
+        } else {
+            // Si on modifie le buffer de recette pour un nouveau produit, on n'a pas besoin de save
+        }
+    }
+
+    function saveProduct(){
+        const name = document.getElementById('prod-name').value.trim();
+        const price = parseFloat(document.getElementById('prod-price').value)||0;
+        
+        if(!name) return alert('Nom du produit requis.');
+
+        // Vider le buffer après sauvegarde
+        state.produits.push({ 
+            id: uid('p'), 
+            name, 
+            price, 
+            recipe: JSON.parse(JSON.stringify(state.recipeBuffer)) // Clone the buffer
+        });
+        state.recipeBuffer = []; // Clear buffer for next product
+
+        // Clear inputs
+        document.getElementById('prod-name').value='';
+        document.getElementById('prod-price').value=0;
+        
+        save();
+    }
+
+    function editProduct(id){
+        console.log('editProduct called for ID:', id);
+        clearEditArea();
+        show('produits');
+        
+        const prod = state.produits.find(p=>p.id===id);
+        if(!prod) return alert('Produit non trouvé');
+        
+        // Inject cost display
+        const cost = getProductCost(prod);
+        
+        const html = `
+            <div class="panel-edit">
+                <h4>Modifier Produit: ${prod.name}</h4>
+                <label>Nom du produit</label>
+                <input id="edit-prod-name" value="${prod.name}" />
+                <label>Prix de vente unitaire (DA)</label>
+                <input id="edit-prod-price" type="number" step="0.01" value="${prod.price}" />
+                
+                <label style="margin-top:10px">Coût de revient actuel (CUMP)</label>
+                <p id="edit-prod-cost-display" style="font-weight:700">${cost.toFixed(4)} DA</p>
+
+                <label>Recette (matière consommée par unité)</label>
+                <div id="edit-recipe-rows"></div>
+                
+                <label style="margin-top:8px">Ajouter ingrédient</label>
+                <div id="edit-recipe-input-area" style="display:flex;gap:8px;margin-top:8px">
+                </div>
+                
+                <div style="display:flex;gap:8px;margin-top:12px">
+                    <button onclick="saveEditProduct('${prod.id}')">Sauvegarder modifications</button>
+                    <button onclick="clearEditArea()" style="background:none; color:var(--muted)">Annuler</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('edit-area').innerHTML = html;
+        
+        // Render the existing recipe and input for editing
+        renderRecipe(prod.id);
+        renderRecipeInputArea(prod.id);
+    }
+
+    function saveEditProduct(id){
+        const prod = state.produits.find(p=>p.id===id);
+        if(!prod) return;
+        
+        const newName = document.getElementById('edit-prod-name').value.trim();
+        const newPrice = parseFloat(document.getElementById('edit-prod-price').value)||0;
+        
+        if(!newName) return alert('Nom du produit requis.');
+        
+        // Update product data
+        prod.name = newName;
+        prod.price = newPrice;
+        
+        // The recipe is updated directly by addRecipeRow/removeRecipeRow when in edit mode
+        
+        // Recalculate stock and save
+        recalculateStockAndSave();
+        clearEditArea();
+    }
+
+    function deleteProduct(id){
+        if(!confirm('Êtes-vous sûr de vouloir supprimer ce produit? Les ventes passées resteront enregistrées mais leur coût de revient ne pourra plus être calculé.')) return;
+        
+        state.produits = state.produits.filter(p => p.id !== id);
+        
+        // Le stock doit être entièrement réajusté après la modification/suppression d'un produit
+        recalculateStockAndSave();
+    }
+
+    function renderProducts(){
+        const el=document.getElementById('produits-list');
+        if(!el) return;
+
+        if(state.produits.length === 0){
+            el.innerHTML = '<div class="small muted">Aucun produit fini enregistré.</div>';
+            return;
+        }
+
+        let html = '<table><thead><tr><th>Nom</th><th>Prix de vente</th><th>Coût de revient</th><th>Marge</th><th>Actions</th></tr></thead><tbody>';
+
+        state.produits.forEach(p => {
+            const cost = getProductCost(p);
+            const margin = p.price > 0 ? ((p.price - cost) / p.price) * 100 : 0;
+            const marginColor = margin > 0 ? 'color:lime' : 'color:red';
+            
+            let recipeDetail = p.recipe && p.recipe.length > 0 ? p.recipe.map(r => `${r.qty} ${r.unit} de ${r.name}`).join('; ') : 'Aucune recette';
+            
+            html += `<tr> 
+                        <td>
+                            ${p.name}
+                            <div class="small muted">${recipeDetail}</div>
+                        </td>
+                        <td>${p.price.toFixed(2)} DA</td>
+                        <td>${cost.toFixed(4)} DA</td>
+                        <td style="${marginColor}">${margin.toFixed(2)}%</td>
+                        <td class="row-actions">
+                            <button class="btn-edit" onclick="editProduct('${p.id}')" style="margin:0; padding:4px 8px;">Modifier</button>
+                            <button class="btn-delete" onclick="deleteProduct('${p.id}')" style="margin:0; padding:4px 8px;">X</button>
+                        </td>
+                    </tr>`;
+        });
+        
+        html += '</tbody></table>';
+        el.innerHTML = html;
+    }
+
+    // --- Packs (C/R/U/D) ---
+
+    function renderPackComposition(packId = null){
+        const isEdit = packId !== null;
+        const currentComposition = isEdit ? state.packs.find(p=>p.id===packId)?.composition : state.packRecipeBuffer;
+        const el = isEdit ? document.getElementById('edit-pack-composition-rows') : document.getElementById('pack-composition-rows');
+        if(!el || !currentComposition) return;
+
+        let html = '<table><thead><tr><th>Composant</th><th>Quantité</th><th>Coût unitaire</th><th>Actions</th></tr></thead><tbody>';
+
+        currentComposition.forEach((c, index) => {
+            let costUnit = 0;
+            let qtyDisplay;
+            let nameDisplay;
+            
+            if(c.type === 'produit'){
+                const prod = state.produits.find(p => p.id === c.id);
+                costUnit = prod ? getProductCost(prod) : 0;
+                qtyDisplay = `${c.qty} x`;
+                nameDisplay = `Produit: ${c.name}`;
+            } else if (c.type === 'matiere'){
+                const cumpData = computeMaterialCosts();
+                costUnit = cumpData.find(m => m.name === c.name)?.cump || 0;
+                qtyDisplay = `${c.qty} ${c.unit}`;
+                nameDisplay = `Matière/Packaging: ${c.name}`;
+            }
+            
+            const totalCost = c.qty * costUnit;
+            
+            html += `
+                <tr class="pack-component-row">
+                    <td>${nameDisplay}</td>
+                    <td>${qtyDisplay}</td>
+                    <td>${totalCost.toFixed(4)} DA</td>
+                    <td class="row-actions">
+                        <button class="btn-delete" onclick="removePackComponentRow(${index}, ${isEdit}, '${packId}')" style="margin:0; padding:4px 8px;">X</button>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        el.innerHTML = html;
+        
+        // Update pack cost in edit mode
+        if (isEdit) {
+            const pack = state.packs.find(p => p.id === packId);
+            if (pack) {
+                const cost = getPackCost(pack);
+                document.getElementById('edit-pack-cost-display').textContent = `${cost.toFixed(4)} DA`;
+            }
+        }
+    }
+
+    function renderPackCompositionInputArea(packId = null){
+        const isEdit = packId !== null;
+        const prefix = isEdit ? 'edit-' : '';
+        const el = isEdit ? document.getElementById('edit-pack-input-area') : document.getElementById('pack-input-area');
+        if(!el) return;
+
+        const uniqueMaterials = getUniqueMaterials();
+        
+        let options = '<option value="">-- Sélectionner un Composant --</option>';
+        
+        // Produits Finis
+        options += '<optgroup label="Produits Finis">';
+        state.produits.forEach(p => {
+            options += `<option value="produit|${p.id}|${p.name}|u">${p.name} (Produit)</option>`;
+        });
+        options += '</optgroup>';
+        
+        // Matières Premières & Packaging
+        options += '<optgroup label="Matières Premières & Packaging">';
+        uniqueMaterials.forEach(m => {
+            options += `<option value="matiere|${m.name}|${m.unit}|${m.category}">${m.name} (${m.unit})</option>`;
+        });
+        options += '</optgroup>';
+
+
+        el.innerHTML = `
+            <div style="display:flex;gap:8px;align-items:flex-end;">
+                <div style="flex:2">
+                    <select id="${prefix}pack-component" onchange="updatePackComponentUnit('${prefix}')">
+                        ${options}
+                    </select>
+                </div>
+                <div style="flex:1">
+                    <label class="small muted">Quantité</label>
+                    <input id="${prefix}pack-component-qty" type="number" step="0.01" value="1" placeholder="Quantité" />
+                </div>
+                <div style="flex:1">
+                    <label class="small muted">Unité</label>
+                    <input id="${prefix}pack-component-unit" placeholder="u" disabled />
+                </div>
+                <button onclick="addPackComponentRow('${prefix}', ${isEdit}, '${packId}')" style="flex:none; margin:0; width:120px;">Ajouter</button>
+            </div>
+        `;
+        updatePackComponentUnit(prefix); // Initial call
+    }
+
+    function updatePackComponentUnit(prefix){
+        const select = document.getElementById(prefix + 'pack-component');
+        const unitInput = document.getElementById(prefix + 'pack-component-unit');
+        
+        const value = select.value;
+        if(value){
+            const parts = value.split('|');
+            // parts[0]: type, parts[1]: id/name, parts[2]: unit/name, parts[3]: category/unit
+            const type = parts[0];
+            const unit = type === 'produit' ? 'x' : parts[2];
+            unitInput.value = unit;
+        } else {
+            unitInput.value = '';
+        }
+    }
+
+    function addPackComponentRow(prefix, isEdit = false, packId = null){
+        const compSelect = document.getElementById(prefix + 'pack-component');
+        const qtyInput = document.getElementById(prefix + 'pack-component-qty');
+        const unitInput = document.getElementById(prefix + 'pack-component-unit');
+        
+        const selectedValue = compSelect.value;
+        const qty = parseFloat(qtyInput.value) || 0;
+        
+        if (!selectedValue || qty <= 0) return alert('Sélectionner un composant et une quantité positive.');
+        
+        const [type, idOrName, nameOrUnit, categoryOrUnit] = selectedValue.split('|');
+        
+        let component = { type, qty };
+        
+        if (type === 'produit') {
+            component.id = idOrName; // id
+            component.name = nameOrUnit; // name
+        } else if (type === 'matiere') {
+            component.name = idOrName; // name
+            component.unit = nameOrUnit; // unit (was parts[2] = unit)
+            component.category = categoryOrUnit; // category (was parts[3] = category)
+        } else {
+            return alert('Type de composant inconnu.');
+        }
+
+        const currentComposition = isEdit ? state.packs.find(p=>p.id===packId)?.composition : state.packRecipeBuffer;
+        if(!currentComposition) return;
+        
+        // Check if the component already exists in the composition
+        let existingIndex = -1;
+        if (type === 'produit') {
+            existingIndex = currentComposition.findIndex(c => c.type === 'produit' && c.id === component.id);
+        } else if (type === 'matiere') {
+            existingIndex = currentComposition.findIndex(c => c.type === 'matiere' && c.name === component.name);
+        }
+        
+        if (existingIndex !== -1) {
+            currentComposition[existingIndex].qty = component.qty; // Replace quantity
+        } else {
+            currentComposition.push(component);
+        }
+
+        renderPackComposition(packId);
+        
+        if (!isEdit) save();
+    }
+
+    function removePackComponentRow(index, isEdit = false, packId = null){
+        const currentComposition = isEdit ? state.packs.find(p=>p.id===packId)?.composition : state.packRecipeBuffer;
+        if(!currentComposition) return;
+        
+        currentComposition.splice(index, 1);
+        
+        renderPackComposition(packId);
+        
+        if(isEdit){
+            save(); // Sauvegarde l'état du pack modifié
+        }
+    }
+
+    function savePack(){
+        const name = document.getElementById('pack-name').value.trim();
+        const price = parseFloat(document.getElementById('pack-price').value)||0;
+        
+        if(!name) return alert('Nom du Pack requis.');
+
+        state.packs.push({ 
+            id: uid('pk'), 
+            name, 
+            price, 
+            composition: JSON.parse(JSON.stringify(state.packRecipeBuffer)) // Clone the buffer
+        });
+        state.packRecipeBuffer = []; // Clear buffer for next pack
+
+        // Clear inputs
+        document.getElementById('pack-name').value='';
+        document.getElementById('pack-price').value=0;
+        
+        save();
+    }
+
+    function editPack(id){
+        console.log('editPack called for ID:', id);
+        clearEditArea();
+        show('packs');
+        
+        const pack = state.packs.find(p=>p.id===id);
+        if(!pack) return alert('Pack non trouvé');
+        
+        const cost = getPackCost(pack);
+        
+        const html = `
+            <div class="panel-edit">
+                <h4>Modifier Pack: ${pack.name}</h4>
+                <label>Nom du Pack</label>
+                <input id="edit-pack-name" value="${pack.name}" />
+                <label>Prix de vente unitaire (DA)</label>
+                <input id="edit-pack-price" type="number" step="0.01" value="${pack.price}" />
+                
+                <label style="margin-top:10px">Coût de revient actuel (CUMP)</label>
+                <p id="edit-pack-cost-display" style="font-weight:700">${cost.toFixed(4)} DA</p>
+
+                <label>Composition du Pack</label>
+                <div id="edit-pack-composition-rows"></div>
+                
+                <label style="margin-top:8px">Ajouter Composant</label>
+                <div id="edit-pack-input-area">
+                </div>
+                
+                <div style="display:flex;gap:8px;margin-top:12px">
+                    <button onclick="saveEditPack('${pack.id}')">Sauvegarder modifications</button>
+                    <button onclick="clearEditArea()" style="background:none; color:var(--muted)">Annuler</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('edit-area').innerHTML = html;
+        
+        renderPackComposition(pack.id);
+        renderPackCompositionInputArea(pack.id);
+    }
+
+    function saveEditPack(id){
+        const pack = state.packs.find(p=>p.id===id);
+        if(!pack) return;
+        
+        const newName = document.getElementById('edit-pack-name').value.trim();
+        const newPrice = parseFloat(document.getElementById('edit-pack-price').value)||0;
+        
+        if(!newName) return alert('Nom du Pack requis.');
+        
+        pack.name = newName;
+        pack.price = newPrice;
+        
+        // The composition is updated directly by addPackComponentRow/removePackComponentRow when in edit mode
+        
+        recalculateStockAndSave();
+        clearEditArea();
+    }
+
+    function deletePack(id){
+        if(!confirm('Êtes-vous sûr de vouloir supprimer ce Pack? Les ventes passées resteront enregistrées mais leur coût de revient ne pourra plus être calculé.')) return;
+        
+        state.packs = state.packs.filter(p => p.id !== id);
+        
+        recalculateStockAndSave();
+    }
+
+    function renderPacks(){
+        const el=document.getElementById('packs-list');
+        if(!el) return;
+
+        if(state.packs.length === 0){
+            el.innerHTML = '<div class="small muted">Aucun pack enregistré.</div>';
+            return;
+        }
+
+        let html = '<table><thead><tr><th>Nom</th><th>Prix de vente</th><th>Coût de revient</th><th>Marge</th><th>Actions</th></tr></thead><tbody>';
+
+        state.packs.forEach(p => {
+            const cost = getPackCost(p);
+            const margin = p.price > 0 ? ((p.price - cost) / p.price) * 100 : 0;
+            const marginColor = margin > 0 ? 'color:lime' : 'color:red';
+            
+            let compositionDetail = p.composition && p.composition.length > 0 ? p.composition.map(c => c.type === 'produit' ? `${c.qty}x ${c.name}` : `${c.qty}${c.unit} ${c.name}`).join('; ') : 'Aucune composition';
+            
+            html += `<tr> 
+                        <td>
+                            ${p.name}
+                            <div class="small muted">${compositionDetail}</div>
+                        </td>
+                        <td>${p.price.toFixed(2)} DA</td>
+                        <td>${cost.toFixed(4)} DA</td>
+                        <td style="${marginColor}">${margin.toFixed(2)}%</td>
+                        <td class="row-actions">
+                            <button class="btn-edit" onclick="editPack('${p.id}')" style="margin:0; padding:4px 8px;">Modifier</button>
+                            <button class="btn-delete" onclick="deletePack('${p.id}')" style="margin:0; padding:4px 8px;">X</button>
+                        </td>
+                    </tr>`;
+        });
+        
+        html += '</tbody></table>';
+        el.innerHTML = html;
+    }
+
+    // --- Stock ---
+    
+    function computeProductStock(){
+        const productStock = [];
+        const materialStock = computeMaterialStock(); // Get current stock of all materials
+
+        state.produits.forEach(p => {
+            let maxUnits = Infinity;
+            
+            if (p.recipe && p.recipe.length > 0) {
+                p.recipe.forEach(r => {
+                    // Find current stock for this material
+                    const stock = materialStock.find(m => m.name === r.name);
+                    
+                    if(!stock){
+                        if(r.qty > 0) maxUnits = 0; // Requires material, but none in stock
+                        return;
+                    }
+                    // r.qty is the quantity needed for ONE product
+                    const possibleUnits = stock.qty / r.qty;
+                    maxUnits = Math.min(maxUnits, possibleUnits);
+                });
+            } else {
+                // Product with no recipe: assume unlimited stock (0 cost)
+                maxUnits = Infinity;
+            }
+
+            productStock.push({
+                name: p.name,
+                id: p.id,
+                qty: Math.floor(maxUnits), // Round down to a whole unit
+                // Add cost for completeness
+                cost: getProductCost(p)
+            });
+        });
+        
+        return productStock;
+    }
+
+    function renderStock(){
+        const cumpData = computeMaterialCosts();
+        const materialStock = computeMaterialStock();
+        const productStock = computeProductStock();
+        const el = document.getElementById('stock-area');
+        if(!el) return;
+
+        let html = '<h4>Stock de Matières Premières & Fournitures</h4>';
+        
+        // Group materials by category
+        const matPrime = materialStock.filter(m => m.category === 'matiere_premiere').sort((a,b) => a.name.localeCompare(b.name));
+        const packaging = materialStock.filter(m => m.category === 'packaging').sort((a,b) => a.name.localeCompare(b.name));
+        
+        // 1. Matières Premières
+        html += '<h5 style="margin-top:10px">1. Matières Premières (Cire, Parfum, Mèche...)</h5>';
+        if(matPrime.length === 0){
+            html+='<div class="small muted">Aucune matière première en stock.</div>';
+        } else {
+            html+='<table><thead><tr><th>Nom</th><th>Qté restante</th><th>Unité</th><th>CUMP</th><th>Valeur Stock (CUMP)</th></tr></thead><tbody>';
+            matPrime.forEach(m => {
+                const cump = cumpData.find(c => c.name === m.name)?.cump || 0;
+                const totalStockCost = m.qty * cump;
+                const color = m.qty <= 0 ? 'color:red' : m.qty < 10 && m.unit === 'unité' ? 'color:orange' : '';
+                html += `<tr> 
+                            <td>${m.name}</td> 
+                            <td style="${color}">${m.qty.toFixed(2)}</td> 
+                            <td>${m.unit}</td> 
+                            <td>${cump.toFixed(4)} DA</td> 
+                            <td>${totalStockCost.toFixed(2)} DA</td> 
+                        </tr>`;
+            });
+            html+='</tbody></table>';
+        }
+
+        // 2. Packaging & Emballage
+        html += '<h5 style="margin-top:15px">2. Packaging & Emballage (Récipients, Étiquettes, Cartons...)</h5>';
+        if(packaging.length === 0){
+            html+='<div class="small muted">Aucun packaging en stock.</div>';
+        } else {
+            html+='<table><thead><tr><th>Nom</th><th>Qté restante</th><th>Unité</th><th>CUMP</th><th>Valeur Stock (CUMP)</th></tr></thead><tbody>';
+            packaging.forEach(m => {
+                const cump = cumpData.find(c => c.name === m.name)?.cump || 0;
+                const totalStockCost = m.qty * cump;
+                const color = m.qty <= 0 ? 'color:red' : m.qty < 10 && m.unit === 'unité' ? 'color:orange' : '';
+                html += `<tr> 
+                            <td>${m.name}</td> 
+                            <td style="${color}">${m.qty.toFixed(2)}</td> 
+                            <td>${m.unit}</td> 
+                            <td>${cump.toFixed(4)} DA</td> 
+                            <td>${totalStockCost.toFixed(2)} DA</td> 
+                        </tr>`;
+            });
+            html+='</tbody></table>';
+        }
+        
+        // 3. Produits Finis
+        html += '<h4 style="margin-top:20px">Stock de Produits Finis (Calculé)</h4>';
+        if(productStock.length === 0){
+            html+='<div class="small muted">Aucun produit fini pour calculer le stock.</div>';
+        } else {
+            html+='<table><thead><tr><th>Nom</th><th>Unités possibles</th><th>Coût de revient unitaire</th></tr></thead><tbody>';
+            productStock.forEach(p => {
+                const color = p.qty <= 0 ? 'color:red' : p.qty < 5 ? 'color:orange' : '';
+                html += `<tr>
+                            <td>${p.name}</td>
+                            <td style="${color}">${p.qty} unités</td>
+                            <td>${p.cost.toFixed(4)} DA</td>
+                        </tr>`;
+            });
+            html+='</tbody></table>';
+        }
+        el.innerHTML = html;
+    }
+
+    function editStockManually(){
+        clearEditArea();
+        show('stock');
+        const materialStock = computeMaterialStock();
+        const cumpData = computeMaterialCosts();
+        
+        if (materialStock.length === 0) {
+            document.getElementById('edit-area').innerHTML = `<div class="panel-edit"><h4>Modifier Stock Matière</h4><div class="small muted">Aucune matière ou packaging n'a été acheté pour le moment. Ajoutez un achat d'abord.</div></div>`;
+            return;
+        }
+
+        const formatName = (m) => `${m.name} (${m.category === 'matiere_premiere' ? 'M.P.' : 'Pkg'})`;
+
+        let html = `
+            <div class="panel-edit">
+            <h4>Ajuster le Stock de Matières Premières & Fournitures</h4>
+            <p class="small muted">Enregistrez toujours un nouvel achat si vous rachetez du stock. Cette modification annule l'effet des ventes passées sur ce stock. Le système va recalculer la consommation totale pour s'assurer que le stock final correspond à ce que vous entrez ici. Cela affectera le CUMP de l'achat le plus ancien si la quantité restante change.</p>
+            <form id="manual-stock-form">
+        `;
+        
+        materialStock.forEach(m => {
+            // formatName is needed because m.name might be ambiguous (e.g. if a material name appears in both MP and Packaging)
+            const nameDisplay = formatName(m);
+            // We use a safe ID based on name and category to avoid collisions (though unlikely since computeMaterialStock aggregates by name only)
+            const safeName = m.name.replace(/[^a-zA-Z0-9]/g, '_') + '_' + m.category;
+
+            html += `
+                <label>${nameDisplay} (Unité: ${m.unit})</label>
+                <input type="number" step="0.01" value="${m.qty.toFixed(2)}" id="stock-edit-${safeName}" data-material-name="${m.name}" data-material-category="${m.category}" />
+            `;
+        });
+
+        html += `
+            </form>
+            <button onclick="saveManualStock()">Sauvegarder Stock Manuellement</button>
+            <button onclick="clearEditArea()" style="background:none; color:var(--muted)">Annuler</button>
+            </div>
+        `;
+        document.getElementById('edit-area').innerHTML = html;
+    }
+
+    function saveManualStock(){
+        const form = document.getElementById('manual-stock-form');
+        const cumpData = computeMaterialCosts();
+        const newStockMap = {}; // { materialName: newQty }
+        
+        // 1. Collect new stock quantities and check for errors
+        Array.from(form.elements).forEach(input => {
+            if (input.type === 'number') {
+                const materialName = input.getAttribute('data-material-name');
+                const newQty = parseFloat(input.value) || 0;
+                newStockMap[materialName] = newQty;
+
+                if (newQty < 0) {
+                    return alert(`La quantité pour ${materialName} ne peut pas être négative.`);
+                }
+            }
+        });
+
+        if (Object.keys(newStockMap).length === 0) return alert('Aucune matière à modifier.');
+
+        // 2. Adjust the 'qty' in the individual purchase lots (state.achats)
+        Object.keys(newStockMap).forEach(materialName => {
+            const newTotalQty = newStockMap[materialName];
+            
+            // Get all purchases for this material, sorted by date (FIFO/LIFO logic here is key)
+            // We will assume that stock is consumed from the OLDEST lots first (FIFO - Standard CUMP logic)
+            const materialLots = state.achats
+                .filter(a => a.type === 'matiere' && a.name === materialName)
+                .sort((a, b) => new Date(a.date) - new Date(b.date)); // Oldest first
+
+            // Calculate the total initial quantity bought for this material
+            const totalOriginalQty = materialLots.reduce((sum, lot) => sum + lot.originalQty, 0);
+            
+            // Calculate the total quantity consumed historically
+            const totalConsumption = totalOriginalQty - newTotalQty;
+            
+            if (totalConsumption < 0) {
+                 // This shouldn't happen if newTotalQty <= totalOriginalQty, but if the user *over*-stocks, 
+                 // we just reset all lot qtys to their original qty, and the excess is ignored 
+                 // (as the excess should have been added via a new purchase, not a manual stock edit).
+                 alert(`Attention: La quantité restante pour ${materialName} (${newTotalQty.toFixed(2)}) est supérieure à la quantité totale achetée (${totalOriginalQty.toFixed(2)}). Le stock a été réinitialisé au maximum. Veuillez ajouter un achat pour augmenter le stock.`);
+                 
+                 materialLots.forEach(p => {
+                     p.qty = p.originalQty; // Reset remaining stock to initial stock
+                 });
+                 return;
+            }
+            
+            // Reset all remaining quantities (p.qty) to their original purchased quantity (p.originalQty)
+            materialLots.forEach(p => {
+                p.qty = p.originalQty;
+            });
+            
+            // Now, simulate the consumption again, starting from the oldest lot
+            let remainingConsumption = totalConsumption;
+
+            materialLots.forEach(p => {
+                // p.qty is currently the original purchased quantity (restored)
+                const available = p.qty; 
+                // The amount consumed from this lot is the MINIMUM of (available in this lot, remaining to be consumed)
+                const deduction = Math.min(available, remainingConsumption);
+                
+                p.qty -= deduction;
+                remainingConsumption -= deduction;
+                
+                if (p.qty < 0) p.qty = 0; // Safety
+            });
+        });
+
+        // 3. Save (which triggers renderAll)
+        save();
+        clearEditArea();
+        alert('Stock ajusté manuellement. Notez que le CUMP peut avoir été recalculé pour certains lots.');
+    }
+    
+    // --- Ventes (C/R/U/D) ---
+
+    // NOUVELLE FONCTION HELPER: Décompose une vente (produit ou pack) en quantités de produits finis individuels (bougies)
+    function getIndividualProductQuantitiesFromSale(sale) {
+        const soldQuantities = {};
+        const [type, id] = sale.itemId.split('|');
+
+        if (type === 'produit') {
+            soldQuantities[id] = sale.qty;
+        } else if (type === 'pack') {
+            const salePack = state.packs.find(p => p.id === id);
+            if (salePack) {
+                salePack.composition.forEach(c => {
+                    if (c.type === 'produit') {
+                        const prodId = c.id;
+                        const qtePerPack = c.qty;
+                        const totalQte = sale.qty * qtePerPack;
+                        soldQuantities[prodId] = (soldQuantities[prodId] || 0) + totalQte;
+                    }
+                });
+            }
+        }
+        return soldQuantities;
+    }
+
+    // NOUVELLE FONCTION HELPER: Décompose la recette totale (produits + extra packaging) de la vente en matière première/packaging
+    function getMaterialConsumptionForSale(sale) {
+        const consumption = {};
+        const soldQuantities = getIndividualProductQuantitiesFromSale(sale);
+        
+        // 1. Consumption from Products in the sale/pack
+        Object.entries(soldQuantities).forEach(([prodId, qtySold]) => {
+            const prod = state.produits.find(p => p.id === prodId);
+            if(prod && prod.recipe){
+                prod.recipe.forEach(r => {
+                    consumption[r.name] = (consumption[r.name] || 0) + (r.qty * qtySold);
+                });
+            }
+        });
+        
+        // 2. Consumption from Extra Packaging
+        sale.extraPackaging?.forEach(pkg => {
+            consumption[pkg.name] = (consumption[pkg.name] || 0) + pkg.qty;
+        });
+
+        return consumption;
+    }
+
+    // MAIN LOGIC: Re-synchronizes the entire stock from all purchases, then applies all sales in order.
+    function recalculateStockAndSave() {
+        // 1. Reset all lot quantities to their initial values
+        state.achats.forEach(a => {
+            if (a.type === 'matiere') {
+                a.qty = a.originalQty; // Reset remaining stock to original stock
+            }
+        });
+        
+        // 2. Sort all sales by date to apply them chronologically (FIFO on consumption)
+        const sortedSales = state.ventes.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        // 3. Apply consumption from each sale
+        sortedSales.forEach(sale => {
+            const consumption = getMaterialConsumptionForSale(sale);
+            
+            Object.entries(consumption).forEach(([materialName, qtyConsumed]) => {
+                if (qtyConsumed > 0) {
+                    // Get all *remaining* lots for this material, sorted by date (oldest first - FIFO)
+                    const materialLots = state.achats
+                        .filter(a => a.type === 'matiere' && a.name === materialName && a.qty > 0)
+                        .sort((a, b) => new Date(a.date) - new Date(b.date)); 
+
+                    let remainingToConsume = qtyConsumed;
+                    
+                    materialLots.forEach(lot => {
+                        if (remainingToConsume > 0) {
+                            // Consume up to the lot's remaining stock
+                            const deduction = Math.min(lot.qty, remainingToConsume);
+                            lot.qty -= deduction;
+                            remainingToConsume -= deduction;
+                        }
+                    });
+
+                    // If remainingToConsume > 0 after checking all lots, it means there was a stockout, 
+                    // but the stock will just go to 0. We don't need to alert the user here, 
+                    // as it might be an old sale that depleted stock.
+                }
+            });
+        });
+
+        // 4. Save the new state with updated lot quantities (p.qty)
+        save();
+    }
+
+
+    function renderSalesSelect(){
+        const select = document.getElementById('sale-prod');
+        if(!select) return;
+        
+        let options = '<option value="">-- Sélectionner un Produit ou un Pack --</option>';
+        
+        options += '<optgroup label="Produits Finis">';
+        state.produits.forEach(p => {
+            options += `<option value="produit|${p.id}">${p.name} (Produit)</option>`;
+        });
+        options += '</optgroup>';
+        
+        options += '<optgroup label="Packs">';
+        state.packs.forEach(p => {
+            options += `<option value="pack|${p.id}">${p.name} (Pack)</option>`;
+        });
+        options += '</optgroup>';
+        
+        select.innerHTML = options;
+        
+        // Attach listener to show/hide extra packaging section
+        select.onchange = toggleExtraPackaging;
+        toggleExtraPackaging();
+    }
+
+    function toggleExtraPackaging(){
+        const select = document.getElementById('sale-prod');
+        const area = document.getElementById('extra-packaging-area');
+        if(!select || !area) return;
+        
+        const selectedValue = select.value;
+        const type = selectedValue.split('|')[0];
+
+        // Extra packaging only makes sense if a product or pack is selected
+        if(type === 'produit' || type === 'pack'){
+            area.style.display = 'block';
+        } else {
+            area.style.display = 'none';
+        }
+        
+        renderExtraPackagingInputArea();
+        state.salePackagingBuffer = []; // Clear the buffer on sale item change
+        renderExtraPackagingRows();
+    }
+
+    function renderExtraPackagingRows(){
+        const el = document.getElementById('sale-extra-packaging-rows');
+        if(!el) return;
+
+        let html = '<table><thead><tr><th>Packaging</th><th>Quantité</th><th>Coût CUMP</th><th>Actions</th></tr></thead><tbody>';
+
+        state.salePackagingBuffer = state.salePackagingBuffer || []; // Ensure buffer exists
+        
+        state.salePackagingBuffer.forEach((p, index) => {
+            const cumpData = computeMaterialCosts();
+            const cump = cumpData.find(c => c.name === p.name)?.cump || 0;
+            const cost = p.qty * cump;
+            
+            html += `
+                <tr class="pack-component-row">
+                    <td>${p.name}</td>
+                    <td>${p.qty} ${p.unit}</td>
+                    <td>${cost.toFixed(4)} DA</td>
+                    <td class="row-actions">
+                        <button class="btn-delete" onclick="removeExtraPackagingRow(${index})" style="margin:0; padding:4px 8px;">X</button>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        el.innerHTML = html;
+    }
+
+    function renderExtraPackagingInputArea(){
+        const el = document.getElementById('sale-extra-packaging-input-area');
+        if(!el) return;
+
+        const uniqueMaterials = getUniqueMaterials();
+        
+        let options = '<option value="">-- Sélectionner un Packaging --</option>';
+        options += '<optgroup label="Packaging & Emballage">';
+        // Only allow packaging materials
+        uniqueMaterials.filter(m => m.category === 'packaging').forEach(m => {
+            options += `<option value="${m.name}|${m.unit}">${m.name} (${m.unit})</option>`;
+        });
+        options += '</optgroup>';
+
+        el.innerHTML = `
+            <div style="flex:2">
+                <select id="sale-pkg-mat" onchange="updateSalePkgUnit()">
+                    ${options}
+                </select>
+            </div>
+            <div style="flex:1">
+                <label class="small muted">Quantité</label>
+                <input id="sale-pkg-qty" type="number" step="1" value="1" placeholder="Quantité" />
+            </div>
+            <div style="flex:1">
+                <label class="small muted">Unité</label>
+                <input id="sale-pkg-unit" placeholder="u" disabled />
+            </div>
+            <button onclick="addExtraPackagingRow()" style="flex:none; margin:0; width:120px;">Ajouter</button>
+        `;
+        updateSalePkgUnit(); // Initial call
+    }
+    
+    function updateSalePkgUnit(){
+        const select = document.getElementById('sale-pkg-mat');
+        const unitInput = document.getElementById('sale-pkg-unit');
+        
+        const value = select.value;
+        if(value){
+            const parts = value.split('|');
+            unitInput.value = parts[1];
+        } else {
+            unitInput.value = '';
+        }
+    }
+
+    function addExtraPackagingRow(){
+        const matSelect = document.getElementById('sale-pkg-mat');
+        const qtyInput = document.getElementById('sale-pkg-qty');
+        
+        const selectedValue = matSelect.value;
+        const qty = parseInt(qtyInput.value) || 0;
+        
+        if (!selectedValue || qty <= 0) return alert('Sélectionner un packaging et une quantité positive.');
+        
+        const [name, unit] = selectedValue.split('|');
+        
+        const newItem = { name, qty, unit };
+
+        state.salePackagingBuffer = state.salePackagingBuffer || [];
+
+        // Check if the packaging already exists
+        let existingIndex = state.salePackagingBuffer.findIndex(p => p.name === newItem.name);
+        
+        if (existingIndex !== -1) {
+            state.salePackagingBuffer[existingIndex].qty = newItem.qty; // Replace quantity
+        } else {
+            state.salePackagingBuffer.push(newItem);
+        }
+
+        matSelect.value = ''; // Clear selection
+        qtyInput.value = 1; // Reset quantity
+        document.getElementById('sale-pkg-unit').value = ''; // Clear unit
+        
+        renderExtraPackagingRows();
+    }
+    
+    function removeExtraPackagingRow(index){
+        state.salePackagingBuffer = state.salePackagingBuffer || [];
+        state.salePackagingBuffer.splice(index, 1);
+        renderExtraPackagingRows();
+    }
+
+    function addSale(){
+        const itemId = document.getElementById('sale-prod').value;
+        const qty = parseInt(document.getElementById('sale-qty').value)||0;
+        const priceOverride = document.getElementById('sale-price').value.trim();
+        const date = document.getElementById('sale-date').value||new Date().toISOString().slice(0,10);
+        
+        if(!itemId) return alert('Sélectionner un produit ou un pack.');
+        if(qty<=0) return alert('Quantité vendue requise.');
+
+        let finalPrice = null;
+        if(priceOverride !== ""){
+            finalPrice = parseFloat(priceOverride);
+            if(finalPrice < 0) return alert('Le prix ne peut pas être négatif.');
+        }
+
+        // Get the extra packaging from the buffer
+        const extraPackaging = JSON.parse(JSON.stringify(state.salePackagingBuffer || []));
+        
+        // Push the sale object
+        state.ventes.push({ 
+            id: uid('s'), 
+            itemId, 
+            qty, 
+            price: finalPrice, // null if default price is used
+            date, 
+            extraPackaging: extraPackaging 
+        }); 
+        
+        // Clear inputs
+        document.getElementById('sale-prod').value='';
+        document.getElementById('sale-qty').value=1;
+        document.getElementById('sale-price').value='';
+        state.salePackagingBuffer = [];
+        renderExtraPackagingRows();
+        
+        // Le stock est mis à jour après chaque ajout/modification/suppression de vente
+        recalculateStockAndSave();
+    }
+
+    function renderSalesList(){
+        const el=document.getElementById('sales-list');
+        if(!el) return;
+
+        if(state.ventes.length === 0){
+            el.innerHTML = '<div class="small muted">Aucune vente enregistrée.</div>';
+            return;
+        }
+
+        let html = '<table><thead><tr><th>Date</th><th>Produit/Pack</th><th>Qté</th><th>Prix Vente</th><th>Coût Total</th><th>Bénéfice Net</th><th>Actions</th></tr></thead><tbody>';
+
+        state.ventes.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(s => {
+            const itemDetails = getSaleItemDetails(s);
+            const finalPriceUnit = s.price || itemDetails.price;
+            const costUnit = itemDetails.cost;
+            
+            const revenue = finalPriceUnit * s.qty;
+            let totalCost = costUnit * s.qty; // Cost of the product/pack recipe
+
+            // Add extra packaging cost
+            let extraPkgDetail = '';
+            if (s.extraPackaging && s.extraPackaging.length > 0) {
+                const cumpData = computeMaterialCosts();
+                s.extraPackaging.forEach(pkg => {
+                    const cump = cumpData.find(c => c.name === pkg.name)?.cump || 0;
+                    totalCost += pkg.qty * cump;
+                    extraPkgDetail += `${pkg.qty}${pkg.unit} ${pkg.name}, `;
+                });
+                extraPkgDetail = ` (+${extraPkgDetail.slice(0, -2)})`;
+            }
+            
+            const profit = revenue - totalCost;
+            const profitColor = profit > 0 ? 'color:lime' : 'color:red';
+
+            const nameDisplay = s.price ? itemDetails.name : `${itemDetails.name} (Prix par défaut)`;
+            
+            html += `<tr> 
+                        <td>${new Date(s.date).toLocaleDateString('fr-FR')}</td> 
+                        <td>
+                            ${nameDisplay}
+                            <div class="small muted">${extraPkgDetail}</div>
+                        </td>
+                        <td>${s.qty}</td> 
+                        <td>${finalPriceUnit.toFixed(2)} DA</td>
+                        <td>${totalCost.toFixed(4)} DA</td>
+                        <td style="${profitColor}">${profit.toFixed(2)} DA</td> 
+                        <td class="row-actions">
+                            <button class="btn-edit" onclick="editSale('${s.id}')" style="margin:0; padding:4px 8px;">Modifier</button>
+                            <button class="btn-delete" onclick="deleteSale('${s.id}')" style="margin:0; padding:4px 8px;">X</button>
+                        </td>
+                    </tr>`;
+        });
+        
+        html += '</tbody></table>';
+        el.innerHTML = html;
+        renderRecentSales();
+    }
+
+    function editSale(id){
+        const saleIndex = state.ventes.findIndex(s => s.id === id);
+        if(saleIndex === -1) return alert('Vente non trouvée.');
+        const sale = state.ventes[saleIndex];
+        const itemDetails = getSaleItemDetails(sale);
+        
+        const currentPriceUnit = sale.price || itemDetails.price;
+        
+        const newQteStr = prompt(`Modifier la quantité vendue pour ${itemDetails.name} (actuel: ${sale.qty}) :`, sale.qty);
+        if (newQteStr === null) return;
+        
+        const newQte = parseInt(newQteStr);
+        if (isNaN(newQte) || newQte <= 0) {
+            alert("Quantité invalide ou non positive.");
+            return;
+        }
+        
+        // Optionnel: modifier le prix total (ce qui recalcule le prix unitaire)
+        const newPrixTotalStr = prompt(`Modifier le prix TOTAL de la vente (actuel: ${(currentPriceUnit * sale.qty).toFixed(2)} DA). Laisser vide pour conserver le prix unitaire actuel. :`, (currentPriceUnit * newQte).toFixed(2));
+        
+        let newPriceUnit = currentPriceUnit;
+        if (newPrixTotalStr !== null && newPrixTotalStr.trim() !== "") {
+            const newPrixTotal = parseFloat(newPrixTotalStr);
+            if (isNaN(newPrixTotal) || newPrixTotal < 0) {
+                alert("Prix total invalide.");
+                return;
+            }
+            // Calculer le nouveau prix unitaire
+            newPriceUnit = newPrixTotal / newQte;
+        } else {
+            // Utiliser le prix par défaut du produit/pack
+            newPriceUnit = itemDetails.price;
+        }
+        
+        // Mise à jour de la vente
+        state.ventes[saleIndex].qty = newQte;
+        state.ventes[saleIndex].price = newPriceUnit; // Stocke le nouveau prix unitaire
+        
+        // Le stock doit être entièrement réajusté après la modification d'une vente
+        recalculateStockAndSave();
+        show('ventes');
+    }
+
+    function deleteSale(id){
+        if(!confirm('Êtes-vous sûr de vouloir supprimer cette vente? Le stock sera réajusté.')) return;
+        
+        state.ventes = state.ventes.filter(s=>s.id!==id);
+        
+        recalculateStockAndSave();
+    }
+    
+    function renderRecentSales(){
+        const el=document.getElementById('recent-sales');
+        if(!el) return;
+
+        if(state.ventes.length === 0){
+            el.innerHTML = '<div class="small muted">Aucune vente enregistrée.</div>';
+            return;
+        }
+
+        let html = '<table><thead><tr><th>Date</th><th>Produit/Pack</th><th>Qté</th><th>Bénéfice Net</th></tr></thead><tbody>';
+
+        state.ventes.sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5).forEach(s => {
+            const itemDetails = getSaleItemDetails(s);
+            const finalPriceUnit = s.price || itemDetails.price;
+            const cost = itemDetails.cost;
+            
+            const revenue = finalPriceUnit * s.qty;
+            let totalCost = cost * s.qty; 
+            
+            // Add extra packaging cost
+            if (s.extraPackaging && s.extraPackaging.length > 0) {
+                const cumpData = computeMaterialCosts();
+                s.extraPackaging.forEach(pkg => {
+                    const cump = cumpData.find(c => c.name === pkg.name)?.cump || 0;
+                    totalCost += pkg.qty * cump;
+                });
+            }
+            
+            const profit = revenue - totalCost;
+            const profitColor = profit > 0 ? 'color:lime' : 'color:red';
+
+            html += `<tr> 
+                        <td>${new Date(s.date).toLocaleDateString('fr-FR')}</td> 
+                        <td>${itemDetails.name}</td> 
+                        <td>${s.qty}</td> 
+                        <td style="${profitColor}">${profit.toFixed(2)} DA</td> 
+                    </tr>`;
+        });
+        
+        html += '</tbody></table>';
+        el.innerHTML = html;
+    }
+
+    // --- Charts ---
+
+    function renderCharts(){
+        // ----------------------------------------------------
+        // --- Graphique 1: Ventes par Produit/Pack ---
+        // ----------------------------------------------------
+        const salesByItem = {};
+        state.ventes.forEach(s => {
+            const itemDetails = getSaleItemDetails(s);
+            salesByItem[itemDetails.name] = (salesByItem[itemDetails.name] || 0) + s.qty;
+        });
+
+        const labels1 = Object.keys(salesByItem);
+        const data1 = Object.values(salesByItem);
+
+        const chartSalesCanvas = document.getElementById('chart-sales-by-product');
+        if (Chart.getChart(chartSalesCanvas)) {
+            Chart.getChart(chartSalesCanvas).destroy();
+        } 
+        
+        if (labels1.length > 0) {
+             const backgroundColor = labels1.map((_, i) => {
+                const colors = ['#FAD1E8', '#E6C8F2', '#D7E9FF', '#DFF7E6', '#FFF3C8', '#7f8fa3', '#7fcf9a', '#7fb4dd', '#d3a67a', '#9aa0a6'];
+                return colors[i % colors.length];
+            });
+
+            new Chart(chartSalesCanvas, {
+                type: 'bar',
+                data: {
+                    labels: labels1,
+                    datasets: [{
+                        label: 'Unités Vendues',
+                        data: data1,
+                        backgroundColor: backgroundColor,
+                        borderColor: backgroundColor.map(c => c.replace('0.', '0.5')), // Lighter border
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Unités Vendues par Produit / Pack'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        } else {
+            chartSalesCanvas.insertAdjacentHTML('afterend', '<div class="small muted" style="margin-top:10px">Aucune donnée de vente pour le graphique des produits.</div>');
+        }
+
+        // ----------------------------------------------------
+        // --- Graphique 2: Dépenses vs. Bénéfices Net ---
+        // ----------------------------------------------------
+        const stats = computeStats();
+        
+        const totalExpenses = computeTotalExpenses();
+        const netProfit = stats.profit; 
+
+        // Si le bénéfice est négatif, il est considéré comme une perte à ajouter au total des dépenses pour le graphique en cercle
+        const loss = Math.min(0, netProfit);
+        const positiveProfit = Math.max(0, netProfit);
+        
+        const labels2 = ['Total Dépenses (Achats & Frais) + Pertes', 'Bénéfice Net'];
+        const data2 = [totalExpenses - loss, positiveProfit];
+
+        const chartFinancesCanvas = document.getElementById('chart-finances');
+        if (Chart.getChart(chartFinancesCanvas)) {
+            Chart.getChart(chartFinancesCanvas).destroy();
+        } 
+
+        if (totalExpenses > 0 || netProfit !== 0) {
+            new Chart(chartFinancesCanvas, {
+                type: 'doughnut',
+                data: {
+                    labels: labels2,
+                    datasets: [{
+                        data: data2,
+                        backgroundColor: ['var(--secondary-accent)', 'var(--accent)'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `Synthèse Financière (Dépenses: ${totalExpenses.toFixed(2)} DA, Bénéfice: ${netProfit.toFixed(2)} DA)`
+                        }
+                    }
+                }
+            });
+        } else {
+            chartFinancesCanvas.insertAdjacentHTML('afterend', '<div class="small muted" style="margin-top:10px">Aucune donnée financière pour le graphique.</div>');
+        }
+    }
+
+
+    // --- General Render/Display Logic ---
+
+    function renderAll(){
+        renderStats();
+        renderAchatList();
+        renderProducts();
+        renderPacks();
+        renderSalesList();
+        renderStock();
+        renderSalesSelect();
+        renderCharts();
+        renderThemeSelector(); // Call theme selector rendering here
+    }
+
+    function show(panel){
+        document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
+        document.getElementById(panel).style.display='block';
+        
+        clearEditArea();
+        
+        if(panel==='produits') {
+            renderRecipeInputArea();
+            state.recipeBuffer = []; // Clear buffer if switching to main
+            renderRecipe();
+        }
+        if(panel==='packs') {
+            renderPackCompositionInputArea();
+            state.packRecipeBuffer = []; // Clear buffer if switching to main
+            renderPackComposition();
+        }
+        if(panel==='ventes') {
+            renderSalesSelect();
+            toggleExtraPackaging();
+        }
+        if(panel==='charts'){
+            renderCharts(); // Re-render charts on view
+        }
+    }
+
+    // --- Import/Export ---
+    
+    function exportJSON(){
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
+        const dlAnchorElem = document.createElement('a');
+        dlAnchorElem.setAttribute("href", dataStr);
+        dlAnchorElem.setAttribute("download", `candlemgr_export_${new Date().toISOString().slice(0, 10)}.json`);
+        document.body.appendChild(dlAnchorElem);
+        dlAnchorElem.click();
+        dlAnchorElem.remove();
+    }
+
+    function exportCSV(){
+        // Get all data needed
+        const header = ["ID", "Date", "Type", "Produit/Pack", "Quantité", "Prix Vente Unitaire", "Chiffre d'Affaires", "Coût Revient Unitaire", "Coût Total", "Bénéfice Net"];
+        const rows = [];
+        
+        state.ventes.sort((a,b) => new Date(a.date) - new Date(b.date)).forEach(s => {
+            const itemDetails = getSaleItemDetails(s);
+            const finalPriceUnit = s.price || itemDetails.price;
+            const costUnit = itemDetails.cost;
+            const revenue = finalPriceUnit * s.qty;
+            
+            let totalCost = costUnit * s.qty; 
+            if (s.extraPackaging) {
+                const cumpData = computeMaterialCosts();
+                s.extraPackaging.forEach(pkg => {
+                    const cump = cumpData.find(c => c.name === pkg.name)?.cump || 0;
+                    totalCost += pkg.qty * cump;
+                });
+            }
+            
+            const profit = revenue - totalCost;
+            
+            const row = [
+                s.id,
+                new Date(s.date).toLocaleDateString('fr-FR'),
+                itemDetails.type,
+                itemDetails.name,
+                s.qty,
+                finalPriceUnit.toFixed(2),
+                revenue.toFixed(2),
+                (totalCost / s.qty).toFixed(4), // Coût unitaire réel de la vente (incluant le packaging)
+                totalCost.toFixed(2),
+                profit.toFixed(2)
+            ];
+            rows.push(row.map(cell => `"${cell}"`).join(','));
+        });
+
+        const csvContent = "data:text/csv;charset=utf-8," 
+                         + header.map(h => `"${h}"`).join(',') + "\n"
+                         + rows.join("\n");
+        
+        const dlAnchorElem = document.createElement('a');
+        dlAnchorElem.setAttribute("href", encodeURI(csvContent));
+        dlAnchorElem.setAttribute("download", `candlemgr_ventes_export_${new Date().toISOString().slice(0, 10)}.csv`);
+        document.body.appendChild(dlAnchorElem);
+        dlAnchorElem.click();
+        dlAnchorElem.remove();
+    }
+
+    function importJSON(){
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'application/json';
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try{
+                    const importedState = JSON.parse(event.target.result);
+                    
+                    if(importedState.achats && importedState.produits && importedState.ventes){
+                        state = importedState;
+                        
+                        // Sécurisation des nouvelles structures
+                        if (!state.packs) state.packs = [];
+                        if (!state.recipeBuffer) state.recipeBuffer = [];
+                        if (!state.packRecipeBuffer) state.packRecipeBuffer = [];
+                        if (!state.salePackagingBuffer) state.salePackagingBuffer = []; // NOUVEAU
+                        
+                        // Réinitialiser le stock après importation pour s'assurer de la cohérence
+                        recalculateStockAndSave();
+                        
+                        alert('Importation réussie !');
+                    } else {
+                        alert('Erreur: Le fichier JSON importé n\'est pas au format attendu.');
+                    }
+                } catch(err){
+                    alert('Erreur lors de la lecture ou de l\'analyse du fichier JSON.');
+                    console.error(err);
+                }
+            };
+            reader.readAsText(file);
+        };
+        input.click();
+    }
+    
+    function clearAll(){
+        if(confirm('Êtes-vous sûr de vouloir tout réinitialiser ? Toutes les données seront perdues si vous n\'avez pas exporté le JSON.')){
+            localStorage.removeItem(STORAGE_KEY);
+            state = { achats: [], produits: [], packs: [], ventes: [] , recipeBuffer: [], packRecipeBuffer: [] };
+            renderAll();
+            show('dashboard');
+            alert('Réinitialisation complète effectuée.');
+        }
+    }
+    
+    // --- Initialization ---
+    load();
+    loadTheme(); // CHARGEMENT ET APPLICATION DU THÈME SAUVEGARDÉ
+    renderAll();
+    renderFraisTemplateSelect();
+    show('dashboard'); // Start on dashboard
+  </script>
+</body>
+</html>
