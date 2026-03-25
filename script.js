@@ -764,178 +764,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==================== EXPORT DES FONCTIONS GLOBALES ====================
 window.scrollToSection = scrollToSection;
 
-// ==================== DONNÉES DES PROJETS ====================
-// Personnalisez vos projets ici — ajoutez, modifiez ou supprimez selon vos besoins.
-// Chaque projet peut avoir : un PDF (links.pdf), des images (links.photos), ou un lien (links.demo / links.github)
-const projectsData = [
-    {
-        id: 1,
-        title: 'Infrastructure entreprise complète',
-        category: 'network',
-        icon: '🖥️',
-        year: '2025',
-        status: 'Terminé',
-        featured: true,
-        shortDescription: 'Mise en place complète d\'une infrastructure d\'entreprise : RAID, serveurs, Active Directory, DNS, DHCP, GPO et partage de fichiers.',
-        description: 'Déploiement d\'une infrastructure réseau professionnelle de bout en bout. Le projet couvre la configuration RAID matériel, l\'installation de Windows Server, la promotion en contrôleur de domaine, la gestion des unités organisationnelles (OU), le déploiement des stratégies de groupe (GPO), la mise en place du serveur DHCP avec réservations, le partage de fichiers sécurisé et tous les paramètres essentiels. Tous les détails sont documentés dans le rapport PDF.',
-        technologies: ['Windows Server', 'RAID', 'Active Directory', 'DNS', 'DHCP', 'GPO', 'VirtualBox', 'Sauvegarde'],
-        role: 'Administratrice Système',
-        duration: '2 mois',
-        team: 'Projet académique individuel',
-        details: {
-            context: 'Projet de déploiement complet d\'une infrastructure d\'entreprise simulée, de la configuration matérielle (RAID) jusqu\'aux services finaux.',
-            objectives: [
-                'Configurer le RAID matériel sur le serveur',
-                'Installer et configurer Windows Server',
-                'Promouvoir en contrôleur de domaine',
-                'Déployer DNS, DHCP et stratégies de groupe (GPO)',
-                'Mettre en place le partage de fichiers sécurisé',
-                'Documenter toutes les étapes dans un rapport détaillé'
-            ],
-            achievements: [
-                'Configuration RAID opérationnelle',
-                'Infrastructure Active Directory complète',
-                'Services DNS et DHCP fonctionnels',
-                'GPO déployées pour la gestion des postes clients',
-                'Partage de fichiers avec droits différenciés',
-                'Rapport PDF complet avec captures d\'écran'
-            ],
-            challenges: [
-                'Coordination entre les étapes matérielles et logicielles',
-                'Application correcte des GPO',
-                'Résolution des conflits DNS/DHCP'
-            ],
-            results: 'Infrastructure entièrement fonctionnelle et documentée. Rapport PDF détaillé disponible.',
-            learnings: [
-                'Maîtrise du RAID matériel et BIOS',
-                'Gestion complète d\'Active Directory',
-                'Déploiement des stratégies de groupe (GPO)'
-            ]
-        },
-        links: {
-            demo: null,
-            github: null,
-            documentation: null,
-            pdf: 'doc/infrastructure-entreprise.pdf',
-            photos: []
-        },
-        gallery: []
-    },
-    {
-        id: 2,
-        title: 'Sites web créés avec l\'IA',
-        category: 'development',
-        icon: '🤖',
-        year: '2024',
-        status: 'En cours',
-        featured: true,
-        shortDescription: 'Création de plusieurs sites web avec des outils d\'intelligence artificielle, hébergés sur GitHub. Un projet ludique où je m\'amuse à expérimenter !',
-        description: 'Collection de sites web que j\'ai créés en m\'aidant d\'outils basés sur l\'IA. C\'est un projet personnel et amusant : je teste des idées, je génère du contenu et du design, et j\'héberge le tout sur GitHub Pages. Chaque site est une petite aventure — exploration, apprentissage et plaisir de créer.',
-        technologies: ['HTML5', 'CSS3', 'JavaScript', 'Outils IA', 'GitHub Pages', 'SEO'],
-        role: 'Créatrice de sites web & exploratrice IA',
-        duration: 'Continu',
-        team: 'Projet personnel',
-        details: {
-            context: 'Projet ludique : créer des sites web en utilisant l\'IA comme assistant. C\'est avant tout pour m\'amuser et apprendre !',
-            objectives: [
-                'Expérimenter avec les outils IA pour la création web',
-                'Publier mes réalisations sur GitHub Pages',
-                'Apprendre en s\'amusant',
-                'Construire un portfolio de sites variés'
-            ],
-            achievements: [
-                'Plusieurs sites hébergés sur GitHub Pages',
-                'Intégration créative des outils IA',
-                'Designs et contenus générés avec assistance IA',
-                'Apprentissage continu et ludique'
-            ],
-            challenges: [
-                'Trouver le bon équilibre entre IA et créativité personnelle',
-                'Maintenir la qualité du code'
-            ],
-            results: 'Une collection de sites web vivante, évolutive et hébergée sur GitHub. Je continue d\'en ajouter au fil de mes idées !',
-            learnings: [
-                'Utilisation pratique des outils IA en développement',
-                'Publication sur GitHub Pages',
-                'Créativité et expérimentation'
-            ]
-        },
-        links: {
-            demo: 'https://tudertshr.github.io/',
-            github: 'https://github.com/tudertshr',
-            documentation: null,
-            pdf: null,
-            photos: [],
-            sites: [
-                { name: 'LINUX-serv', url: 'https://tudertshr.github.io/LINUX-serv/#top' },
-                { name: 'boo-gie', url: 'https://tudertshr.github.io/boo-gie/#home' },
-                { name: 'boo-gie (alt)', url: 'https://boo-gie.github.io/web/' },
-                { name: 'Cours', url: 'https://tudertshr.github.io/cours/' },
-                { name: 'Tendances', url: 'https://tudertshr.github.io/tendances/#introduction' },
-                { name: 'Script', url: 'https://tudertshr.github.io/script/' }
-            ]
-        },
-        gallery: []
-    },
-    {
-        id: 3,
-        title: 'Tests de vulnérabilités et pentest',
-        category: 'security',
-        icon: '🔍',
-        year: '2025',
-        status: 'Terminé',
-        featured: true,
-        shortDescription: 'Tests de sécurité en laboratoire : simulation d\'attaques (phishing, brute force), analyse de vulnérabilités, utilisation de Kali Linux et Kibana pour l\'analyse.',
-        description: 'Projet de laboratoire de cybersécurité réalisé à des fins d\'apprentissage. J\'ai simulé des attaques (phishing, brute force), analysé des vulnérabilités (SQL Injection, CVE, CVSS, CWE), utilisé Kali Linux pour les outils offensifs, et Kibana pour la visualisation et l\'analyse des événements de sécurité. Tout cela dans un environnement isolé et contrôlé.',
-        technologies: ['Kali Linux', 'Kibana', 'Phishing', 'Wireshark', 'Nmap', 'Snort', 'Security Onion'],
-        role: 'Analyste Sécurité Junior',
-        duration: '4 mois',
-        team: 'Projet académique',
-        details: {
-            context: 'Laboratoire de sécurité pour comprendre les vecteurs d\'attaque et les contre-mesures. Projet réalisé dans un cadre pédagogique et éthique.',
-            objectives: [
-                'Simuler des attaques réelles (phishing, brute force)',
-                'Analyser des vulnérabilités applicatives',
-                'Utiliser Kali Linux pour les tests',
-                'Maîtriser Kibana pour l\'analyse des logs et événements',
-                'Comprendre CVE, CVSS et CWE'
-            ],
-            achievements: [
-                'Simulation d\'attaques phishing et brute force',
-                'Analyse de vulnérabilités SQL Injection',
-                'Utilisation de Kali Linux en environnement de test',
-                'Visualisation et corrélation avec Kibana',
-                'Rapports d\'analyse de vulnérabilités'
-            ],
-            challenges: [
-                'Configuration des outils en environnement isolé',
-                'Interprétation des résultats Kibana',
-                'Réduction des faux positifs'
-            ],
-            results: 'Maîtrise des outils offensifs et défensifs. Capacité à détecter, analyser et documenter les vulnérabilités.',
-            learnings: [
-                'Techniques de pentest (phishing, brute force)',
-                'Utilisation de Kali Linux et Kibana',
-                'Analyse forensique et réponse aux incidents'
-            ]
-        },
-        links: {
-            demo: null,
-            github: null,
-            documentation: null,
-            pdf: null,
-            photos: [],
-            sites: [
-                { name: 'Vulnérabilités — Théorie', url: 'https://tudertshr.github.io/Vulnerabilites-theorie/#vulnerabilites' },
-                { name: 'TP Vulnérabilités', url: 'https://tudertshr.github.io/TP-vulnerabilites/' },
-                { name: 'Vul-résumé', url: 'https://tudertshr.github.io/Vul-resume/' },
-                { name: 'Suite Sécurité', url: 'https://tudertshr.github.io/suite-securite/' },
-                { name: 'Exam', url: 'https://tudertshr.github.io/exam/' }
-            ]
-        },
-        gallery: []
-    }
-];
 
 // ==================== INITIALISATION DES PROJETS ====================
 function initProjects() {
@@ -1654,6 +1482,7 @@ function getCategoryIcon(category) {
 }
 
 // ==================== EXPORT ====================
+window.scrollToSection = scrollToSection;
 window.openProjectModal = openProjectModal;
 window.closeProjectModal = closeProjectModal;
 window.openGalleryImage = openGalleryImage;
@@ -1665,7 +1494,10 @@ window.removeProjectPdf = removeProjectPdf;
 window.saveProjectLink = saveProjectLink;
 window.removeProjectLink = removeProjectLink;
 window.addCertPdf = addCertPdf;
-window.removeCertPdf = removeCertPdf;// ==================== ANIMATIONS AVANCÉES ====================
+window.removeCertPdf = removeCertPdf;
+
+
+// ==================== ANIMATIONS AVANCÉES ====================
 
 // Initialiser les animations personnalisées
 function initAdvancedAnimations() {
