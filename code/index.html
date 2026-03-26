@@ -860,21 +860,21 @@
     }
 
     function getSaleItemDetails(sale){
-        const prod = state.produits.find(p => p.id === sale.itemId);
-        if(prod) return {
-            name: prod.name,
-            price: prod.price,
-            cost: getProductCost(prod),
-            type: 'produit'
-        };
-        const pack = state.packs.find(p => p.id === sale.itemId);
-        if(pack) return {
-            name: pack.name,
-            price: pack.price,
-            cost: getPackCost(pack),
-            type: 'pack'
-        };
-        return { name: 'Inconnu', price: 0, cost: 0, type: 'unknown' };
+        const raw = (sale && sale.itemId) ? String(sale.itemId) : '';
+        const [type, id] = raw.includes('|') ? raw.split('|') : ['unknown', raw];
+
+        if(type === 'produit'){
+            const prod = state.produits.find(p => p.id === id);
+            if(prod) return { name: prod.name, price: prod.price, cost: getProductCost(prod), type: 'produit' };
+        }
+        if(type === 'pack'){
+            const pack = state.packs.find(p => p.id === id);
+            if(pack) return { name: pack.name, price: pack.price, cost: getPackCost(pack), type: 'pack' };
+        }
+
+        // Fallback: si l'article a été supprimé après la vente
+        const fallbackName = sale?.itemName ? sale.itemName : 'Article supprimé';
+        return { name: fallbackName, price: 0, cost: 0, type: type || 'unknown' };
     }
 
     function computeStats(){
@@ -904,7 +904,8 @@
         state.ventes.forEach(s => {
             s.extraPackaging?.forEach(pkg => {
                 const cump = computeMaterialCosts().find(c => c.name === pkg.name)?.cump || 0;
-                totalCMV += pkg.qty * cump;
+                // pkg.qty = quantité par unité vendue (on multiplie par s.qty)
+                totalCMV += pkg.qty * s.qty * cump;
             });
         });
 
@@ -912,19 +913,10 @@
         const totalExpenses = computeTotalExpenses();
         
         // 4. Bénéfice Net (CA - CMV - Frais non-CMV)
-        // Note: totalExpenses englobe les frais spécifiques aux achats (CMV) et les frais généraux (non-CMV).
-        // Le CMV est déjà calculé en utilisant le CUMP qui inclut les frais spécifiques aux achats.
-        // On considère ici: Bénéfice = CA - (Coût Total Matières VENDUES) - (Total Frais SANS Matières VENDUES)
-        // Simplification: Bénéfice = CA - CMV - Frais Généraux (Ceux qui n'ont pas alimenté un CUMP)
-        // L'approche "Marge Brute (CA-CMV) - Frais Généraux = Bénéfice Net" est plus complexe car nos Achats mixent les deux.
-        
-        // Nouvelle approche simple: Bénéfice = CA - CMV - (Frais non intégrés au CUMP/CMV)
-        // Ici, on va utiliser une approche plus comptable pour l'affichage : Profit = CA - Coût Total de TOUT ce qui est DÉPENSÉ (CMV + Frais)
-        // C'est moins précis mais plus facile à comprendre comme 'flux de trésorerie' dans un MVP.
-        const profit = totalCA - totalCMV - (totalExpenses - totalCMV);
-        
-        // Marge moyenne (Marge sur CA)
-        const netProfit = totalCA - totalCMV - computeNonCMVExpenses(); // Bénéfice = CA - Coût des ventes - Frais généraux
+        // CMV = coût des ventes (matières/pack déjà incluses via le CUMP).
+        // non-CMV = frais généraux (type 'frais' uniquement).
+        const nonCMVExpenses = computeNonCMVExpenses();
+        const netProfit = totalCA - totalCMV - nonCMVExpenses;
         const averageMargin = totalCA > 0 ? (netProfit / totalCA) * 100 : 0;
         
         return {
@@ -1331,6 +1323,8 @@
 
         let html = '<table><thead><tr><th>Composant</th><th>Quantité</th><th>Coût unitaire</th><th>Actions</th></tr></thead><tbody>';
 
+        const packIdArg = isEdit ? `'${packId}'` : 'null';
+
         currentComposition.forEach((c, index) => {
             let costUnit = 0;
             let qtyDisplay;
@@ -1356,7 +1350,7 @@
                     <td>${qtyDisplay}</td>
                     <td>${totalCost.toFixed(4)} DA</td>
                     <td class="row-actions">
-                        <button class="btn-delete" onclick="removePackComponentRow(${index}, ${isEdit}, '${packId}')" style="margin:0; padding:4px 8px;">X</button>
+                        <button class="btn-delete" onclick="removePackComponentRow(${index}, ${isEdit}, ${packIdArg})" style="margin:0; padding:4px 8px;">X</button>
                     </td>
                 </tr>
             `;
@@ -1400,6 +1394,8 @@
         options += '</optgroup>';
 
 
+        const packIdArg = isEdit ? `'${packId}'` : 'null';
+
         el.innerHTML = `
             <div style="display:flex;gap:8px;align-items:flex-end;">
                 <div style="flex:2">
@@ -1415,7 +1411,7 @@
                     <label class="small muted">Unité</label>
                     <input id="${prefix}pack-component-unit" placeholder="u" disabled />
                 </div>
-                <button onclick="addPackComponentRow('${prefix}', ${isEdit}, '${packId}')" style="flex:none; margin:0; width:120px;">Ajouter</button>
+                <button onclick="addPackComponentRow('${prefix}', ${isEdit}, ${packIdArg})" style="flex:none; margin:0; width:120px;">Ajouter</button>
             </div>
         `;
         updatePackComponentUnit(prefix); // Initial call
@@ -1424,7 +1420,8 @@
     function updatePackComponentUnit(prefix){
         const select = document.getElementById(prefix + 'pack-component');
         const unitInput = document.getElementById(prefix + 'pack-component-unit');
-        
+        if(!select || !unitInput) return;
+
         const value = select.value;
         if(value){
             const parts = value.split('|');
@@ -1441,6 +1438,7 @@
         const compSelect = document.getElementById(prefix + 'pack-component');
         const qtyInput = document.getElementById(prefix + 'pack-component-qty');
         const unitInput = document.getElementById(prefix + 'pack-component-unit');
+        if(!compSelect || !qtyInput || !unitInput) return;
         
         const selectedValue = compSelect.value;
         const qty = parseFloat(qtyInput.value) || 0;
@@ -1479,7 +1477,7 @@
             currentComposition.push(component);
         }
 
-        renderPackComposition(packId);
+        renderPackComposition(isEdit ? packId : null);
         
         if (!isEdit) save();
     }
@@ -1490,7 +1488,7 @@
         
         currentComposition.splice(index, 1);
         
-        renderPackComposition(packId);
+        renderPackComposition(isEdit ? packId : null);
         
         if(isEdit){
             save(); // Sauvegarde l'état du pack modifié
@@ -1502,6 +1500,7 @@
         const price = parseFloat(document.getElementById('pack-price').value)||0;
         
         if(!name) return alert('Nom du Pack requis.');
+        if(!state.packRecipeBuffer || state.packRecipeBuffer.length === 0) return alert('Ajoute au moins 1 composant au pack.');
 
         state.packs.push({ 
             id: uid('pk'), 
@@ -1892,7 +1891,8 @@
         
         // 2. Consumption from Extra Packaging
         sale.extraPackaging?.forEach(pkg => {
-            consumption[pkg.name] = (consumption[pkg.name] || 0) + pkg.qty;
+            // pkg.qty = quantité par unité vendue
+            consumption[pkg.name] = (consumption[pkg.name] || 0) + pkg.qty * sale.qty;
         });
 
         return consumption;
@@ -2054,6 +2054,7 @@
     function updateSalePkgUnit(){
         const select = document.getElementById('sale-pkg-mat');
         const unitInput = document.getElementById('sale-pkg-unit');
+        if(!select || !unitInput) return;
         
         const value = select.value;
         if(value){
@@ -2067,6 +2068,7 @@
     function addExtraPackagingRow(){
         const matSelect = document.getElementById('sale-pkg-mat');
         const qtyInput = document.getElementById('sale-pkg-qty');
+        if(!matSelect || !qtyInput) return;
         
         const selectedValue = matSelect.value;
         const qty = parseInt(qtyInput.value) || 0;
@@ -2118,11 +2120,20 @@
 
         // Get the extra packaging from the buffer
         const extraPackaging = JSON.parse(JSON.stringify(state.salePackagingBuffer || []));
+
+        // Capture a stable display name for charts/history even if the item is deleted later
+        const [type, id] = itemId.split('|');
+        const itemName = type === 'produit'
+            ? (state.produits.find(p => p.id === id)?.name || 'Produit supprimé')
+            : type === 'pack'
+                ? (state.packs.find(p => p.id === id)?.name || 'Pack supprimé')
+                : 'Article';
         
         // Push the sale object
         state.ventes.push({ 
             id: uid('s'), 
             itemId, 
+            itemName,
             qty, 
             price: finalPrice, // null if default price is used
             date, 
@@ -2165,8 +2176,9 @@
                 const cumpData = computeMaterialCosts();
                 s.extraPackaging.forEach(pkg => {
                     const cump = cumpData.find(c => c.name === pkg.name)?.cump || 0;
-                    totalCost += pkg.qty * cump;
-                    extraPkgDetail += `${pkg.qty}${pkg.unit} ${pkg.name}, `;
+                    // pkg.qty = quantité par unité vendue
+                    totalCost += pkg.qty * s.qty * cump;
+                    extraPkgDetail += `${pkg.qty * s.qty}${pkg.unit} ${pkg.name}, `;
                 });
                 extraPkgDetail = ` (+${extraPkgDetail.slice(0, -2)})`;
             }
@@ -2273,7 +2285,8 @@
                 const cumpData = computeMaterialCosts();
                 s.extraPackaging.forEach(pkg => {
                     const cump = cumpData.find(c => c.name === pkg.name)?.cump || 0;
-                    totalCost += pkg.qty * cump;
+                    // pkg.qty = quantité par unité vendue
+                    totalCost += pkg.qty * s.qty * cump;
                 });
             }
             
@@ -2356,14 +2369,16 @@
         const stats = computeStats();
         
         const totalExpenses = computeTotalExpenses();
-        const netProfit = stats.profit; 
+        const netProfit = stats.profit;
 
-        // Si le bénéfice est négatif, il est considéré comme une perte à ajouter au total des dépenses pour le graphique en cercle
-        const loss = Math.min(0, netProfit);
-        const positiveProfit = Math.max(0, netProfit);
-        
-        const labels2 = ['Total Dépenses (Achats & Frais) + Pertes', 'Bénéfice Net'];
-        const data2 = [totalExpenses - loss, positiveProfit];
+        const isProfit = netProfit >= 0;
+        const labels2 = isProfit
+            ? ['Total Dépenses (Achats & Frais)', 'Bénéfice Net']
+            : ['Total Dépenses (Achats & Frais)', 'Perte Nette'];
+
+        const data2 = isProfit
+            ? [totalExpenses, netProfit]
+            : [totalExpenses, Math.abs(netProfit)];
 
         const chartFinancesCanvas = document.getElementById('chart-finances');
         if (Chart.getChart(chartFinancesCanvas)) {
@@ -2377,7 +2392,7 @@
                     labels: labels2,
                     datasets: [{
                         data: data2,
-                        backgroundColor: ['var(--secondary-accent)', 'var(--accent)'],
+                        backgroundColor: isProfit ? ['var(--secondary-accent)', 'var(--accent)'] : ['var(--secondary-accent)', 'rgba(220, 38, 38, 0.85)'],
                         hoverOffset: 4
                     }]
                 },
@@ -2386,7 +2401,9 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: `Synthèse Financière (Dépenses: ${totalExpenses.toFixed(2)} DA, Bénéfice: ${netProfit.toFixed(2)} DA)`
+                            text: isProfit
+                                ? `Synthèse Financière (Dépenses: ${totalExpenses.toFixed(2)} DA, Bénéfice: ${netProfit.toFixed(2)} DA)`
+                                : `Synthèse Financière (Dépenses: ${totalExpenses.toFixed(2)} DA, Perte: ${Math.abs(netProfit).toFixed(2)} DA)`
                         }
                     }
                 }
@@ -2464,7 +2481,8 @@
                 const cumpData = computeMaterialCosts();
                 s.extraPackaging.forEach(pkg => {
                     const cump = cumpData.find(c => c.name === pkg.name)?.cump || 0;
-                    totalCost += pkg.qty * cump;
+                    // pkg.qty = quantité par unité vendue
+                    totalCost += pkg.qty * s.qty * cump;
                 });
             }
             
