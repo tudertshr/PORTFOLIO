@@ -34,23 +34,38 @@ function initPreloader() {
     const preloader = document.getElementById('preloader');
     const progressBar = document.getElementById('progressBar');
     const progressPercentage = document.getElementById('progressPercentage');
-    
+
+    if (!preloader) return;
+
     let progress = 0;
+    let done = false;
+
+    function hidePreloader() {
+        if (done) return;
+        done = true;
+        clearInterval(interval);
+        if (progressBar) progressBar.style.width = '100%';
+        if (progressPercentage) progressPercentage.textContent = '100%';
+        setTimeout(() => {
+            preloader.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }, 400);
+    }
+
     const interval = setInterval(() => {
-        progress += Math.random() * 30;
-        if (progress > 100) progress = 100;
-        
-        progressBar.style.width = progress + '%';
-        progressPercentage.textContent = Math.floor(progress) + '%';
-        
-        if (progress >= 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-                preloader.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }, 500);
-        }
+        // Incrément minimum de 10 pour éviter de rester bloqué
+        progress += 10 + Math.random() * 20;
+        if (progress > 95) progress = 95; // On plafonne à 95, window.load finit à 100
+
+        if (progressBar) progressBar.style.width = progress + '%';
+        if (progressPercentage) progressPercentage.textContent = Math.floor(progress) + '%';
     }, 200);
+
+    // Fermeture normale quand tout est chargé
+    window.addEventListener('load', hidePreloader);
+
+    // ✅ Sécurité mobile : fermeture forcée après 4 secondes max
+    setTimeout(hidePreloader, 4000);
 }
 
 // ==================== MODE THÈME ====================
