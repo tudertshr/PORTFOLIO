@@ -75,8 +75,8 @@ const projectsData = [
         status: 'En cours',
         featured: true,
         shortDescription: 'Gestion stock & ventes (boutique Boo-gie!) avec JSON (localStorage) + graphiques.',
-        description: 'Logiciel créé pour mon atelier/boutique de bougies artisanales : gestion des produits, matières premières et emballages, suivi des ventes et des achats, et calculs associés. L’application est entièrement pensée en front-end avec HTML/CSS/JavaScript et utilise Chart.js pour les graphiques. Les données sont stockées localement via `localStorage` au format JSON (export/import), sans base de données côté serveur (donc pas de PHP/MySQL). Projet personnel : encore en évolution et amélioration des calculs/fiabilité.',
-        technologies: ['HTML5', 'CSS3', 'JavaScript', 'Chart.js', 'JSON (localStorage)', 'Export/Import JSON', 'UI tableaux & graphiques'],
+        description: 'Logiciel créé pour mon atelier/boutique de bougies artisanales : gestion des produits, matières premières et emballages, suivi des ventes et des achats, et calculs associés. L’application est entièrement pensée en front-end avec HTML/CSS/JavaScript . Les données sont stockées localement via `localStorage` au format JSON (export/import), sans base de données côté serveur (donc pas de PHP/MySQL). Projet personnel : encore en évolution et amélioration des calculs/fiabilité.',
+        technologies: ['HTML5', 'CSS3', 'JavaScript', 'JSON (localStorage)', 'Export/Import JSON', 'UI tableaux & graphiques'],
         role: 'Projet personnel — Gestion stock (Web App)',
         duration: '2 mois',
         team: 'Projet personnel',
@@ -91,7 +91,7 @@ const projectsData = [
             ],
             achievements: [
                 'Interface front-end complète pour gérer stock & ventes',
-                'Graphiques (Chart.js) pour visualiser les ventes et les finances',
+                'Graphiques pour visualiser les ventes et les finances',
                 'Modèle de données structuré en JSON et persistant via localStorage',
                 'Import/Export JSON pour sauvegarde et réutilisation des données',
                 'Organisation des sections : produits, matières premières, packaging, achats, ventes'
@@ -102,7 +102,7 @@ const projectsData = [
                 'Optimiser les performances (rendu + recalculs) quand la quantité de données augmente'
             ],
             results: 'Outil fonctionnel pour centraliser la gestion de stock/ventes, avec sauvegarde locale JSON et graphiques. Version améliorée en continu.',
-            learnings: ['Modélisation de données en JSON', 'Stockage local (localStorage) et export/import', 'Visualisation via Chart.js', 'Optimisation du rendu et des calculs']
+            learnings: ['Modélisation de données en JSON', 'Stockage local (localStorage) et export/import', 'Visualisation ', 'Optimisation du rendu et des calculs']
         },
         links: { demo: 'code/index.html', github: null, documentation: null, pdf: null, photos: [] },
         gallery: []
@@ -266,7 +266,7 @@ const projectsData = [
                 'Méthodologie de test (scan Nmap) et lecture d’alertes IDS'
             ]
         },
-        links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
+        links: { demo: null, github: null, documentation: null, pdf: 'doc/Rapport Technique PFSENSE.pdf', photos: ['img/TP4.png'] },
         gallery: [ 'img/PF1.png','img/PF2.png']
     },
     {
@@ -293,7 +293,7 @@ const projectsData = [
             learnings: ['Maîtrise de Cisco Packet Tracer', 'Compréhension approfondie des protocoles réseau']
         },
         links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
-        gallery: []
+        gallery: ['img/TP1.png','img/TP2.png','img/TP3.png','img/TP4.png','img/TP5.png','img/TP6.png']
     },
     {
         id: 6,
