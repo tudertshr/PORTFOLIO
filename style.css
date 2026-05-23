@@ -2409,6 +2409,33 @@ body.dark .project-card-title {
     box-shadow: var(--shadow-primary);
 }
 
+.filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1;
+    transition: all var(--transition-normal);
+}
+
+.filter-btn.active .filter-count {
+    background: rgba(255,255,255,0.35);
+    color: #fff;
+}
+
+.filter-btn:not(.active) .filter-count {
+    background: var(--color-primary);
+    color: #fff;
+    opacity: 0.85;
+}
+
 .load-more-container {
     text-align: center;
     margin-top: var(--spacing-xl);
@@ -4990,4 +5017,560 @@ body:not(.dark) .main-footer .footer-bottom {
     .main-footer .footer-bottom .footer-social {
         justify-content: center;
     }
+}
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║            SECTION EXPÉRIENCE PROFESSIONNELLE                   ║
+   ╚══════════════════════════════════════════════════════════════════╝ */
+
+.experience-section {
+    background: var(--bg-primary);
+    padding: var(--space-section) 0;
+}
+
+/* ── Grille des cartes ─────────────────────────────────────────── */
+.exp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 28px;
+    margin-top: 48px;
+}
+
+/* ── Carte d'expérience ─────────────────────────────────────────── */
+.exp-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 28px;
+    cursor: pointer;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: relative;
+    overflow: hidden;
+}
+
+.exp-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 20px;
+    z-index: 0;
+}
+
+.exp-card:hover::before { opacity: 0.04; }
+
+.exp-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    border-color: var(--color-primary);
+}
+
+.exp-card > * { position: relative; z-index: 1; }
+
+/* ── En-tête carte ─────────────────────────────────────────────── */
+.exp-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.exp-logo-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.exp-card-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+/* ── Badges ────────────────────────────────────────────────────── */
+.exp-type-badge {
+    background: rgba(var(--color-primary-rgb, 100,108,255), 0.12);
+    color: var(--color-primary);
+    border: 1px solid rgba(var(--color-primary-rgb, 100,108,255), 0.25);
+    border-radius: 999px;
+    padding: 3px 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.exp-status-badge {
+    border-radius: 999px;
+    padding: 3px 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.exp-status-wip {
+    background: rgba(251,191,36,0.12);
+    color: #f59e0b;
+    border: 1px solid rgba(251,191,36,0.3);
+}
+
+.exp-status-done {
+    background: rgba(16,185,129,0.12);
+    color: #10b981;
+    border: 1px solid rgba(16,185,129,0.3);
+}
+
+/* ── Corps carte ──────────────────────────────────────────────── */
+.exp-card-body { display: flex; flex-direction: column; gap: 8px; }
+
+.exp-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+    margin: 0;
+}
+
+.exp-company, .exp-period, .exp-location {
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0;
+}
+
+.exp-company i, .exp-period i, .exp-location i {
+    color: var(--color-primary);
+    width: 14px;
+    text-align: center;
+}
+
+.exp-summary {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 6px 0 0;
+}
+
+.exp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.exp-tag {
+    background: rgba(var(--color-primary-rgb, 100,108,255), 0.08);
+    color: var(--color-primary);
+    border: 1px solid rgba(var(--color-primary-rgb, 100,108,255), 0.18);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+/* ── Pied de carte ────────────────────────────────────────────── */
+.exp-card-footer {
+    border-top: 1px solid var(--border-color);
+    padding-top: 14px;
+    margin-top: auto;
+}
+
+.exp-read-more {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: gap 0.2s;
+}
+
+.exp-card:hover .exp-read-more { gap: 12px; }
+
+/* ── Carte placeholder ─────────────────────────────────────────── */
+.exp-card-placeholder {
+    border-style: dashed;
+    cursor: default;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.exp-card-placeholder:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--border-color);
+}
+
+.exp-placeholder-inner {
+    text-align: center;
+    color: var(--text-muted, var(--text-secondary));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.exp-placeholder-inner i {
+    font-size: 32px;
+    opacity: 0.35;
+}
+
+.exp-placeholder-inner p {
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0.5;
+    margin: 0;
+}
+
+.exp-placeholder-inner span {
+    font-size: 12px;
+    opacity: 0.35;
+}
+
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║              MODAL EXPÉRIENCE PROFESSIONNELLE                   ║
+   ╚══════════════════════════════════════════════════════════════════╝ */
+
+.exp-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.exp-modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.exp-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px);
+}
+
+.exp-modal-wrapper {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 1;
+    transform: translateY(30px) scale(0.97);
+    transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) transparent;
+}
+
+.exp-modal.active .exp-modal-wrapper {
+    transform: translateY(0) scale(1);
+}
+
+.exp-modal-close {
+    position: sticky;
+    top: 16px;
+    float: right;
+    margin: 16px 16px 0 0;
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.exp-modal-close:hover {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+}
+
+.exp-modal-content { padding: 28px 32px 36px; }
+
+/* ── Hero modal ───────────────────────────────────────────────── */
+.exp-modal-hero {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.exp-modal-hero-left {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    flex: 1;
+    min-width: 240px;
+}
+
+.exp-modal-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.exp-modal-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+    line-height: 1.3;
+}
+
+.exp-modal-company {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0 0 10px;
+}
+
+.exp-modal-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.exp-modal-hero-right {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 200px;
+}
+
+.exp-modal-info-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.exp-modal-info-row i {
+    color: var(--color-primary);
+    width: 16px;
+    text-align: center;
+}
+
+/* ── Thème du stage ───────────────────────────────────────────── */
+.exp-modal-theme {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: rgba(var(--color-primary-rgb, 100,108,255), 0.07);
+    border: 1px solid rgba(var(--color-primary-rgb, 100,108,255), 0.2);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+}
+
+.exp-modal-theme i {
+    font-size: 22px;
+    color: var(--color-primary);
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.exp-modal-theme strong {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-primary);
+    margin-bottom: 4px;
+}
+
+.exp-modal-theme p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* ── Sections modal ───────────────────────────────────────────── */
+.exp-modal-section {
+    margin-bottom: 28px;
+}
+
+.exp-modal-section h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.exp-modal-section h4 i {
+    color: var(--color-primary);
+    font-size: 14px;
+}
+
+.exp-modal-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin: 0;
+}
+
+.exp-modal-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.exp-modal-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.exp-modal-list li i {
+    color: var(--color-primary);
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+/* ── Tâches ───────────────────────────────────────────────────── */
+.exp-modal-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.exp-modal-task {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 16px;
+}
+
+.exp-modal-task-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(var(--color-primary-rgb, 100,108,255), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.exp-modal-task-body strong {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.exp-modal-task-body p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.55;
+}
+
+.exp-tags-row { margin: 0; }
+
+/* ── Rapport ──────────────────────────────────────────────────── */
+.exp-modal-report {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: rgba(251,191,36,0.06);
+    border: 1px solid rgba(251,191,36,0.25);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-top: 8px;
+}
+
+.exp-modal-report i {
+    font-size: 22px;
+    color: #f59e0b;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.exp-modal-report strong {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #f59e0b;
+    margin-bottom: 4px;
+}
+
+.exp-modal-report p {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .exp-grid { grid-template-columns: 1fr; }
+    .exp-modal-hero { flex-direction: column; }
+    .exp-modal-content { padding: 20px 18px 28px; }
+    .exp-modal-hero-left { flex-direction: column; }
 }
