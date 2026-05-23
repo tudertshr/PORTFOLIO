@@ -34,38 +34,23 @@ function initPreloader() {
     const preloader = document.getElementById('preloader');
     const progressBar = document.getElementById('progressBar');
     const progressPercentage = document.getElementById('progressPercentage');
-
-    if (!preloader) return;
-
+    
     let progress = 0;
-    let done = false;
-
-    function hidePreloader() {
-        if (done) return;
-        done = true;
-        clearInterval(interval);
-        if (progressBar) progressBar.style.width = '100%';
-        if (progressPercentage) progressPercentage.textContent = '100%';
-        setTimeout(() => {
-            preloader.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }, 400);
-    }
-
     const interval = setInterval(() => {
-        // Incrément minimum de 10 pour éviter de rester bloqué
-        progress += 10 + Math.random() * 20;
-        if (progress > 95) progress = 95; // On plafonne à 95, window.load finit à 100
-
-        if (progressBar) progressBar.style.width = progress + '%';
-        if (progressPercentage) progressPercentage.textContent = Math.floor(progress) + '%';
+        progress += Math.random() * 30;
+        if (progress > 100) progress = 100;
+        
+        progressBar.style.width = progress + '%';
+        progressPercentage.textContent = Math.floor(progress) + '%';
+        
+        if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 500);
+        }
     }, 200);
-
-    // Fermeture normale quand tout est chargé
-    window.addEventListener('load', hidePreloader);
-
-    // ✅ Sécurité mobile : fermeture forcée après 4 secondes max
-    setTimeout(hidePreloader, 4000);
 }
 
 // ==================== MODE THÈME ====================
@@ -227,12 +212,39 @@ function initTypingEffect() {
 
 // ==================== COMPTEURS ANIMÉS ====================
 function initCounters() {
-    const counters = document.querySelectorAll('.stat-number');
-    const observerOptions = {
-        threshold: 0.5,
-        rootMargin: '0px'
+    // Calcul automatique depuis les données réelles
+    const statsMap = {
+        'Projets': () => (typeof projectsData !== 'undefined') ? projectsData.length : null,
+        'Certifications': () => {
+            if (typeof certificationsData === 'undefined') return null;
+            return certificationsData.filter(c =>
+                c.icon !== 'fas fa-trophy' && c.icon !== 'fas fa-star' && !(c.badge || '').includes('🏆')
+            ).length;
+        },
+        'Prix': () => {
+            if (typeof certificationsData === 'undefined') return null;
+            return certificationsData.filter(c =>
+                c.icon === 'fas fa-trophy' || c.icon === 'fas fa-star' || (c.badge || '').includes('🏆')
+            ).length;
+        }
     };
-    
+
+    const counters = document.querySelectorAll('.stat-number');
+    counters.forEach(counter => {
+        const label = counter.closest('.stat-content') &&
+                      counter.closest('.stat-content').querySelector('.stat-label')
+                      ? counter.closest('.stat-content').querySelector('.stat-label').textContent.trim()
+                      : null;
+        if (label && statsMap[label]) {
+            const val = statsMap[label]();
+            if (val !== null && !isNaN(val)) {
+                counter.setAttribute('data-target', val);
+            }
+        }
+    });
+
+    // Animation au scroll
+    const observerOptions = { threshold: 0.5, rootMargin: '0px' };
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -243,7 +255,6 @@ function initCounters() {
             }
         });
     }, observerOptions);
-    
     counters.forEach(counter => observer.observe(counter));
 }
 
@@ -948,7 +959,24 @@ function createProjectCard(project, index) {
 // ==================== FILTRES DE PROJETS ====================
 function initProjectFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
-    
+
+    // Injecter les vrais comptages sur chaque bouton
+    if (typeof projectsData !== 'undefined') {
+        filterButtons.forEach(button => {
+            const f = button.getAttribute('data-filter');
+            const count = f === 'all'
+                ? projectsData.length
+                : projectsData.filter(p => p.category === f).length;
+            // Supprimer l'ancien badge s'il existe
+            const oldBadge = button.querySelector('.filter-count');
+            if (oldBadge) oldBadge.remove();
+            const badge = document.createElement('span');
+            badge.className = 'filter-count';
+            badge.textContent = count;
+            button.appendChild(badge);
+        });
+    }
+
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
             // Retirer la classe active de tous les boutons
