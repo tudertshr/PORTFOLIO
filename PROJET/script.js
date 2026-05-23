@@ -118,26 +118,39 @@ const projectsData = [
         featured: false,
         shortDescription: 'Bibliothèque de sites web avec IA : cours, révision/pratique et boutique.',
         description: 'Création de plusieurs sites web statiques (HTML/CSS/JavaScript) avec assistance IA pour accélérer la production (structure, contenu, variations de design). L’objectif ici est de regrouper mes sites par usage : pages de cours/référence, pages de révision/pratique (TP, résumés), et sites liés à ma boutique (expérience web pour Boo-gie!).',
-        technologies: ['HTML5', 'CSS3', 'JavaScript', 'Outils IA', 'GitHub Pages'],
+        technologies: ['HTML5', 'CSS3', 'JavaScript', 'Outils IA', 'GitHub Pages', 'Simulation CLI (JS)', 'API IA'],
         role: 'Projet personnel — Développement Frontend',
         duration: 'Continu',
         team: 'Projets personnels',
         details: {
-            context: 'Projet personnel : utiliser l’IA comme accélérateur pour créer des sites utiles et bien structurés, puis les regrouper de façon claire par catégories (cours, révision/pratique, boutique).',
+            context: 'Utiliser l’IA comme accélérateur pour produire des sites web utiles et bien structurés. Une des réalisations phares est l’intégration d’un terminal CLI simulé avec correction intelligente basée sur l’IA, permettant de pratiquer les commandes Cisco dans un scénario fictif (infrastructure hôtel) directement dans le navigateur.',
             objectives: [
-                'Produire rapidement des sites web statiques propres et responsive',
-                'Utiliser l’IA comme assistant (itération, mise en page, contenu) sans complexifier le stack',
-                'Structurer les liens par catégories (cours, révision/pratique, boutique)',
-                'Publier et maintenir les sites (GitHub Pages)'
+                'Produire rapidement des sites web statiques propres et responsive avec assistance IA',
+                'Développer un terminal CLI simulé en JavaScript avec correction intelligente (IA) pour pratiquer les commandes Cisco',
+                'Créer des scénarios de simulation réalistes (ex. : infrastructure réseau d’un hôtel fictif)',
+                'Structurer les liens par catégories (cours, révision/pratique, administration réseau, boutique)',
+                'Publier et maintenir les sites via GitHub Pages'
             ],
             achievements: [
-                'Développement de plusieurs pages/sites en HTML/CSS/JS avec assistance IA',
-                'Amélioration itérative du design et du contenu',
-                'Mise en ligne de sites statiques et regroupement par usage'
+                'Terminal CLI Cisco simulé en JS avec correction intelligente (IA) — scénario hôtel fictif complet',
+                'Guide interactif Zabbix 7.4 : installation complète, supervision DNS, gestion des alertes (7 modules, 20 checkpoints)',
+                'Guide HA Cluster Linux (Pacemaker/Corosync) : 2 nœuds Ubuntu, VIP flottante, bascule automatique Apache2 — documenté avec captures',
+                'Sites de cours/référence réseau et sécurité (VLAN, STP, DNS, vulnérabilités)',
+                'Sites de révision/pratique : TP vulnérabilités, résumés, scripts Linux',
+                'Boutique Boo-gie! : vitrine + configurateur de commande personnalisée'
             ],
-            challenges: ['Maintenir une bonne qualité et cohérence malgré la génération assistée', 'Itérer vite sans accumuler de dette technique'],
-            results: 'Maîtrise des outils IA appliqués au développement web.',
-            learnings: ['HTML/CSS/JS côté front', 'Utilisation d’outils IA pour accélérer les itérations', 'Publication de sites statiques']
+            challenges: [
+                'Concevoir un terminal CLI Cisco convaincant et pédagogique en JavaScript pur avec retour IA',
+                'Maintenir la cohérence et la qualité technique sur un grand nombre de sites',
+                'Itérer vite sans accumuler de dette technique'
+            ],
+            results: 'Une bibliothèque de sites web couvrant l’administration réseau, la sécurité, la supervision et le développement — dont un terminal CLI simulé avec IA pour pratiquer Cisco, utilisable directement dans le navigateur.',
+            learnings: [
+                'Développement frontend HTML/CSS/JS et intégration d’IA pour la correction/simulation',
+                'Conception de simulations interactives (CLI, checkpoints, progression)',
+                'Publication et maintenance de sites statiques sur GitHub Pages',
+                'Structuration de contenu technique complexe pour l’apprentissage'
+            ]
         },
         links: {
             demo: null,
@@ -146,6 +159,10 @@ const projectsData = [
             pdf: null,
             photos: [],
             sites: [
+                { name: 'Admin Réseau — NetAcademy (VLAN, STP, DHCP, DNS, Sécurité, Labs CLI)', url: 'https://tudertshr.github.io/ADMINISTRATEUR/' },
+                { name: 'SOC — Zabbix Mastery : Guide Complet (7 modules, 20 checkpoints)', url: 'https://tudertshr.github.io/ZABBIX/' },
+                { name: 'HA — Cluster Linux (Pacemaker/Corosync, VIP, Apache2)', url: 'https://tudertshr.github.io/HA-CLUSTER--linux-/' },
+
                 { name: 'Boutique — Bougie', url: 'https://tudertshr.github.io/boo-gie/#home' },
                 { name: 'Boutique — BougieSite (site vitrine)', url: 'https://boo-gie.github.io/web/' },
 
@@ -164,7 +181,7 @@ const projectsData = [
         gallery: []
     },
     {
-        id: 14,
+        id: 4,
         title: 'Boo-gie! — Bougies artisanales',
         category: 'business',
         icon: '🕯️',
@@ -222,7 +239,7 @@ const projectsData = [
         gallery: ['img/BOO1.png','img/BOO2.png','img/BOO3.png','img/BOO4.png','img/BOO5.png','img/BOO6.png','img/BOO7.png']
     },
     {
-        id: 4,
+        id: 5,
         title: 'Mise en place de Sécurité Réseau',
         category: 'security',
         icon: '🛡️',
@@ -270,7 +287,7 @@ const projectsData = [
         gallery: [ 'img/PF1.png','img/PF2.png']
     },
     {
-        id: 5,
+        id: 6,
         title: 'Simulation Réseau — Topologies & Routage (Packet Tracer)',
         category: 'network',
         icon: '🌐',
@@ -296,7 +313,7 @@ const projectsData = [
         gallery: ['img/TP1.png','img/TP2.png','img/TP3.png','img/TP4.png','img/TP5.png','img/TP6.png']
     },
     {
-        id: 6,
+        id: 7,
         title: 'Olympiades des Métiers  2025 — Infrastructure SoummamTech',
         category: 'achievement',
         icon: '🏅',
@@ -394,7 +411,7 @@ const projectsData = [
         gallery: ['img/SEC1.png','img/SEC2.png','img/SEC3.png','img/SEC4.png','img/SEC5.png','img/SEC6.png','img/SEC7.png','img/SEC8.png','img/SEC9.png','img/SEC10.png','img/SEC11.png','img/SEC12.png','img/SEC13.png','img/SEC14.png']
     },
     {
-        id: 13,
+        id: 9,
         title: 'Simulations d’Attaques — Phishing, Brute Force, SQLi',
         category: 'security',
         icon: '🎯',
@@ -438,7 +455,7 @@ const projectsData = [
         gallery: []
     },
     {
-        id: 9,
+        id: 10,
         title: 'Haute Disponibilité — Cluster de Serveurs',
         category: 'network',
         icon: '⚡',
@@ -484,7 +501,7 @@ const projectsData = [
         gallery: ['img/HA1.png','img/HA2.png','img/HA3.png','img/HA4.png',]
     },
     {
-        id: 10,
+        id: 11,
         title: 'Infrastructure Windows Server – Nova-Pharm',
         category: 'network',
         icon: '🖥️',
@@ -510,7 +527,7 @@ const projectsData = [
         gallery: []
     },
     {
-        id: 11,
+        id: 12,
         title: 'Installation OpenLDAP & phpLDAPadmin sur Ubuntu',
         category: 'network',
         icon: '📂',
@@ -556,6 +573,173 @@ const projectsData = [
         },
         links: { demo: null, github:'https://tudertshr.github.io/LINUX-serv/#LDHCP', documentation: null, pdf: null, photos: [] },
         gallery: ['img/1.png','img/2.png','img/3.png','img/4.png','img/5.png']
+    },
+
+    {
+        id: 13,
+        title: 'Administration Réseau — VLAN, STP, DHCP, DNS, Sécurité L2 (Labs CLI)',
+        category: 'network',
+        icon: '🌐',
+        image: null,
+        year: '2025',
+        status: 'En cours',
+        featured: true,
+        shortDescription: 'Pratique complète couche 2–3 : configuration VLAN/802.1Q, STP, EtherChannel, DHCP, DNS, sécurité L2 et labs CLI Cisco simulés.',
+        description: 'Apprentissage et pratique approfondie de l’administration réseau couche 2–3 via des labs guidés et un terminal CLI Cisco simulé avec correction intelligente (IA). Les compétences couvertes : segmentation en VLANs (802.1Q, trunks, inter-VLAN routing), évitement des boucles réseau avec STP/RSTP (Root Bridge, états des ports), agrégation de liens EtherChannel (LACP/PAgP), configuration DHCP (processus DORA, relay, DHCPv6/SLAAC), DNS (résolution forward/reverse, zones, port 53), et sécurité L2 (Port Security, DHCP Snooping, DAI, prévention VLAN Hopping, ACL, durcissement IOS). Le tout pratiqué dans un terminal CLI simulé avec un scénario fictif d’infrastructure hôtel, où l’IA corrige les commandes et guide le dépannage.',
+        technologies: ['Cisco IOS CLI', 'VLAN / 802.1Q', 'STP / RSTP', 'EtherChannel (LACP/PAgP)', 'DHCP / DHCPv6', 'DNS', 'Port Security', 'DHCP Snooping', 'DAI', 'ACL', 'GitHub Pages', 'JavaScript', 'Simulation CLI (IA)'],
+        role: 'Administratrice Réseau — Apprentissage & Pratique',
+        duration: 'Continu',
+        team: 'Projet personnel',
+        details: {
+            context: 'Maîtriser la couche 2–3 et les services IP fondamentaux en entreprise, avec la logique de dépannage d’un professionnel — en pratiquant sur des labs CLI réalistes et un scénario de simulation hôtel.',
+            objectives: [
+                'Configurer et dépannager les VLANs, trunks 802.1Q et le routage inter-VLAN sur switches Cisco',
+                'Comprendre et appliquer STP/RSTP : élection Root Bridge, états des ports, évitement des boucles',
+                'Agréger des liens physiques avec EtherChannel (LACP / PAgP, Layer 2 et Layer 3)',
+                'Configurer le service DHCP (DORA, relay, DHCPv6 stateful/stateless, SLAAC)',
+                'Mettre en place et diagnostiquer le DNS (forward/reverse lookup, zones, port 53)',
+                'Appliquer la sécurité L2 : Port Security, DHCP Snooping, DAI, prévention VLAN Hopping, ACL',
+                'S’entraîner via un terminal CLI Cisco simulé (scénario hôtel fictif) avec correction intelligente par IA'
+            ],
+            achievements: [
+                'Configuration complète VLAN : création, ports access/trunk, native VLAN, routage inter-VLAN',
+                'Maîtrise STP/RSTP : root bridge, BPDUs, états des ports (blocking/listening/learning/forwarding)',
+                'EtherChannel opérationnel : négociation LACP et PAgP, port-channel L2 et L3',
+                'DHCP Server Cisco configuré : plages, exclusions, relay agent, DHCPv6 (SARR, SLAAC)',
+                'DNS résolu : zones forward/reverse, dépannage avec nslookup et dig',
+                'Sécurité L2 : Port Security (sticky MAC, violation), DHCP Snooping activé, DAI configuré, ACL standard et étendues',
+                'Labs CLI validés dans le terminal simulé avec scénario hôtel fictif et retour IA'
+            ],
+            challenges: [
+                'Comprendre les subtiles différences STP/RSTP et le comportement des ports selon la topologie',
+                'Gérer correctement les modes de négociation EtherChannel (LACP vs PAgP, Active/Passive)',
+                'Dépannage DHCP Snooping et DAI sans couper la connectivité légitime'
+            ],
+            results: 'Compétences solides en administration réseau couche 2–3, validées par des labs CLI et un simulateur IA — avec un réflexe de dépannage professionnel (commandes show, sauvegarde config, inventaire VLAN, NTP).',
+            learnings: [
+                'Configuration Cisco complète : VLAN, trunk, STP, EtherChannel, DHCP, DNS',
+                'Sécurité réseau L2 : Port Security, Snooping, DAI, ACL, durcissement IOS',
+                'Dépannage réseau structuré avec commandes show et analyse des logs'
+            ]
+        },
+        links: {
+            demo: 'https://tudertshr.github.io/ADMINISTRATEUR/',
+            github: null ,
+            documentation: null,
+            pdf: null,
+            photos: []
+        },
+        gallery: []
+    },
+    {
+        id: 14,
+        title: 'Supervision SOC — Installation et Configuration Zabbix 7.4',
+        category: 'security',
+        icon: '📡',
+        image: null,
+        year: '2025',
+        status: 'Terminé',
+        featured: true,
+        shortDescription: 'Installation complète Zabbix 7.4 sur Ubuntu 24.04, configuration d’agents, supervision DNS, création d’alertes et dépannage d’incidents réseau.',
+        description: 'TP complet de supervision réseau et système en contexte SOC : installation de Zabbix 7.4 sur Ubuntu 24.04 LTS (dépôt officiel, paquets server/agent/frontend/MySQL/Apache), création et configuration de la base de données MySQL (import du schéma, gestion des droits, sécurité log_bin_trust), démarrage et activation des services, configuration de l’interface web, ajout d’hôtes à surveiller, création d’items, de triggers et d’alertes automatiques. Scénario de TP concret : un serveur DNS est tombé sans que personne ne s’en aperçoive pendant 2h. Objectif : mettre en place une supervision capable de détecter toute panne en moins de 30 secondes.',
+        technologies: ['Zabbix 7.4', 'Ubuntu 24.04 LTS', 'MySQL', 'Apache', 'PHP', 'Zabbix Server', 'Zabbix Agent', 'Triggers', 'Items', 'Alertes', 'Supervision DNS', 'SOC'],
+        role: 'Administratrice Système / Analyste SOC',
+        duration: '—',
+        team: 'Projet personnel',
+        details: {
+            context: 'TP SOC réaliste : un serveur DNS tombe silencieusement et personne ne le détecte pendant 2 heures. Mise en place de Zabbix pour éviter que cela se reproduise — avec détection automatique en moins de 30 secondes.',
+            objectives: [
+                'Installer Zabbix 7.4 sur Ubuntu 24.04 (dépôt officiel, paquets server/agent/frontend)',
+                'Créer et configurer la base de données MySQL (import schéma, droits, sécurité)',
+                'Démarrer et activer les services Zabbix Server, Zabbix Agent et Apache',
+                'Configurer l’interface web et ajouter les hôtes à superviser',
+                'Créer des items, triggers et alertes pour surveiller le service DNS',
+                'Diagnostiquer et résoudre les erreurs d’installation fréquentes'
+            ],
+            achievements: [
+                'Zabbix 7.4 installé et opérationnel sur Ubuntu 24.04 (server + agent + frontend)',
+                'Base MySQL configurée avec import du schéma et gestion correcte des permissions (log_bin_trust repassé à 0 après import)',
+                'Services démarrés et activés (systemctl enable zabbix-server zabbix-agent apache2)',
+                'Hôtes ajoutés, items et triggers configurés pour la supervision DNS',
+                'Alertes automatiques opérationnelles : détection de panne en < 30 secondes',
+                'Module de dépannage documenté (erreurs MySQL, Apache, agent)'
+            ],
+            challenges: [
+                'Gérer correctement la permission MySQL log_bin_trust_function_creators (temporaire puis remise à 0)',
+                'Faire correspondre DBPassword dans zabbix_server.conf avec le mot de passe MySQL créé',
+                'Comprendre la chaîne Server → Agent → Frontend → MySQL et dépannager chaque maillon'
+            ],
+            results: 'Infrastructure de supervision SOC complète et opérationnelle : Zabbix 7.4 surveille les services critiques en temps réel et déclenche des alertes automatiques dès qu’un service tombe.',
+            learnings: [
+                'Installation et administration de Zabbix 7.4 sur Linux',
+                'Configuration MySQL pour une application de supervision (import schéma, droits, sécurité)',
+                'Concepts SOC : métriques, items, triggers, seuils et alertes automatiques',
+                'Dépannage systèmatique d’une stack Linux (MySQL + Apache + service Zabbix)'
+            ]
+        },
+        links: {
+            demo: 'https://tudertshr.github.io/ZABBIX/',
+            github: null ,
+            documentation: null,
+            pdf: null,
+            photos: []
+        },
+        gallery: []
+    },
+    {
+        id: 15,
+        title: 'Cluster Haute Disponibilité Linux — Pacemaker / Corosync / Apache2',
+        category: 'network',
+        icon: '⚙️',
+        image: null,
+        year: '2025',
+        status: 'Terminé',
+        featured: true,
+        shortDescription: 'Déploiement d’un cluster HA Linux : 2 nœuds Ubuntu, IP virtuelle flottante (VIP), bascule automatique Apache2 avec Pacemaker/Corosync.',
+        description: 'Déploiement et configuration d’un cluster haute disponibilité sur Linux (Ubuntu 24.04 LTS) avec Pacemaker, Corosync et PCS. Architecture : node1 (192.168.1.10 — maître actif) et node2 (192.168.1.11 — standby) partageant une IP virtuelle flottante (VIP : 192.168.1.100/24). En cas de défaillance du nœud maître, Pacemaker détecte la panne et bascule automatiquement la VIP et Apache2 sur node2 — sans intervention manuelle. Le projet couvre la configuration réseau statique (Netplan), l’installation des paquets, la création du cluster (auth, setup, start, enable), la définition des ressources (IPaddr2 + ocf:heartbeat:apache) groupées en webgroup, les contraintes de localisation, la désactivation de STONITH pour l’environnement virtuel, et les tests de bascule validés avec captures.',
+        technologies: ['Ubuntu 24.04 LTS', 'Pacemaker', 'Corosync', 'PCS', 'Apache2', 'Netplan', 'IPaddr2', 'ocf:heartbeat:apache', 'STONITH', 'VIP (IP flottante)', 'VMware Workstation', 'resource-agents'],
+        role: 'Administratrice Système Linux',
+        duration: '—',
+        team: 'Projet personnel',
+        details: {
+            context: 'Déployer un cluster HA Linux réel en environnement virtualisé (VMware) : 2 nœuds Ubuntu avec bascule automatique d’Apache et d’une IP virtuelle, validé par des tests de failover et documenté avec captures.',
+            objectives: [
+                'Configurer le réseau statique via Netplan et la résolution de noms /etc/hosts sur les 2 nœuds',
+                'Installer et activer pacemaker, corosync, pcs, apache2 et resource-agents',
+                'Créer et initialiser le cluster "mycluster" (pcs host auth, pcs cluster setup/start/enable)',
+                'Définir la ressource VIP (IPaddr2, 192.168.1.100) et Apache (webserver) groupées en webgroup',
+                'Configurer la contrainte de localisation (node1 préféré) et tester la bascule automatique',
+                'Documenter chaque étape avec captures d’écran réelles (pcs status, ip a, hostnamectl)'
+            ],
+            achievements: [
+                'Cluster "mycluster" opérationnel : node1 (DC maître) et node2 (standby) — Online sur les 2 nœuds',
+                'IP virtuelle flottante 192.168.1.100/24 bascule automatiquement en cas de panne de node1',
+                'Apache2 géré exclusivement par Pacemaker (désactivé dans systemd pour éviter le conflit)',
+                'Ressources groupées (webgroup : vip + webserver) pour bascule simultanée et cohérente',
+                'Tests de failover validés et documentés avec pcs status avant/après bascule',
+                'STONITH désactivé et no-quorum-policy configuré pour l’environnement virtuel à 2 nœuds'
+            ],
+            challenges: [
+                'Synchronisation exacte de la configuration réseau (IPs statiques, /etc/hosts) entre les 2 nœuds',
+                'Comprendre que Pacemaker doit gérer Apache exclusivement (ne pas le laisser dans systemd)',
+                'Adapter STONITH et no-quorum-policy à un environnement virtuel sans matériel dédié'
+            ],
+            results: 'Cluster web HA Linux pleinement fonctionnel : bascule automatique de la VIP et d’Apache2 en < 30 secondes en cas de panne du nœud maître, validée par des tests de failover réels.',
+            learnings: [
+                'Architecture cluster HA Linux : Pacemaker, Corosync, PCS et resource-agents',
+                'Configuration réseau statique avec Netplan sur Ubuntu 24.04',
+                'Gestion des ressources cluster (IPaddr2, ocf:heartbeat:apache) et contraintes de localisation',
+                'Test et validation du failover automatique en environnement virtualisé'
+            ]
+        },
+        links: {
+            demo: 'https://tudertshr.github.io/HA-CLUSTER--linux-/',
+            github: null ,
+            documentation: null,
+            pdf: null,
+            photos: []
+        },
+        gallery: []
     },
 
     /* Pour ajouter un projet : copiez un bloc ci-dessus, changez l'id et les champs.
