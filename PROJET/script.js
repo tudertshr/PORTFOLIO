@@ -159,12 +159,11 @@ const projectsData = [
             pdf: null,
             photos: [],
             sites: [
-                { name: 'Admin Réseau — NetAcademy (VLAN, STP, DHCP, DNS, Sécurité, Labs CLI)', url: 'https://tudertshr.github.io/ADMINISTRATEUR/' },
+                { name: 'Admin Réseau — NetAcademy ', url: 'https://tudertshr.github.io/ADMINISTRATEUR/' },
                 { name: 'SOC — Zabbix Mastery : Guide Complet (7 modules, 20 checkpoints)', url: 'https://tudertshr.github.io/ZABBIX/' },
-                { name: 'HA — Cluster Linux (Pacemaker/Corosync, VIP, Apache2)', url: 'https://tudertshr.github.io/HA-CLUSTER--linux-/' },
+                { name: 'HA — Cluster Linux ', url: 'https://tudertshr.github.io/HA-CLUSTER--linux-/' },
 
-                { name: 'Boutique — Bougie', url: 'https://tudertshr.github.io/boo-gie/#home' },
-                { name: 'Boutique — BougieSite (site vitrine)', url: 'https://boo-gie.github.io/web/' },
+                { name: 'Boutique — BougieSite ', url: 'https://boo-gie.github.io/web/' },
 
                 { name: 'Cours — Vulnérabilités (théorie)', url: 'https://tudertshr.github.io/Vulnerabilites-theorie/#vulnerabilites' },
                 { name: 'Cours — Cours', url: 'https://tudertshr.github.io/cours/' },
@@ -173,7 +172,7 @@ const projectsData = [
                 { name: 'Cours — Tendances', url: 'https://tudertshr.github.io/tendances/#introduction' },
 
                 { name: 'Révision/Pratique — TP vulnérabilités', url: 'https://tudertshr.github.io/TP-vulnerabilites/' },
-                { name: 'Révision/Pratique — Vulnérabilités (résumé)', url: 'https://tudertshr.github.io/Vul-resume/' },
+                { name: 'Révision/Pratique — Vulnérabilités', url: 'https://tudertshr.github.io/Vul-resume/' },
                 { name: 'Révision/Pratique — LINUX-serv', url: 'https://tudertshr.github.io/LINUX-serv/#top' },
                 { name: 'Révision/Pratique — Script', url: 'https://tudertshr.github.io/script/' }
             ]
@@ -571,7 +570,7 @@ const projectsData = [
                 'Gestion des paquets et reconfiguration avec dpkg-reconfigure'
             ]
         },
-        links: { demo: null, github:'https://tudertshr.github.io/LINUX-serv/#LDHCP', documentation: null, pdf: null, photos: [] },
+        links: { demo: 'https://tudertshr.github.io/LINUX-serv/#LDHCP', github: null, documentation: null, pdf: null, photos: [] },
         gallery: ['img/1.png','img/2.png','img/3.png','img/4.png','img/5.png']
     },
 
@@ -739,6 +738,56 @@ const projectsData = [
             pdf: null,
             photos: []
         },
+      gallery: ['img/lin1.png','img/lin2.png','img/lin3.png','img/lin4.png','img/lin4.png','img/lin5.png']
+    },
+
+    {
+        id: 16,
+        title: 'Étude de Gestion des Risques — Méthode EBIOS "SI d’un aéroport international " ',
+        category: 'security',
+        icon: '✈️',
+        image: null,
+        year: '2025',
+        status: 'Terminé',
+        featured: true,
+        shortDescription: 'Application complète de la méthode EBIOS Risk Manager au SI d\'un aéroport international : actifs, événements redoutés, scénarios de menaces et plan de traitement.',
+        description: 'Étude de cas académique appliquant la méthode EBIOS Risk Manager au Système d\'Information d\'un aéroport international. Le travail couvre les 5 étapes officielles : étude du contexte (périmètre SI, actifs primaires et supports, acteurs), identification des événements redoutés avec leur impact, étude des scénarios de menaces (sources, types d\'attaques, vulnérabilités), analyse des risques via la formule Probabilité × Impact, et plan de traitement (réduire, éviter, accepter, transférer) avec mesures concrètes pour chaque risque.',
+        technologies: ['EBIOS Risk Manager', 'Analyse de risques', 'Gestion des menaces', 'Cybersécurité SI', 'Modélisation des actifs'],
+        role: 'Étudiante — Analyse & Gestion des Risques',
+        duration: '—',
+        team: 'Projet académique',
+        details: {
+            context: 'Le périmètre couvre le SI complet d\'un aéroport international : interfaces passagers (bornes libre-service, biométrie), gestion des opérations (AODB, SITB), infrastructure critique (réseau LAN/Fibre, vidéosurveillance) et logistique commerciale (passerelles de paiement Duty Free).',
+            objectives: [
+                'Délimiter le périmètre du SI et identifier les actifs primaires et supports',
+                'Cartographier les acteurs et leurs niveaux d\'accès',
+                'Évaluer les besoins de sécurité (Confidentialité / Intégrité / Disponibilité)',
+                'Identifier les événements redoutés et leurs impacts organisationnels',
+                'Modéliser les sources de menaces, types d\'attaques et vulnérabilités',
+                'Construire la matrice des risques et le plan de traitement'
+            ],
+            achievements: [
+                'Cartographie complète des actifs : 5 actifs primaires, 9 actifs supports, 5 acteurs',
+                'Tableau des besoins de sécurité CIA pour chaque actif',
+                '8 événements redoutés identifiés avec impact détaillé (paralysie trafic, fuite biométrique, chaos bagages…)',
+                '5 scénarios de menaces réalistes : Ransomware par phishing, Clé USB infectée (SITB), Social Engineering (Tour de Contrôle), Wi-Fi Spoofing, Bombe logique (employé malveillant)',
+                'Matrice de risques 10 entrées : Probabilité × Impact → Niveau (Élevé/Moyen/Faible)',
+                'Plan de traitement complet : EDR + Air-gap, VLAN, MFA, redondance fibre, chiffrement AODB, blocage USB, assurance Cyber'
+            ],
+            challenges: [
+                'Identifier tous les actifs critiques d\'un SI aussi complexe qu\'un aéroport',
+                'Évaluer objectivement la probabilité et l\'impact sans données statistiques réelles',
+                'Choisir le bon type de traitement (réduire / éviter / accepter / transférer) selon le contexte'
+            ],
+            results: 'Étude EBIOS complète en 5 étapes avec cartographie des actifs, 5 scénarios de menaces réalistes et un plan de traitement actionnable pour sécuriser le SI aéroportuaire.',
+            learnings: [
+                'Maîtrise de la méthode EBIOS Risk Manager (5 étapes)',
+                'Identification et classification des actifs SI',
+                'Modélisation des menaces (sources, vecteurs, vulnérabilités)',
+                'Construction d\'une matrice de risques et d\'un plan de traitement'
+            ]
+        },
+        links: { demo: null, github: null, documentation: null, pdf: 'doc/ÉTude de gestion des risques (AEROPORT) – Méthode EBIOS.pdf', photos: [] },
         gallery: []
     },
 
