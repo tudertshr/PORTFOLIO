@@ -10,99 +10,101 @@ const experiencesData = {
 
     // ────────────────────────────────────────────────────────────────────────
     // STAGE 01 — HighTech Compass
-    // Thème : Authentification AAA — FreeRADIUS + OpenLDAP
     // ────────────────────────────────────────────────────────────────────────
     'stage-01': {
         id: 'stage-01',
         type: 'Stage',
-        status: 'En cours',
+        status: 'Terminé',
         featured: true,
 
-        // ── Identité ────────────────────────────────────────────────────────
         title: 'Stagiaire — Administration Système & Sécurité Réseau',
         company: 'HighTech Compass',
         sector: 'Informatique & Télécommunications',
         location: 'Algérie',
 
-        // ── Dates ───────────────────────────────────────────────────────────
         period: 'Mai 2025 — Juin 2025',
         duration: '1 mois',
-        tutor: 'À compléter',           // ← Nom du tuteur / maître de stage
+        tutor: 'À compléter',
 
-        // ── Résumé affiché sur la carte ─────────────────────────────────────
-        theme: 'Authentification AAA basée sur serveur FreeRADIUS et annuaire LDAP',
-        summary: "Mise en place d'une infrastructure d'authentification centralisée AAA (Authentication, Authorization, Accounting) sous Ubuntu Server 24.04 LTS — FreeRADIUS comme serveur RADIUS, OpenLDAP comme annuaire d'utilisateurs, interface web PHP d'administration, et intégration d'une machine Linux cliente au domaine.",
+        theme: 'Authentification AAA — FreeRADIUS + OpenLDAP',
+        summary: "Mise en place d'un système d'authentification centralisé AAA (Authentication, Authorization, Accounting) sous Ubuntu 24.04 LTS, basé sur FreeRADIUS et OpenLDAP — avec intégration d'une machine Linux cliente au domaine.",
 
-        // ── Contenu de la modal ──────────────────────────────────────────────
-        context: "Dans un contexte où la gestion des accès utilisateurs devient critique pour la sécurité des infrastructures réseau, HighTech Compass a confié la mise en place d'un serveur d'authentification AAA centralisé. L'objectif : remplacer les authentifications locales disparates par un système unifié, sécurisé et auditable, basé sur les standards RADIUS et LDAP.",
+        // ── Rapport théorique (section orange existante) ──────────────────
+        report_url: null,
+        report_note: 'Le rapport théorique sera disponible ici une fois finalisé.',
+
+        // ── Partie pratique (nouveau bouton foncé) ────────────────────────
+        practical_url: 'https://tudertshr.github.io/AAA-freeRadius/',
+
+        // ── Projets complémentaires ───────────────────────────────────────
+        related_projects: [
+            {
+                label: 'Installation OpenLDAP & phpLDAPadmin',
+                portfolio_id: 12,
+                external_url: 'https://tudertshr.github.io/LINUX-serv/#LDHCP'
+            },
+            {
+                label: 'Supervision Zabbix 7.4',
+                portfolio_id: 14,
+                external_url: 'https://tudertshr.github.io/ZABBIX/'
+            }
+        ],
+
+        // ── Contenu modal ─────────────────────────────────────────────────
+        context: "Déploiement d'un serveur d'authentification AAA centralisé pour HighTech Compass, visant à unifier et sécuriser la gestion des accès réseau via FreeRADIUS et un annuaire OpenLDAP.",
 
         objectives: [
-            "Déployer et configurer FreeRADIUS sur Ubuntu Server 24.04 LTS",
-            "Installer et structurer un annuaire LDAP (OpenLDAP) comme base de données utilisateurs",
-            "Interfacer FreeRADIUS avec OpenLDAP pour l'authentification centralisée (module rlm_ldap)",
-            "Créer une interface web PHP pour administrer les utilisateurs LDAP",
-            "Intégrer une machine Linux cliente au domaine du serveur (PAM / SSSD)",
-            "Documenter l'architecture, les procédures et les tests dans un rapport de stage"
+            "Déployer FreeRADIUS et OpenLDAP sur Ubuntu 24.04 LTS",
+            "Interfacer FreeRADIUS avec OpenLDAP pour l'authentification centralisée",
+            "Intégrer une machine Linux cliente au domaine (SSSD / PAM)",
+            "Mettre en place l'autorisation par groupe et la comptabilité des sessions",
+            "Configurer l'authentification Wi-Fi (EAP-TTLS) et l'attribution de VLAN dynamique"
         ],
 
         tasks: [
             {
-                icon: 'fas fa-server',
-                label: 'Préparation Ubuntu Server 24.04 LTS',
-                desc: "Mise à jour système, configuration réseau statique (Netplan), sécurisation SSH, installation des dépendances."
+                icon: 'fas fa-network-wired',
+                label: 'Intégration client Linux au domaine',
+                desc: "Configuration SSSD et PAM pour intégrer la machine cliente dans le domaine dom10.dz et permettre l'authentification via l'annuaire LDAP."
             },
             {
-                icon: 'fas fa-broadcast-tower',
-                label: 'Déploiement & configuration FreeRADIUS',
-                desc: "Installation FreeRADIUS, configuration des clients RADIUS, définition des politiques d'authentification (PAP, CHAP, EAP), tests avec radtest."
+                icon: 'fas fa-user-lock',
+                label: 'Authentification utilisateur & machine',
+                desc: "Mise en place de l'authentification centralisée via FreeRADIUS couplé à OpenLDAP — utilisateurs et machines authentifiés depuis le même annuaire."
             },
             {
-                icon: 'fas fa-address-book',
-                label: 'Mise en place OpenLDAP',
-                desc: "Création de l'arborescence LDAP (DIT), ajout d'unités organisationnelles (ou, cn, uid), configuration du schéma et des ACL, peuplement de la base."
+                icon: 'fas fa-shield-alt',
+                label: 'Autorisation par groupe',
+                desc: "Définition de trois niveaux d'accès (admins, users, invités) avec des politiques RADIUS différenciées selon le groupe LDAP de l'utilisateur."
             },
             {
-                icon: 'fas fa-link',
-                label: 'Intégration FreeRADIUS ↔ OpenLDAP',
-                desc: "Configuration du module rlm_ldap dans FreeRADIUS, mapping des attributs RADIUS/LDAP, tests d'authentification de bout en bout."
+                icon: 'fas fa-chart-line',
+                label: 'Comptabilité & supervision',
+                desc: "Journalisation des sessions RADIUS et intégration avec Zabbix pour la supervision en temps réel et la génération d'alertes automatiques."
             },
             {
-                icon: 'fab fa-php',
-                label: "Interface web PHP d'administration",
-                desc: "Développement d'une interface PHP permettant la gestion des comptes utilisateurs LDAP (création, modification, suppression, recherche)."
-            },
-            {
-                icon: 'fas fa-laptop',
-                label: 'Intégration machine Linux cliente au domaine',
-                desc: "Configuration PAM et SSSD sur la machine cliente pour authentification centralisée via le serveur RADIUS/LDAP."
-            },
-            {
-                icon: 'fas fa-file-alt',
-                label: 'Rapport de stage',
-                desc: "Rédaction du rapport : architecture AAA, procédures de déploiement, captures d'écran, résultats des tests — en cours de finalisation."
+                icon: 'fas fa-wifi',
+                label: 'Authentification Wi-Fi & VLAN dynamique',
+                desc: "Configuration EAP-TTLS pour le réseau sans-fil et attribution automatique de VLAN selon le groupe de l'utilisateur via attributs RADIUS."
             }
         ],
 
         technologies: [
-            'Ubuntu Server 24.04', 'FreeRADIUS', 'OpenLDAP', 'PHP',
-            'PAM', 'SSSD', 'LDAP', 'RADIUS', 'SSH', 'Netplan', 'Linux CLI'
+            'Ubuntu 24.04 LTS', 'FreeRADIUS', 'OpenLDAP', 'phpLDAPadmin',
+            'SSSD', 'PAM', 'EAP-TTLS', 'VLAN 802.1Q', 'Zabbix', 'RADIUS', 'LDAP'
         ],
 
-        results: "Serveur d'authentification AAA fonctionnel avec FreeRADIUS + OpenLDAP. Machine Linux cliente intégrée au domaine avec authentification centralisée opérationnelle. Interface web PHP d'administration déployée. TP et rapport de stage en cours de finalisation.",
+        results: "Infrastructure AAA fonctionnelle : authentification centralisée, autorisation différenciée par groupe, comptabilité des sessions avec alertes Zabbix, authentification Wi-Fi EAP-TTLS et attribution de VLAN dynamique — le tout documenté dans la partie pratique disponible en ligne.",
 
         skills_gained: [
-            "Architecture et protocole AAA (Authentication, Authorization, Accounting)",
-            "Administration FreeRADIUS : clients, politiques, modules (rlm_ldap, rlm_pap...)",
-            "Annuaire LDAP : structure DIT, schéma, ACL, peuplement et requêtes LDIF",
-            "Intégration de services Linux : PAM, SSSD, authentification centralisée",
-            "Développement PHP appliqué à l'administration système et LDAP",
-            "Rédaction d'un rapport de stage technique (architecture, procédures, tests)"
+            "Architecture AAA et protocole RADIUS",
+            "Administration FreeRADIUS et intégration LDAP",
+            "Gestion d'un annuaire OpenLDAP sous Linux",
+            "Authentification réseau 802.1X et gestion de VLAN",
+            "Supervision et alerting avec Zabbix"
         ],
 
-        // ── Rapport ──────────────────────────────────────────────────────────
-        report_status: 'En cours',
-        report_url: null,          // ← Mettre l'URL du PDF quand c'est prêt
-        report_note: "Le rapport de stage sera disponible ici une fois finalisé."
+        report_status: 'Terminé',
     },
 
     /* ──────────────────────────────────────────────────────────────────────
@@ -111,11 +113,7 @@ const experiencesData = {
        2. Changer l'id (ex : 'stage-02', 'cdi-01', 'alternance-01'...)
        3. Remplir tous les champs
        4. Enregistrer — la carte et la modal se génèrent automatiquement
-
-       Champs obligatoires : id, type, status, title, company, period, summary
-       Champs optionnels  : tutor, report_url, featured
     ────────────────────────────────────────────────────────────────────── */
-
 };
 
 
@@ -152,14 +150,44 @@ function openExpModal(id) {
     ).join('');
 
     const skillsHTML = (exp.skills_gained || []).map(s =>
-        `<li><i class="fas fa-star"></i> ${s}</li>`
+        `<li><i class="fas fa-angle-right"></i> ${s}</li>`
     ).join('');
 
+    // Rapport théorique (bouton orange existant)
     const reportHTML = exp.report_url
-        ? `<a href="${exp.report_url}" target="_blank" class="exp-report-link">
-               <i class="fas fa-download"></i> Télécharger le rapport
+        ? `<a href="${exp.report_url}" target="_blank" class="exp-report-link-theory">
+               <i class="fas fa-file-pdf"></i> Télécharger le rapport
            </a>`
-        : `<p>${exp.report_note || 'Rapport non disponible.'}</p>`;
+        : `<p class="exp-report-pending">${exp.report_note || 'Rapport non disponible.'}</p>`;
+
+    // Partie pratique (bouton foncé élégant)
+    const practicalHTML = exp.practical_url ? `
+        <a href="${exp.practical_url}" target="_blank" class="exp-practical-link">
+            <i class="fas fa-laptop-code"></i>
+            <div>
+                <span class="exp-practical-label">Partie pratique</span>
+                <span class="exp-practical-sub">Rapport interactif en ligne</span>
+            </div>
+            <i class="fas fa-arrow-right exp-practical-arrow"></i>
+        </a>` : '';
+
+    // Projets complémentaires
+    const relatedHTML = (exp.related_projects || []).map(p => `
+        <div class="exp-related-item">
+            <div class="exp-related-name">
+                <i class="fas fa-cube"></i>
+                <span>${p.label}</span>
+            </div>
+            <div class="exp-related-actions">
+                <a href="${p.external_url}" target="_blank" class="exp-related-btn exp-related-btn-ext" title="Voir le guide en ligne">
+                    <i class="fas fa-external-link-alt"></i> Site
+                </a>
+                ${p.portfolio_id ? `<button onclick="closeExpModal(); setTimeout(() => openProjectModal(${p.portfolio_id}), 300);" class="exp-related-btn exp-related-btn-portfolio" title="Voir dans Mes Projets">
+                    <i class="fas fa-folder-open"></i> Portfolio
+                </button>` : ''}
+            </div>
+        </div>
+    `).join('');
 
     content.innerHTML = `
         <div class="exp-modal-hero">
@@ -224,15 +252,24 @@ function openExpModal(id) {
         ${skillsHTML ? `
         <div class="exp-modal-section">
             <h4><i class="fas fa-graduation-cap"></i> Compétences acquises</h4>
-            <ul class="exp-modal-list">${skillsHTML}</ul>
+            <ul class="exp-modal-list exp-modal-list-compact">${skillsHTML}</ul>
         </div>` : ''}
 
-        <div class="exp-modal-report">
-            <i class="fas fa-file-alt"></i>
-            <div>
-                <strong>Rapport de stage</strong>
-                ${reportHTML}
+        ${relatedHTML ? `
+        <div class="exp-modal-section">
+            <h4><i class="fas fa-link"></i> Projets complémentaires</h4>
+            <div class="exp-related-list">${relatedHTML}</div>
+        </div>` : ''}
+
+        <div class="exp-modal-docs">
+            <div class="exp-modal-report">
+                <i class="fas fa-file-alt"></i>
+                <div>
+                    <strong>Rapport théorique</strong>
+                    ${reportHTML}
+                </div>
             </div>
+            ${practicalHTML}
         </div>
     `;
 
@@ -246,7 +283,6 @@ function closeExpModal() {
     document.body.style.overflow = '';
 }
 
-// Initialisation des écouteurs de la modal
 document.addEventListener('DOMContentLoaded', function () {
     const overlay  = document.getElementById('expModalOverlay');
     const closeBtn = document.getElementById('expModalClose');
@@ -254,5 +290,39 @@ document.addEventListener('DOMContentLoaded', function () {
     if (closeBtn) closeBtn.addEventListener('click', closeExpModal);
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape') closeExpModal();
+    });
+});
+
+
+/* ═══════════════════════════════════════════════════════════
+   PATCH NIVEAUX COMPÉTENCES
+   ═══════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function () {
+
+    function getLevel(pct) {
+        if (pct < 50) return { label: 'Débutant',      level: 'debutant' };
+        if (pct < 75) return { label: 'Intermédiaire', level: 'intermediaire' };
+        return             { label: 'Avancé',           level: 'avance' };
+    }
+
+    document.querySelectorAll('.skill-item').forEach(item => {
+        const bar     = item.querySelector('.skill-bar');
+        const pctSpan = item.querySelector('.skill-percentage');
+        if (!bar || !pctSpan) return;
+        const progress = parseInt(bar.getAttribute('data-progress') || '0', 10);
+        const { label, level } = getLevel(progress);
+        pctSpan.textContent = label;
+        pctSpan.setAttribute('data-level', level);
+    });
+
+    document.querySelectorAll('.skill-category-card').forEach(card => {
+        if (card.querySelector('.skill-level-legend')) return;
+        const legend = document.createElement('div');
+        legend.className = 'skill-level-legend';
+        legend.innerHTML =
+            '<span class="legend-step"><span class="legend-dot d1"></span>Débutant</span>' +
+            '<span class="legend-step"><span class="legend-dot d2"></span>Intermédiaire</span>' +
+            '<span class="legend-step"><span class="legend-dot d3"></span>Avancé</span>';
+        card.appendChild(legend);
     });
 });
