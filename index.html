@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfolio d'étudiante en Administration Réseau & Sécurité - Objectif cybersécurité">
+    <meta name="description" content="Portfolio d'étudiante en Administration Réseau & Sécurité ">
     <meta name="keywords" content="cybersécurité, réseau, administration système, développement web">
     <meta name="author" content="SAHRAOUI TUDERT">
     <meta property="og:title" content="Portfolio - SAHRAOUI TUDERT">
-    <meta property="og:description" content="Étudiante en Administration Réseau & Sécurité - Objectif cybersécurité">
+    <meta property="og:description" content="Étudiante en Administration Réseau & Sécurité ">
     <meta property="og:type" content="website">
     
     <title>Portfolio Premium | SAHRAOUI TUDERT 🌸</title>
@@ -136,8 +136,8 @@
                 <!-- Titre principal -->
                 <h1 class="lobby-title">
                     <span class="title-greeting">Bonjour, je suis</span>
-                    <span class="title-name">SAHRAOUI TUDERT</span>
-                    <span class="title-accent">✨</span>
+                    <span class="title-lastname">SAHRAOUI TUDERT </span>
+                    
                 </h1>
                 
                 <!-- Texte animé -->
@@ -178,7 +178,7 @@
                             <i class="fas fa-project-diagram"></i>
                         </div>
                         <div class="stat-content">
-                            <span class="stat-number" data-target="3">0</span>
+                            <span class="stat-number" data-target="16">0</span>
                             <span class="stat-label">Projets</span>
                         </div>
                     </div>
@@ -640,6 +640,15 @@
                                 <div class="skill-bar" data-progress="60"></div>
                             </div>
                         </div>
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Gestion des risques — Méthode EBIOS</span>
+                                <span class="skill-percentage">80%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" data-progress="80"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -742,6 +751,7 @@
                     <span class="tech-tag">Corosync</span>
                     <span class="tech-tag">Kibana</span>
                     <span class="tech-tag">Snort</span>
+                    <span class="tech-tag">EBIOS Risk Manager</span>
                     <span class="tech-tag">Security Onion</span>
                     <span class="tech-tag">Wireshark</span>
                     <span class="tech-tag">Nmap</span>
@@ -778,20 +788,20 @@
                 <div class="exp-card" data-aos="fade-up" data-aos-delay="100" onclick="openExpModal('stage-01')">
                     <div class="exp-card-header">
                         <div class="exp-logo-wrap">
-                            <i class="fas fa-building"></i>
+                            <i class="fas fa-shield-alt"></i>
                         </div>
                         <div class="exp-card-meta">
                             <span class="exp-type-badge">
                                 <i class="fas fa-user-graduate"></i> Stage
                             </span>
-                            <span class="exp-status-badge exp-status-wip">
-                                <i class="fas fa-spinner fa-spin"></i> En cours
+                            <span class="exp-status-badge exp-status-done">
+                                <i class="fas fa-check-circle"></i> Terminé
                             </span>
                         </div>
                     </div>
 
                     <div class="exp-card-body">
-                        <h3 class="exp-title">Stagiaire — Administration Système & Sécurité Réseau</h3>
+                        <h3 class="exp-title">Stagiaire — Administration Système &amp; Sécurité Réseau</h3>
                         <p class="exp-company">
                             <i class="fas fa-building"></i>
                             <strong>HighTech Compass</strong>
@@ -805,24 +815,37 @@
                             Algérie
                         </p>
 
+                        <div class="exp-card-theme">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Authentification AAA — FreeRADIUS + OpenLDAP</span>
+                        </div>
+
                         <p class="exp-summary">
-                            Mise en place d'un serveur d'authentification centralisée AAA basé sur FreeRADIUS et OpenLDAP sur Ubuntu Server — avec intégration d'une machine Linux cliente au domaine.
+                            Déploiement d'un système AAA complet sur Ubuntu 24.04 (dom10.dz · 192.168.1.66) : authentification LDAP centralisée, autorisation par groupe, accounting Zabbix, EAP-TTLS et VLAN dynamique.
                         </p>
 
                         <div class="exp-tags">
                             <span class="exp-tag">FreeRADIUS</span>
                             <span class="exp-tag">OpenLDAP</span>
                             <span class="exp-tag">AAA</span>
-                            <span class="exp-tag">Ubuntu Server</span>
-                            <span class="exp-tag">PHP</span>
-                            <span class="exp-tag">Sécurité réseau</span>
+                            <span class="exp-tag">SSSD / PAM</span>
+                            <span class="exp-tag">EAP-TTLS</span>
+                            <span class="exp-tag">VLAN 802.1Q</span>
+                            <span class="exp-tag">Zabbix</span>
+                            <span class="exp-tag">Ubuntu 24.04</span>
                         </div>
                     </div>
 
                     <div class="exp-card-footer">
-                        <span class="exp-read-more">
-                            <i class="fas fa-expand-alt"></i> Voir le détail
-                        </span>
+                        <div class="exp-footer-row">
+                            <span class="exp-read-more">
+                                <i class="fas fa-expand-alt"></i> Voir le détail
+                            </span>
+                            <a href="https://tudertshr.github.io/AAA-freeRadius/" target="_blank"
+                               class="exp-report-btn" onclick="event.stopPropagation()">
+                                <i class="fas fa-external-link-alt"></i> Rapport en ligne
+                            </a>
+                        </div>
                     </div>
                 </div>
 
