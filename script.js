@@ -2246,3 +2246,51 @@ window.createRippleEffect = createRippleEffect;document.addEventListener('DOMCon
     `;
     document.head.appendChild(style);
 });
+
+/**
+ * SKILLS — Patch labels de niveau
+ * Remplace les pourcentages bruts (90%, 95%...) par des badges lisibles
+ * À charger après script.js :  <script src="skills-patch.js"></script>
+ *
+ * Échelle :
+ *   < 50%  → Débutant    (jaune)
+ *   50–74% → Intermédiaire (vert)
+ *   ≥ 75%  → Avancé      (rose/primaire)
+ */
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Correspondance numérique → label affiché
+    function getLevel(pct) {
+        if (pct < 50) return { label: 'Débutant',       cls: 'level-debutant' };
+        if (pct < 75) return { label: 'Intermédiaire',  cls: 'level-intermediaire' };
+        return            { label: 'Avancé',            cls: 'level-avance' };
+    }
+
+    // 1. Patcher chaque .skill-item
+    document.querySelectorAll('.skill-item').forEach(item => {
+        const bar     = item.querySelector('.skill-bar');
+        const pctSpan = item.querySelector('.skill-percentage');
+        if (!bar || !pctSpan) return;
+
+        const progress = parseInt(bar.dataset.progress || '0', 10);
+        const { label, cls } = getLevel(progress);
+
+        // Remplacer le texte "90%" par le label de niveau
+        pctSpan.textContent = label;
+        pctSpan.className   = 'skill-percentage ' + cls;
+    });
+
+    // 2. Ajouter la légende en bas de chaque carte (une seule fois)
+    document.querySelectorAll('.skill-category-card').forEach(card => {
+        if (card.querySelector('.skill-level-legend')) return; // déjà présente
+
+        const legend = document.createElement('div');
+        legend.className = 'skill-level-legend';
+        legend.innerHTML = `
+            <span class="legend-step"><span class="legend-dot d1"></span> Débutant</span>
+            <span class="legend-step"><span class="legend-dot d2"></span> Intermédiaire</span>
+            <span class="legend-step"><span class="legend-dot d3"></span> Avancé</span>
+        `;
+        card.appendChild(legend);
+    });
+});
