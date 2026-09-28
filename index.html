@@ -18,37 +18,29 @@
     <!-- Polices -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- AOS Animation -->
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     
     <!-- Styles -->
 
     
     
+    <script>
+        (function () {
+            try {
+                if ((localStorage.getItem('theme') || 'dark') === 'dark') {
+                    document.documentElement.classList.add('theme-dark-boot');
+                }
+            } catch (e) {}
+        })();
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Préchargeur Premium -->
-    <div class="preloader" id="preloader">
-        <div class="preloader-content">
-            <div class="spinner-container">
-                <div class="spinner"></div>
-                <div class="spinner-ring"></div>
-            </div>
-            <h2 class="preloader-text">SAHRAOUI TUDERT</h2>
-            <p class="preloader-subtitle">Chargement du portfolio...</p>
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-            <span class="progress-percentage" id="progressPercentage">0%</span>
-        </div>
-    </div>
-    
     <!-- Barre de progression du scroll -->
     <div class="scroll-progress-bar" id="scrollProgressBar"></div>
     
@@ -109,347 +101,159 @@
         </ul>
     </nav>
     
-    <!-- Section Lobby Améliorée -->
+    <!-- Section Accueil -->
     <section class="lobby-section" id="lobby">
-        <div class="lobby-background">
-            <div class="gradient-orb orb-1"></div>
-            <div class="gradient-orb orb-2"></div>
-            <div class="gradient-orb orb-3"></div>
-        </div>
-        
-        <div class="lobby-container">
-            <div class="lobby-content" data-aos="fade-up" data-aos-duration="1000">
-                <!-- Avatar animé -->
-                <div class="lobby-avatar">
-                    <div class="avatar-container">
-                        <div class="avatar-ring"></div>
-                        <div class="avatar-image">
-                            <i class="fas fa-user-shield"></i>
-                        </div>
-                        <div class="avatar-status">
-                            <span class="status-dot"></span>
-                            <span class="status-text">Disponible</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Titre principal -->
-                <h1 class="lobby-title">
-                    <span class="title-greeting">Bonjour, je suis</span>
-                    <span class="title-lastname">SAHRAOUI TUDERT </span>
-                    
+        <div class="hero-grid">
+
+            <!-- Colonne texte -->
+            <div class="hero-text">
+                <p class="hero-eyebrow"><span class="hero-dot"></span>Disponible pour stage / alternance</p>
+
+                <h1 class="hero-title">
+                    <span class="hero-title-hi">Bonjour, je suis</span>
+                    <span class="hero-title-name">SAHRAOUI TUDERT</span>
                 </h1>
-                
-                <!-- Texte animé -->
-                <div class="lobby-subtitle">
-                    <span class="typing-text">
-                        <span class="typed-text"></span>
-                        <span class="cursor">|</span>
-                    </span>
-                </div>
-                
-                <!-- Description -->
-                <p class="lobby-description">
-                    Passionnée par la <strong>cybersécurité</strong> et l'<strong>administration réseau</strong>, 
-                    je combine compétences techniques et créativité pour concevoir des 
-                    <span class="highlight">solutions sécurisées et innovantes</span>.
+
+                <p class="hero-role">Étudiante en administration et sécurité des réseaux informatiques</p>
+
+                <p class="hero-description">
+                    Passionnée par la <strong>cybersécurité</strong> et l'<strong>administration réseau</strong>.
+                    Je recherche un stage ou une alternance pour mettre en pratique mes compétences
+                    en réseau, en systèmes et en sécurité.
                 </p>
-                
-                <!-- Badges de compétences -->
-                <div class="skills-badges">
-                    <span class="badge badge-primary">
-                        <i class="fas fa-shield-alt"></i>
-                        Cybersécurité
-                    </span>
-                    <span class="badge badge-secondary">
-                        <i class="fas fa-network-wired"></i>
-                        Réseau
-                    </span>
-                    <span class="badge badge-accent">
-                        <i class="fas fa-code"></i>
-                        Développement
-                    </span>
+
+                <div class="hero-actions">
+                    <button class="btn-hero btn-hero--primary" onclick="scrollToSection('projects')">
+                        <span>Mes projets</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button class="btn-hero btn-hero--ghost" onclick="scrollToSection('contact')">
+                        <span>Me contacter</span>
+                    </button>
                 </div>
-                
-                <!-- Statistiques rapides -->
-                <div class="quick-stats">
-                    <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
-                        <div class="stat-icon">
-                            <i class="fas fa-project-diagram"></i>
-                        </div>
+            </div>
+
+            <!-- Colonne carte : chiffres + liens -->
+            <aside class="hero-card">
+                <div class="hero-stats">
+                    <div class="stat-item">
                         <div class="stat-content">
                             <span class="stat-number" data-target="16">0</span>
                             <span class="stat-label">Projets</span>
                         </div>
                     </div>
-                    <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
-                        <div class="stat-icon">
-                            <i class="fas fa-certificate"></i>
-                        </div>
+                    <div class="stat-item">
                         <div class="stat-content">
                             <span class="stat-number" data-target="4">0</span>
                             <span class="stat-label">Certifications</span>
                         </div>
                     </div>
-                    <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
-                        <div class="stat-icon">
-                            <i class="fas fa-trophy"></i>
-                        </div>
+                    <div class="stat-item">
                         <div class="stat-content">
                             <span class="stat-number" data-target="1">0</span>
                             <span class="stat-label">Prix</span>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Boutons d'action -->
-                <div class="lobby-actions">
-                    <button class="btn btn-primary btn-lg" onclick="scrollToSection('projects')">
-                        <i class="fas fa-rocket"></i>
-                        <span>Découvrir mes projets</span>
-                        <div class="btn-glow"></div>
-                    </button>
-                    <button class="btn btn-outline btn-lg" onclick="scrollToSection('contact')">
-                        <i class="fas fa-envelope"></i>
-                        <span>Me contacter</span>
-                    </button>
-                </div>
-                
-                <!-- Réseaux sociaux -->
-                <div class="social-links-lobby">
-                    <a href="https://www.linkedin.com/in/tudert-sahraoui-44982235b/" target="_blank" rel="noopener" class="social-link" data-aos="zoom-in" data-aos-delay="400">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a href="https://github.com/tudertshr" target="_blank" rel="noopener" class="social-link" data-aos="zoom-in" data-aos-delay="500">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="mailto:tudertsahraoui@gmail.com" class="social-link" data-aos="zoom-in" data-aos-delay="600">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                    <a href="tel:+213558857832" class="social-link" data-aos="zoom-in" data-aos-delay="700">
-                        <i class="fas fa-phone"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Indicateur de scroll -->
-            <div class="scroll-indicator" data-aos="fade-up" data-aos-delay="800">
-                <div class="mouse">
-                    <div class="wheel"></div>
-                </div>
-                <p>Faites défiler</p>
-            </div>
+
+                <ul class="hero-links">
+                    <li><a href="https://www.linkedin.com/in/tudert-sahraoui-44982235b/" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i><span>LinkedIn</span></a></li>
+                    <li><a href="https://github.com/tudertshr" target="_blank" rel="noopener"><i class="fab fa-github"></i><span>GitHub</span></a></li>
+                    <li><a href="https://profile.hackthebox.com/profile/01a01023-62c1-736a-b44e-5affc9a3e62a" target="_blank" rel="noopener"><i class="fas fa-cube"></i><span>Hack The Box</span></a></li>
+                    <li><a href="mailto:tudertsahraoui@gmail.com"><i class="fas fa-envelope"></i><span>tudertsahraoui@gmail.com</span></a></li>
+                    <li><a href="tel:+213558857832"><i class="fas fa-phone"></i><span>+213 558 857 832</span></a></li>
+                    <li><a href="doc/SAHRAOUI TUDERT CV.pdf" download><i class="fas fa-file-pdf"></i><span>Télécharger mon CV</span></a></li>
+                </ul>
+            </aside>
         </div>
     </section>
     
     <!-- Section À Propos Améliorée -->
+    <!-- Section À Propos — Dossier -->
     <section class="about-section section" id="about">
         <div class="container">
-            <!-- En-tête de section -->
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header">
                 <span class="section-number">01</span>
-                <h2 class="section-title">
-                    <span class="title-icon"><i class="fas fa-user"></i></span>
-                    À Propos de Moi
-                </h2>
+                <h2 class="section-title"><span class="title-icon"><i class="fas fa-user"></i></span>À Propos de Moi</h2>
                 <p class="section-subtitle">Découvrez mon parcours et mon projet professionnel</p>
             </div>
-            
-            <!-- Grille de profil -->
-            <div class="about-grid">
-                <!-- Carte de profil principale -->
-                <div class="profile-main-card" data-aos="fade-right">
-                    <div class="card-header-gradient"></div>
-                    
-                    <div class="profile-avatar-section">
-                        <div class="avatar-wrapper">
-                            <div class="avatar-bg-animation"></div>
-                            <div class="avatar-img">
-                                <i class="fas fa-user-shield"></i>
-                            </div>
-                            <div class="avatar-badge">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                        </div>
+
+            <div class="dossier">
+                <!-- Fiche d'identité -->
+                <div class="dossier-id-card">
+                    <div class="id-card-top">
+                        <div class="id-avatar"><i class="fas fa-user-shield"></i></div>
+                        <div class="id-badge"><i class="fas fa-check-circle"></i></div>
                     </div>
-                    
-                    <div class="profile-info">
-                        <h3 class="profile-name">SAHRAOUI TUDERT</h3>
-                        <p class="profile-role">
-                            <i class="fas fa-shield-alt"></i>
-                            Étudiante en Administration & Sécurité des Réseaux
-                        </p>
-                        <p class="profile-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Raffour, Bouira, Algérie
-                        </p>
-                    </div>
-                    
-                    <!-- Informations de contact -->
-                    <div class="contact-info-grid">
-                        <div class="contact-info-item">
-                            <div class="info-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="info-content">
-                                <span class="info-label">Email</span>
-                                <a href="mailto:tudertsahraoui@gmail.com" class="info-value">tudertsahraoui@gmail.com</a>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-info-item">
-                            <div class="info-icon">
-                                <i class="fas fa-phone"></i>
-                            </div>
-                            <div class="info-content">
-                                <span class="info-label">Téléphone</span>
-                                <a href="tel:+213558857832" class="info-value">+213 558 857 832</a>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-info-item">
-                            <div class="info-icon">
-                                <i class="fas fa-briefcase"></i>
-                            </div>
-                            <div class="info-content">
-                                <span class="info-label">Statut</span>
-                                <span class="info-value status-available">
-                                    <span class="status-dot-small"></span>
-                                    Disponible
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-info-item">
-                            <div class="info-icon">
-                                <i class="fas fa-graduation-cap"></i>
-                            </div>
-                            <div class="info-content">
-                                <span class="info-label">Formation</span>
-                                <span class="info-value">BTS ASRI</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Boutons d'action -->
-                    <div class="profile-actions">
-                        <a href="doc/SAHRAOUI TUDERT CV.pdf" download class="btn btn-primary btn-block">
-                            <i class="fas fa-download"></i>
-                            <span>Télécharger mon CV</span>
+                    <h3 class="id-name">SAHRAOUI TUDERT</h3>
+                    <p class="id-role"><i class="fas fa-shield-alt"></i> Étudiante en Administration &amp; Sécurité des Réseaux</p>
+                    <p class="id-location"><i class="fas fa-map-marker-alt"></i> Raffour, Bouira, Algérie</p>
+
+                    <div class="id-divider"></div>
+
+                    <dl class="id-facts">
+                        <div class="id-fact"><dt><i class="fas fa-envelope"></i>Email</dt><dd><a href="mailto:tudertsahraoui@gmail.com">tudertsahraoui@gmail.com</a></dd></div>
+                        <div class="id-fact"><dt><i class="fas fa-phone"></i>Téléphone</dt><dd><a href="tel:+213558857832">+213 558 857 832</a></dd></div>
+                        <div class="id-fact"><dt><i class="fas fa-briefcase"></i>Statut</dt><dd class="status-available"><span class="status-dot-small"></span>Disponible</dd></div>
+                        <div class="id-fact"><dt><i class="fas fa-graduation-cap"></i>Formation</dt><dd>BTS ASRI</dd></div>
+                    </dl>
+
+                    <div class="id-actions">
+                        <a href="doc/SAHRAOUI TUDERT CV.pdf" download class="btn-hero btn-hero--primary btn-hero--block">
+                            <i class="fas fa-download"></i><span>Télécharger mon CV</span>
                         </a>
-                        <button class="btn btn-outline btn-block" onclick="scrollToSection('contact')">
-                            <i class="fas fa-paper-plane"></i>
+                        <button class="btn-hero btn-hero--ghost btn-hero--block" onclick="scrollToSection('contact')">
                             <span>Me contacter</span>
                         </button>
                     </div>
                 </div>
-                
-                <!-- Objectif et compétences clés -->
-                <div class="about-details" data-aos="fade-left">
-                    <!-- Objectif professionnel -->
-                    <div class="objective-card card-premium">
-                        <div class="card-icon">
-                            <i class="fas fa-bullseye"></i>
-                        </div>
-                        <h3 class="card-title">Projet Professionnel</h3>
-                        <p class="card-text">
-                            Actuellement étudiante en administration et sécurité des réseaux informatiques, ainsi qu’en gestion des systèmes réseau,
+
+                <!-- Colonne de droite : objectif + valeurs + langues -->
+                <div class="dossier-main">
+
+                    <div class="dossier-stats">
+                        <div class="dossier-stat"><span class="dossier-stat-num">2+</span><span class="dossier-stat-label">Années d'expérience</span></div>
+                        <div class="dossier-stat"><span class="dossier-stat-num">10+</span><span class="dossier-stat-label">Projets sécurisés</span></div>
+                        <div class="dossier-stat"><span class="dossier-stat-num">5+</span><span class="dossier-stat-label">Certifications</span></div>
+                    </div>
+
+                    <div class="dossier-panel">
+                        <h3 class="dossier-panel-title"><i class="fas fa-bullseye"></i> Projet Professionnel</h3>
+                        <p class="dossier-panel-text">
+                            Actuellement étudiante en administration et sécurité des réseaux informatiques, ainsi qu'en gestion des systèmes réseau,
                             je recherche un <strong>stage</strong> ou une <strong>alternance</strong> pour renforcer mes compétences sur le terrain
                             (administration, réseaux et sécurité).
                             <br><br>
-                            Mon projet professionnel d’étude est de devenir <strong>analyste cybersécurité</strong>.
-                            En parallèle, j’aime aussi développer de petits projets web personnels afin d’enrichir ma culture informatique,
+                            Mon projet professionnel d'étude est de devenir <strong>analyste cybersécurité</strong>.
+                            En parallèle, j'aime aussi développer de petits projets web personnels afin d'enrichir ma culture informatique,
                             sans pour autant être spécialisée dans le web.
                         </p>
-                        <div class="highlights-list">
-                            <div class="highlight-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Passionnée par la Cybersécurité et les nouvelles Technologies</span>
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Autonomie, Sens d'analyse et Apprentissage rapide</span>
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Pratique en développement web (projets personnels) et administration système</span>
-                            </div>
-                        </div>
+                        <ul class="dossier-highlights">
+                            <li><i class="fas fa-check-circle"></i>Passionnée par la Cybersécurité et les nouvelles Technologies</li>
+                            <li><i class="fas fa-check-circle"></i>Autonomie, Sens d'analyse et Apprentissage rapide</li>
+                            <li><i class="fas fa-check-circle"></i>Pratique en développement web (projets personnels) et administration système</li>
+                        </ul>
                     </div>
-                    
-                    <!-- Valeurs et soft skills -->
-                    <div class="values-card card-premium">
-                        <div class="card-icon">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <h3 class="card-title">Valeurs & Soft Skills</h3>
-                        <div class="values-grid">
-                            <div class="value-item">
-                                <div class="value-icon">
-                                    <i class="fas fa-puzzle-piece"></i>
-                                </div>
-                                <span>Résolution de problèmes</span>
-                            </div>
-                            <div class="value-item">
-                                <div class="value-icon">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                                <span>Travail d'équipe</span>
-                            </div>
-                            <div class="value-item">
-                                <div class="value-icon">
-                                    <i class="fas fa-tasks"></i>
-                                </div>
-                                <span>Rigueur & Organisation</span>
-                            </div>
-                            <div class="value-item">
-                                <div class="value-icon">
-                                    <i class="fas fa-comments"></i>
-                                </div>
-                                <span>Communication</span>
-                            </div>
-                            <div class="value-item">
-                                <div class="value-icon">
-                                    <i class="fas fa-user-check"></i>
-                                </div>
-                                <span>Autonomie</span>
-                            </div>
-                            <div class="value-item">
-                                <div class="value-icon">
-                                    <i class="fas fa-sync-alt"></i>
-                                </div>
-                                <span>Adaptabilité</span>
+
+                    <div class="dossier-row">
+                        <div class="dossier-panel dossier-panel--values">
+                            <h3 class="dossier-panel-title"><i class="fas fa-heart"></i> Valeurs &amp; Soft Skills</h3>
+                            <div class="value-tags">
+                                <span><i class="fas fa-puzzle-piece"></i>Résolution de problèmes</span>
+                                <span><i class="fas fa-users"></i>Travail d'équipe</span>
+                                <span><i class="fas fa-tasks"></i>Rigueur &amp; Organisation</span>
+                                <span><i class="fas fa-comments"></i>Communication</span>
+                                <span><i class="fas fa-user-check"></i>Autonomie</span>
+                                <span><i class="fas fa-sync-alt"></i>Adaptabilité</span>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Langues parlées -->
-                    <div class="languages-quick-card card-premium">
-                        <div class="card-icon">
-                            <i class="fas fa-globe"></i>
-                        </div>
-                        <h3 class="card-title">Langues Maîtrisées</h3>
-                        <div class="languages-quick-list">
-                            <div class="language-quick-item">
-                                <span class="language-flag">🇩🇿</span>
-                                <div class="language-details">
-                                    <span class="language-name">Kabyle & Arabe</span>
-                                    <span class="language-level">Langue maternelle</span>
-                                </div>
-                            </div>
-                            <div class="language-quick-item">
-                                <span class="language-flag">🇫🇷</span>
-                                <div class="language-details">
-                                    <span class="language-name">Français</span>
-                                    <span class="language-level">C1 - TCF 566/699</span>
-                                </div>
-                            </div>
-                            <div class="language-quick-item">
-                                <span class="language-flag">🇬🇧</span>
-                                <div class="language-details">
-                                    <span class="language-name">Anglais</span>
-                                    <span class="language-level">B2 - BC 436/599</span>
-                                </div>
+
+                        <div class="dossier-panel dossier-panel--languages">
+                            <h3 class="dossier-panel-title"><i class="fas fa-globe"></i> Langues Maîtrisées</h3>
+                            <div class="language-rows">
+                                <div class="language-row"><span class="lang-badge">DZ</span><div><span class="language-name">Kabyle &amp; Arabe</span><span class="language-level">Langue maternelle</span></div></div>
+                                <div class="language-row"><span class="lang-badge">FR</span><div><span class="language-name">Français</span><span class="language-level">C2 · TCF 617/699</span></div></div>
+                                <div class="language-row"><span class="lang-badge">EN</span><div><span class="language-name">Anglais</span><span class="language-level">B2 · English-Score 436/599</span></div></div>
                             </div>
                         </div>
                     </div>
@@ -462,7 +266,7 @@
     <section class="skills-section section section-dark" id="skills">
         <div class="container">
             <!-- En-tête -->
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header">
                 <span class="section-number">02</span>
                 <h2 class="section-title">
                     <span class="title-icon"><i class="fas fa-code"></i></span>
@@ -474,7 +278,7 @@
             <!-- Grille de compétences -->
             <div class="skills-grid">
                 <!-- Réseau & Infrastructure -->
-                <div class="skill-category-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="skill-category-card">
                     <div class="category-header">
                         <div class="category-icon">
                             <i class="fas fa-network-wired"></i>
@@ -568,7 +372,7 @@
                 </div>
                 
                 <!-- Cybersécurité -->
-                <div class="skill-category-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="skill-category-card">
                     <div class="category-header">
                         <div class="category-icon">
                             <i class="fas fa-shield-alt"></i>
@@ -653,7 +457,7 @@
                 </div>
                 
                 <!-- Développement Web -->
-                <div class="skill-category-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="skill-category-card">
                     <div class="category-header">
                         <div class="category-icon">
                             <i class="fas fa-code"></i>
@@ -722,7 +526,7 @@
             </div>
             
             <!-- Technologies et outils (Tags cloud) -->
-            <div class="technologies-cloud" data-aos="fade-up" data-aos-delay="400">
+            <div class="technologies-cloud">
                 <h3 class="cloud-title">
                     <i class="fas fa-tools"></i>
                     Technologies & Outils
@@ -772,7 +576,7 @@
         <div class="container">
 
             <!-- En-tête -->
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header">
                 <span class="section-number">03</span>
                 <h2 class="section-title">
                     <span class="title-icon"><i class="fas fa-briefcase"></i></span>
@@ -785,7 +589,8 @@
             <div class="exp-grid" id="expGrid">
 
                 <!-- ─── STAGE 1 : HighTech Compass ─── -->
-                <div class="exp-card" data-aos="fade-up" data-aos-delay="100" onclick="openExpModal('stage-01')">
+                <div class="exp-card" onclick="openExpModal('stage-01')">
+                    <div class="exp-card-cover" style="background-image:url('img/covers/cover-stage.jpg')"></div>
                     <div class="exp-card-header">
                         <div class="exp-logo-wrap">
                             <i class="fas fa-shield-alt"></i>
@@ -850,7 +655,7 @@
                 </div>
 
                 <!-- ─── Placeholder : Ajouter une expérience ─── -->
-                <div class="exp-card exp-card-placeholder" data-aos="fade-up" data-aos-delay="200">
+                <div class="exp-card exp-card-placeholder">
                     <div class="exp-placeholder-inner">
                         <i class="fas fa-plus-circle"></i>
                         <p>Prochain stage / emploi</p>
@@ -879,7 +684,7 @@
     <section class="projects-section section" id="projects">
         <div class="container">
             <!-- En-tête -->
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header">
                 <span class="section-number">04</span>
                 <h2 class="section-title">
                     <span class="title-icon"><i class="fas fa-project-diagram"></i></span>
@@ -889,7 +694,7 @@
             </div>
             
             <!-- Filtres de projets -->
-            <div class="project-filters" data-aos="fade-up" data-aos-delay="100">
+            <div class="project-filters">
                 <button class="filter-btn active" data-filter="all">
                     <i class="fas fa-th"></i>
                     <span>Tous les projets</span>
@@ -916,26 +721,50 @@
                 </button>
             </div>
             
-            <!-- Grille de projets -->
-            <div class="projects-grid" id="projectsGrid">
-                <!-- Les projets seront injectés dynamiquement via JavaScript -->
+            <!-- Grille de projets (scroll horizontal) -->
+            <div class="projects-scroll-wrapper">
+                <div class="projects-grid" id="projectsGrid">
+                    <!-- Les projets seront injectés dynamiquement via JavaScript -->
+                </div>
+                <div class="projects-nav" role="group" aria-label="Navigation des projets">
+                    <button type="button" class="projects-nav-arrow prev" id="projectsPrevBtn" aria-label="Projets précédents">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button type="button" class="projects-nav-arrow next" id="projectsNextBtn" aria-label="Projets suivants">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
             </div>
             
-            <!-- Bouton voir plus -->
-            <div class="load-more-container" data-aos="fade-up">
-                <button class="btn btn-outline btn-lg" id="loadMoreBtn">
-                    <i class="fas fa-plus"></i>
-                    <span>Charger plus de projets</span>
+            <!-- Bouton voir tout -->
+            <div class="load-more-container">
+                <button class="btn btn-outline btn-lg" id="viewAllProjectsBtn">
+                    <i class="fas fa-th-large"></i>
+                    <span>Voir tout</span>
                 </button>
             </div>
         </div>
     </section>
+
+    <!-- ── Modal "Voir tout" — grille 4 colonnes ─────────────────── -->
+    <div class="projects-view-all-modal" id="projectsViewAllModal">
+        <div class="projects-view-all-overlay" id="projectsViewAllOverlay"></div>
+        <div class="projects-view-all-wrapper">
+            <div class="projects-view-all-header">
+                <h3>Tous mes projets</h3>
+                <button class="projects-view-all-close" id="projectsViewAllClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="projects-view-all-grid" id="projectsViewAllGrid"></div>
+        </div>
+    </div>
     
     <!-- Section Formation -->
     <section class="education-section section section-dark" id="education">
         <div class="container">
             <!-- En-tête -->
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header">
                 <span class="section-number">05</span>
                 <h2 class="section-title">
                     <span class="title-icon"><i class="fas fa-graduation-cap"></i></span>
@@ -947,7 +776,7 @@
             <!-- Timeline de formation -->
             <div class="education-timeline">
                 <!-- Item 1 -->
-                <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+                <div class="timeline-item">
                     <div class="timeline-marker">
                         <div class="timeline-dot"></div>
                         <div class="timeline-connector"></div>
@@ -973,11 +802,14 @@
                             <span class="skill-tag-small">Windows Server</span>
                             <span class="skill-tag-small">Sécurité</span>
                         </div>
+                        <button class="btn-program" onclick="openProgramModal('bts')">
+                            <i class="fas fa-file-lines"></i> Afficher le programme
+                        </button>
                     </div>
                 </div>
                 
                 <!-- Item 2 -->
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="200">
+                <div class="timeline-item">
                     <div class="timeline-marker">
                         <div class="timeline-dot"></div>
                         <div class="timeline-connector"></div>
@@ -1008,11 +840,14 @@
                             <span class="skill-tag-small">CCNA</span>
                             <span class="skill-tag-small">Packet Tracer</span>
                         </div>
+                        <button class="btn-program" onclick="openProgramModal('aec')">
+                            <i class="fas fa-file-lines"></i> Afficher le programme
+                        </button>
                     </div>
                 </div>
                 
                 <!-- Item 3 -->
-                <div class="timeline-item" data-aos="fade-right" data-aos-delay="300">
+                <div class="timeline-item">
                     <div class="timeline-marker">
                         <div class="timeline-dot"></div>
                         <div class="timeline-connector"></div>
@@ -1040,7 +875,7 @@
                 </div>
                 
                 <!-- Item 4 -->
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="400">
+                <div class="timeline-item">
                     <div class="timeline-marker">
                         <div class="timeline-dot"></div>
                     </div>
@@ -1068,7 +903,7 @@
             </div>
             
             <!-- Certifications -->
-            <div class="certifications-section" data-aos="fade-up" data-aos-delay="500">
+            <div class="certifications-section">
                 <h3 class="certifications-title">
                     <i class="fas fa-award"></i>
                     Certifications & Distinctions
@@ -1126,7 +961,7 @@
     <section class="testimonials-section section" id="testimonials">
         <div class="container">
             <!-- En-tête -->
-            <div class="section-header" data-aos="fade-up">
+            <div class="section-header">
                 <span class="section-number">06</span>
                 <h2 class="section-title">
                     <span class="title-icon"><i class="fas fa-star"></i></span>
@@ -1136,7 +971,7 @@
             </div>
             
   <!-- Slider de témoignages -->
-<div class="testimonials-slider" data-aos="fade-up" data-aos-delay="100">
+<div class="testimonials-slider">
     <div class="testimonials-container" id="testimonialsContainer">
         <!-- Témoignage 1 en attente -->
         <div class="testimonial-card active">
@@ -1250,7 +1085,7 @@
  
             <div class="contact-grid">
                 <!-- Informations de contact -->
-                <div class="contact-info" data-aos="fade-right">
+                <div class="contact-info">
                     <div class="info-card">
                         <h3 class="card-title">Travaillons ensemble</h3>
                         <p class="card-description">
@@ -1321,13 +1156,16 @@
                                 <a href="doc/SAHRAOUI TUDERT CV.pdf" download class="social-link" target="_blank" rel="noopener" title="Télécharger mon CV">
                                     <i class="fas fa-file-pdf"></i>
                                 </a>
+                                <a href="https://profile.hackthebox.com/profile/01a01023-62c1-736a-b44e-5affc9a3e62a" class="social-link" target="_blank" rel="noopener" title="Mon profil Hack The Box" aria-label="Hack The Box">
+                                    <i class="fas fa-cube"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
  
                 <!-- Formulaire -->
-                <div class="contact-form-container" data-aos="fade-left">
+                <div class="contact-form-container">
                     <div class="form-card">
                         <h3 class="form-title">Envoyez un message</h3>
                         <p class="form-subtitle">Remplissez le formulaire ci-dessous</p>
@@ -1426,10 +1264,12 @@
                     </div>
                     <p class="footer-tagline">Passionnée par la sécurité des systèmes et les solutions réseau innovantes. Disponible pour stage ou alternance.</p>
                     <div class="footer-social">
-                        <a href="https://www.linkedin.com/in/tudert-sahraoui-44982235b/" class="social-icon" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
-                        <a href="https://github.com/tudertshr" class="social-icon" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
-                        <a href="mailto:tudertsahraoui@gmail.com" class="social-icon"><i class="fas fa-envelope"></i></a>
+                        <a href="https://www.linkedin.com/in/tudert-sahraoui-44982235b/" class="social-icon" target="_blank" rel="noopener" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/tudertshr" class="social-icon" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="mailto:tudertsahraoui@gmail.com" class="social-icon" title="Email"><i class="fas fa-envelope"></i></a>
                         <a href="doc/SAHRAOUI TUDERT CV.pdf" download class="social-icon" target="_blank" rel="noopener" title="Télécharger mon CV"><i class="fas fa-file-pdf"></i></a>
+                        <a href="https://profile.hackthebox.com/profile/01a01023-62c1-736a-b44e-5affc9a3e62a" class="social-icon" target="_blank" rel="noopener" title="HackTheBox Profile"><i class="fas fa-cube"></i></a>
+                        <a href="https://app.hackthebox.com/public/teams/9699" class="social-icon" target="_blank" rel="noopener" title="Team ASRIX"><i class="fas fa-users"></i></a>
                     </div>
                 </div>
  
@@ -1451,10 +1291,10 @@
                 <div class="footer-services">
                     <h4>Services</h4>
                     <ul>
-                        <li>Administration Réseau</li>
-                        <li>Sécurité Informatique</li>
-                        <li>Développement Web</li>
-                        <li>Consultation Technique</li>
+                        <li><i class="fas fa-network-wired"></i> Administration Réseau</li>
+                        <li><i class="fas fa-shield-halved"></i> Sécurité Informatique</li>
+                        <li><i class="fas fa-code"></i> Développement Web</li>
+                        <li><i class="fas fa-comments"></i> Consultation Technique</li>
                     </ul>
                 </div>
  
@@ -1494,8 +1334,107 @@
     </div>
 </div>
 
-    <!-- AOS Animation -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<!-- MODAL PROGRAMME BTS -->
+<div class="program-modal" id="programModalBTS">
+    <div class="modal-overlay" onclick="closeProgramModal('bts')"></div>
+    <div class="modal-content-wrapper program-wrapper">
+        <button class="modal-close-btn" onclick="closeProgramModal('bts')">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="program-modal-content">
+            <h2>Programme BTS - Administration et Sécurité des Réseaux</h2>
+            <div class="program-table-container">
+                <table class="program-table">
+                    <thead>
+                        <tr>
+                            <th>Semestre 01</th>
+                            <th>Semestre 02</th>
+                            <th>Semestre 03</th>
+                            <th>Semestre 04</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>MQ1</strong> - Système d'exploitation Windows</td>
+                            <td><strong>Réseaux et sécurité réseau informatique</strong></td>
+                            <td><strong>Administrer les équipements réseau</strong></td>
+                            <td><strong>Administration du service d'authentification</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>MQ2</strong> - Système d'exploitation Linux</td>
+                            <td><strong>Administration des services Linux</strong></td>
+                            <td><strong>Les réseaux VPN</strong></td>
+                            <td><strong>Maintenance des réseaux</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>MC1</strong> - Structure Machine</td>
+                            <td><strong>Administration des services Windows</strong></td>
+                            <td><strong>Administration des services Linux</strong></td>
+                            <td><strong>Disponibilité des réseaux et systèmes</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>MC2</strong> - Technique d'expression</td>
+                            <td><strong>Gestion des risques sécurité information</strong></td>
+                            <td><strong>Surveillance de la sécurité du réseau</strong></td>
+                            <td><strong>MC8</strong> - Méthodologie</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="text-align: center;"><strong>Semestre 05 - Stage pratique</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PROGRAMME AEC -->
+<div class="program-modal" id="programModalAEC">
+    <div class="modal-overlay" onclick="closeProgramModal('aec')"></div>
+    <div class="modal-content-wrapper program-wrapper">
+        <button class="modal-close-btn" onclick="closeProgramModal('aec')">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="program-modal-content">
+            <h2>Programme AEC - Gestion des Systèmes et Réseaux Informatiques</h2>
+            <div class="program-table-container">
+                <table class="program-table">
+                    <thead>
+                        <tr>
+                            <th>Phase 1</th>
+                            <th>Phase 2</th>
+                            <th>Phase 3</th>
+                            <th>Phase 4</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>412-PB4-SH</strong> Documentation Technique</td>
+                            <td><strong>350-GB5-SH</strong> Communication et collaboration</td>
+                            <td><strong>420-GC1-SH</strong> Déploiement de réseau</td>
+                            <td><strong>420-GD1-SH</strong> Projet d'implantation réseaux</td>
+                        </tr>
+                        <tr>
+                            <td><strong>420-GA1-SH</strong> Introduction aux Réseaux</td>
+                            <td><strong>420-GB1-SH</strong> Implantation de réseaux</td>
+                            <td><strong>420-GC2-SH</strong> Infra structures informatiques</td>
+                            <td><strong>420-GD2-SH</strong> Déploiement d'infrastructure</td>
+                        </tr>
+                        <tr>
+                            <td><strong>420-GA2-SH</strong> Gestion physique d'un ordinateur</td>
+                            <td><strong>420-GB3-SH</strong> Administration serveurs LINUX</td>
+                            <td><strong>420-GC3-SH</strong> Téléphonie et messagerie</td>
+                            <td><strong>420-GD3-SH</strong> Développement d'utilisateurs</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="text-align: center;"><strong>Phase 5 - Stage en gestion de réseaux</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
     
     <!-- Données projets (chargé AVANT script.js) -->
     <script src="PROJET/script.js"></script>
