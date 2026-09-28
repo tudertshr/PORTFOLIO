@@ -18,6 +18,7 @@ const experiencesData = {
         featured: true,
 
         title: 'Stagiaire — Administration Système & Sécurité Réseau',
+        cover: 'img/covers/cover-stage.jpg',
         company: 'HighTech Compass',
         sector: 'Informatique & Télécommunications',
         location: 'Algérie',
@@ -26,12 +27,11 @@ const experiencesData = {
         duration: '1 mois',
         tutor: 'À compléter',
 
-        theme: 'Authentification AAA — FreeRADIUS + OpenLDAP',
-        summary: "Mise en place d'un système d'authentification centralisé AAA (Authentication, Authorization, Accounting) sous Ubuntu 24.04 LTS, basé sur FreeRADIUS et OpenLDAP — avec intégration d'une machine Linux cliente au domaine.",
+        theme: 'Authentification AAA Basée sur Serveur — FreeRADIUS + OpenLDAP',
+        summary: "Rapport de stage complet (54 pages, réalisé en binôme) couvrant la théorie de l'authentification réseau (RADIUS, TACACS+, LDAP, 802.1X/EAP) et sa mise en œuvre pratique en trois étapes : AAA local sur routeur Cisco, AAA basé sur serveur côté routeur, puis déploiement personnel d'un serveur FreeRADIUS + OpenLDAP sous Ubuntu 24.04.",
 
         // ── Rapport théorique (section orange existante) ──────────────────
-        report_url: null,
-        report_note: 'Le rapport théorique sera disponible ici une fois finalisé.',
+        report_url: 'doc/RAPPORT_DE_STAGE_.pdf',
 
         // ── Partie pratique (nouveau bouton foncé) ────────────────────────
         practical_url: 'https://tudertshr.github.io/AAA-freeRadius/',
@@ -51,17 +51,24 @@ const experiencesData = {
         ],
 
         // ── Contenu modal ─────────────────────────────────────────────────
-        context: "Déploiement d'un serveur d'authentification AAA centralisé pour HighTech Compass, visant à unifier et sécuriser la gestion des accès réseau via FreeRADIUS et un annuaire OpenLDAP.",
+        context: "Face aux limites de la gestion locale des accès (duplication, absence de traçabilité), le stage explore le passage à une authentification AAA centralisée : d'abord sur routeur Cisco IOS (local puis délégué à un serveur RADIUS), puis via le déploiement personnel d'un serveur FreeRADIUS + OpenLDAP complet sous Ubuntu 24.04, domaine dom10.dz.",
 
         objectives: [
+            "Configurer l'AAA local sur routeur Cisco IOS (comptes, privilèges, accounting)",
+            "Faire évoluer le routeur vers une délégation RADIUS avec fallback local",
             "Déployer FreeRADIUS et OpenLDAP sur Ubuntu 24.04 LTS",
-            "Interfacer FreeRADIUS avec OpenLDAP pour l'authentification centralisée",
             "Intégrer une machine Linux cliente au domaine (SSSD / PAM)",
-            "Mettre en place l'autorisation par groupe et la comptabilité des sessions",
-            "Configurer l'authentification Wi-Fi (EAP-TTLS) et l'attribution de VLAN dynamique"
+            "Mettre en place l'autorisation par groupe LDAP et la comptabilité des sessions",
+            "Configurer l'authentification Wi-Fi 802.1X/EAP-TTLS et le VLAN dynamique",
+            "Superviser le serveur AAA avec Zabbix (métriques et alertes)"
         ],
 
         tasks: [
+            {
+                icon: 'fas fa-router',
+                label: 'AAA local & délégué sur routeur Cisco',
+                desc: "Activation d'aaa new-model, comptes locaux par niveau de privilège, puis délégation des décisions à FreeRADIUS via un groupe de serveurs RADIUS avec compte de secours local (fallback)."
+            },
             {
                 icon: 'fas fa-network-wired',
                 label: 'Intégration client Linux au domaine',
@@ -74,31 +81,32 @@ const experiencesData = {
             },
             {
                 icon: 'fas fa-shield-alt',
-                label: 'Autorisation par groupe',
-                desc: "Définition de trois niveaux d'accès (admins, users, invités) avec des politiques RADIUS différenciées selon le groupe LDAP de l'utilisateur."
+                label: 'Autorisation par groupe (unlang)',
+                desc: "Définition de trois niveaux d'accès (admins, users, invités) avec des politiques RADIUS différenciées (VLAN, durée de session, filtre) selon le groupe LDAP de l'utilisateur."
             },
             {
                 icon: 'fas fa-chart-line',
                 label: 'Comptabilité & supervision',
-                desc: "Journalisation des sessions RADIUS et intégration avec Zabbix pour la supervision en temps réel et la génération d'alertes automatiques."
+                desc: "Journalisation des sessions RADIUS (module detail) et intégration avec Zabbix pour la supervision en temps réel et la génération d'alertes automatiques."
             },
             {
                 icon: 'fas fa-wifi',
                 label: 'Authentification Wi-Fi & VLAN dynamique',
-                desc: "Configuration EAP-TTLS pour le réseau sans-fil et attribution automatique de VLAN selon le groupe de l'utilisateur via attributs RADIUS."
+                desc: "Configuration 802.1X/EAP-TTLS pour le réseau sans-fil et attribution automatique de VLAN selon le groupe de l'utilisateur via attributs RADIUS."
             }
         ],
 
         technologies: [
-            'Ubuntu 24.04 LTS', 'FreeRADIUS', 'OpenLDAP', 'phpLDAPadmin',
-            'SSSD', 'PAM', 'EAP-TTLS', 'VLAN 802.1Q', 'Zabbix', 'RADIUS', 'LDAP'
+            'Cisco IOS (AAA/RADIUS)', 'Ubuntu 24.04 LTS', 'FreeRADIUS', 'OpenLDAP', 'phpLDAPadmin',
+            'SSSD', 'PAM', '802.1X / EAP-TTLS', 'VLAN 802.1Q', 'Zabbix', 'RADIUS', 'LDAP'
         ],
 
-        results: "Infrastructure AAA fonctionnelle : authentification centralisée, autorisation différenciée par groupe, comptabilité des sessions avec alertes Zabbix, authentification Wi-Fi EAP-TTLS et attribution de VLAN dynamique — le tout documenté dans la partie pratique disponible en ligne.",
+        results: "Chaîne AAA complète et documentée sur 54 pages : du routeur Cisco (local puis délégué) jusqu'au serveur FreeRADIUS/OpenLDAP personnel — authentification centralisée, autorisation différenciée par groupe, comptabilité des sessions avec alertes Zabbix, et authentification Wi-Fi EAP-TTLS avec VLAN dynamique.",
 
         skills_gained: [
+            "Configuration AAA sur équipement Cisco IOS (local et délégué RADIUS)",
             "Architecture AAA et protocole RADIUS",
-            "Administration FreeRADIUS et intégration LDAP",
+            "Administration FreeRADIUS et intégration LDAP (unlang)",
             "Gestion d'un annuaire OpenLDAP sous Linux",
             "Authentification réseau 802.1X et gestion de VLAN",
             "Supervision et alerting avec Zabbix"
@@ -190,9 +198,9 @@ function openExpModal(id) {
     `).join('');
 
     content.innerHTML = `
-        <div class="exp-modal-hero">
+        <div class="exp-modal-hero"${exp.cover ? ` style="background-image: linear-gradient(100deg, rgba(11,7,21,0.88), rgba(11,7,21,0.6)), url('${exp.cover}'); background-size: cover; background-position: center;"` : ''}>
             <div class="exp-modal-hero-left">
-                <div class="exp-modal-logo"><i class="fas fa-building"></i></div>
+                <div class="exp-modal-logo"${exp.cover ? ` style="background-image:url('${exp.cover}'); background-size:cover; background-position:center;"` : ''}>${exp.cover ? '' : '<i class="fas fa-building"></i>'}</div>
                 <div>
                     <h2 class="exp-modal-title">${exp.title}</h2>
                     <p class="exp-modal-company"><strong>${exp.company}</strong>${exp.sector ? ' · ' + exp.sector : ''}</p>
