@@ -1,3 +1,77 @@
+// ==================== FILET DE SÉCURITÉ : NOUVEL ACCUEIL ====================
+// Si index.html est encore l'ancienne version, on injecte ici la nouvelle landing page.
+(function ensureNewLanding() {
+    const s = document.getElementById('lobby');
+    if (!s || s.querySelector('.ld')) return;
+    s.className = 'lobby-section';
+    s.innerHTML = `
+        <div class="ld">
+
+            <div class="ld-main">
+                <div class="hero-text">
+                    <p class="hero-eyebrow"><span class="hero-dot"></span>Disponible pour stage / alternance</p>
+
+                    <h1 class="hero-title">
+                        <span class="hero-title-hi">Bonjour, je suis</span>
+                        <span class="hero-title-name">SAHRAOUI TUDERT</span>
+                    </h1>
+
+                    <p class="hero-role">Étudiante en administration et sécurité des réseaux informatiques</p>
+
+                    <p class="hero-description">
+                        Passionnée par la <strong>cybersécurité</strong> et l'<strong>administration réseau</strong>.
+                        Je recherche un stage ou une alternance pour mettre en pratique mes compétences
+                        en réseau, en systèmes et en sécurité.
+                    </p>
+
+                    <div class="hero-actions">
+                        <button class="btn-hero btn-hero--primary" onclick="scrollToSection('projects')">
+                            <span>Voir mes projets</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class="btn-hero btn-hero--ghost" onclick="scrollToSection('contact')">
+                            <span>Me contacter</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="ld-visual">
+                    <span class="ld-orbit"></span>
+                    <span class="ld-ring"></span>
+                    <span class="ld-orb ld-orb--a"></span>
+                    <span class="ld-orb ld-orb--b"></span>
+                    <div class="ld-orb ld-orb--main">
+                        <img class="ld-logo ld-logo--light" src="logo-C.png" alt="Logo Sahraoui Tudert" width="800" height="800">
+                        <img class="ld-logo ld-logo--dark" src="logo-S.png" alt="" aria-hidden="true" width="800" height="800">
+                    </div>
+                    <span class="ld-chip ld-chip--1"><i class="fas fa-network-wired"></i>Administration réseau</span>
+                    <span class="ld-chip ld-chip--2"><i class="fas fa-shield-halved"></i>Cybersécurité</span>
+                    <span class="ld-chip ld-chip--3"><i class="fas fa-key"></i>FreeRADIUS · OpenLDAP</span>
+                    <span class="ld-chip ld-chip--4"><i class="fas fa-cube"></i>Hack The Box</span>
+                    <span class="ld-chip ld-chip--5"><i class="fas fa-certificate"></i>CCNA</span>
+                </div>
+            </div>
+
+            <div class="ld-bar">
+                <div class="ld-bar-stats">
+                    <div class="stat-item"><div class="stat-content"><span class="stat-number" data-target="16">0</span><span class="stat-label">Projets</span></div></div>
+                    <div class="stat-item"><div class="stat-content"><span class="stat-number" data-target="5">0</span><span class="stat-label">Certifications</span></div></div>
+                    <div class="stat-item"><div class="stat-content"><span class="stat-number" data-target="3">0</span><span class="stat-label">Prix</span></div></div>
+                </div>
+                <div class="ld-bar-links">
+                    <a href="https://www.linkedin.com/in/tudert-sahraoui-44982235b/" target="_blank" rel="noopener" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://github.com/tudertshr" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://profile.hackthebox.com/profile/01a01023-62c1-736a-b44e-5affc9a3e62a" target="_blank" rel="noopener" title="Hack The Box"><i class="fas fa-cube"></i></a>
+                    <a href="mailto:tudertsahraoui@gmail.com" title="tudertsahraoui@gmail.com"><i class="fas fa-envelope"></i></a>
+                    <a href="tel:+213558857832" title="+213 558 857 832"><i class="fas fa-phone"></i></a>
+                    <a href="doc/SAHRAOUI TUDERT CV.pdf" download class="ld-cv"><i class="fas fa-file-pdf"></i><span>Mon CV</span></a>
+                </div>
+            </div>
+
+        </div>
+    `;
+})();
+
 // ==================== CONFIGURATION GLOBALE ====================
 const CONFIG = {
     typingSpeed: 100,
@@ -11,7 +85,6 @@ const CONFIG = {
 // ==================== INITIALISATION ====================
 document.addEventListener('DOMContentLoaded', function() {
     // Initialiser toutes les fonctionnalités
-    initPreloader();
     initThemeToggle();
     initNavigation();
     initScrollProgress();
@@ -20,7 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initCounters();
     initSkillBars();
     initParticles();
-    initAOS();
     initProjects();
     initTestimonials();
     initContactForm();
@@ -29,39 +101,16 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollAnimations();
 });
 
-// ==================== PRÉCHARGEUR ====================
-function initPreloader() {
-    const preloader = document.getElementById('preloader');
-    const progressBar = document.getElementById('progressBar');
-    const progressPercentage = document.getElementById('progressPercentage');
-    
-    let progress = 0;
-    const interval = setInterval(() => {
-        progress += Math.random() * 30;
-        if (progress > 100) progress = 100;
-        
-        progressBar.style.width = progress + '%';
-        progressPercentage.textContent = Math.floor(progress) + '%';
-        
-        if (progress >= 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-                preloader.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }, 500);
-        }
-    }, 200);
-}
-
 // ==================== MODE THÈME ====================
 function initThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
-    const currentTheme = localStorage.getItem('theme') || 'light';
+    const currentTheme = localStorage.getItem('theme') || 'dark';
     
     // Appliquer le thème sauvegardé
     if (currentTheme === 'dark') {
         document.body.classList.add('dark');
     }
+    document.documentElement.classList.remove('theme-dark-boot');
     
     // Écouter le changement de thème
     themeToggle.addEventListener('click', () => {
@@ -259,20 +308,7 @@ function initCounters() {
 }
 
 function animateCounter(element, target) {
-    let current = 0;
-    const increment = target / 50;
-    const duration = 2000;
-    const stepTime = duration / 50;
-    
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = target;
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(current);
-        }
-    }, stepTime);
+    element.textContent = target;
 }
 
 // ==================== BARRES DE COMPÉTENCES ====================
@@ -289,9 +325,7 @@ function initSkillBars() {
                 const bar = entry.target;
                 const progress = bar.getAttribute('data-progress');
                 
-                setTimeout(() => {
-                    bar.style.width = progress + '%';
-                }, 200);
+                bar.style.width = progress + '%';
                 
                 observer.unobserve(bar);
             }
@@ -324,19 +358,6 @@ function createParticle(container) {
     particle.style.animationDelay = Math.random() * 5 + 's';
     
     container.appendChild(particle);
-}
-
-// ==================== ANIMATION AOS ====================
-function initAOS() {
-    if (typeof AOS !== 'undefined') {
-        AOS.init({
-            duration: 1000,
-            easing: 'ease-out-cubic',
-            once: true,
-            offset: 100,
-            delay: 0
-        });
-    }
 }
 
 // ==================== DÉFILEMENT FLUIDE ====================
@@ -695,6 +716,14 @@ const certificationsData = [
     {
         icon: 'fas fa-network-wired',
         color: '#00bceb',
+        title: 'CCNA : Switching, Routing, and Wireless Essentials',
+        issuer: 'Cisco Networking Academy — OU Academy Incubator',
+        date: '29 Juillet 2026',
+        badge: 'CCNA 02'
+    },
+    {
+        icon: 'fas fa-network-wired',
+        color: '#00bceb',
         title: 'CCNA : Présentation des réseaux',
         issuer: 'Cisco Networking Academy — The Open University',
         date: '02 Mars 2026',
@@ -703,7 +732,7 @@ const certificationsData = [
     {
         icon: 'fas fa-shield-alt',
         color: '#00bceb',
-        title: 'Notions de cybersécurité',
+        title: 'Introduction à la cybersécurité',
         issuer: 'Cisco Networking Academy',
         date: '02 Mars 2026',
         badge: 'CyberSec'
@@ -735,10 +764,18 @@ const certificationsData = [
     {
         icon: 'fas fa-star',
         color: '#6c63ff',
-        title: 'Major de Section ',
+        title: 'Major de Section — 1er semestre',
         issuer: 'INSIM Bouira — BTS ASRI',
         date: '20 Mai 2025',
-        badge: '18/20'
+        badge: '18,25/20'
+    },
+    {
+        icon: 'fas fa-star',
+        color: '#b45cd0',
+        title: 'Attestation de succès — Journée de l\'étudiant',
+        issuer: 'INSIM Bouira',
+        date: '20 Mai 2025',
+        badge: 'Distinction'
     }
 ];
 
@@ -746,7 +783,7 @@ function renderTimeline() {
     const container = document.querySelector('.experience-timeline');
     if (!container) return;
     container.innerHTML = timelineData.map((item, i) => `
-        <div class="timeline-item" data-aos="fade-${i % 2 === 0 ? 'right' : 'left'}" data-aos-delay="${i * 100}">
+        <div class="timeline-item" >
             <div class="timeline-icon" style="background: ${item.color}">
                 <i class="${item.icon}"></i>
             </div>
@@ -768,7 +805,7 @@ function renderCertifications() {
     const container = document.querySelector('.certifications-grid');
     if (!container) return;
     container.innerHTML = certificationsData.map((cert, i) => `
-        <div class="certification-card" data-aos="zoom-in" data-aos-delay="${i * 80}">
+        <div class="certification-card" >
             <div class="cert-icon" style="color: ${cert.color}">
                 <i class="${cert.icon}"></i>
             </div>
@@ -803,46 +840,96 @@ function initProjects() {
     renderProjects();
     initProjectFilters();
     initProjectModal();
-    initLoadMore();
+    initProjectsArrows();
+    initViewAllProjects();
 }
 
 // ==================== AFFICHAGE DES PROJETS ====================
-let visibleProjects = 6;
 let currentFilter = 'all';
 
-function renderProjects(filter = 'all', limit = visibleProjects) {
+function getFilteredProjects(filter) {
+    return filter === 'all'
+        ? projectsData
+        : projectsData.filter(p => p.category === filter);
+}
+
+function renderProjects(filter = 'all') {
     const projectsGrid = document.getElementById('projectsGrid');
     if (!projectsGrid) return;
-    
-    const filteredProjects = filter === 'all' 
-        ? projectsData 
-        : projectsData.filter(p => p.category === filter);
-    
-    const projectsToShow = filteredProjects.slice(0, limit);
-    
+
+    const filteredProjects = getFilteredProjects(filter);
+
     projectsGrid.innerHTML = '';
-    
-    projectsToShow.forEach((project, index) => {
+    projectsGrid.scrollLeft = 0;
+
+    filteredProjects.forEach((project, index) => {
         const projectCard = createProjectCard(project, index);
         projectsGrid.appendChild(projectCard);
     });
-    
-    // Gérer le bouton "Charger plus"
-    const loadMoreBtn = document.getElementById('loadMoreBtn');
-    if (loadMoreBtn) {
-        if (filteredProjects.length <= limit) {
-            loadMoreBtn.style.display = 'none';
-        } else {
-            loadMoreBtn.style.display = 'inline-flex';
-        }
+
+    // Si la modale "Voir tout" est ouverte, la resynchroniser avec le filtre courant
+    const modal = document.getElementById('projectsViewAllModal');
+    if (modal && modal.classList.contains('open')) {
+        renderViewAllProjects(filter);
     }
+}
+
+// ==================== FLÈCHES DE DÉFILEMENT ====================
+function initProjectsArrows() {
+    const grid = document.getElementById('projectsGrid');
+    const prevBtn = document.getElementById('projectsPrevBtn');
+    const nextBtn = document.getElementById('projectsNextBtn');
+    if (!grid || !prevBtn || !nextBtn) return;
+
+    const scrollAmount = () => (grid.querySelector('.project-card')?.offsetWidth || 300) + 20;
+
+    prevBtn.addEventListener('click', () => {
+        grid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+    });
+    nextBtn.addEventListener('click', () => {
+        grid.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+    });
+}
+
+// ==================== MODALE "VOIR TOUT" ====================
+function renderViewAllProjects(filter = currentFilter) {
+    const container = document.getElementById('projectsViewAllGrid');
+    if (!container) return;
+    const filteredProjects = getFilteredProjects(filter);
+    container.innerHTML = '';
+    filteredProjects.forEach((project, index) => {
+        container.appendChild(createProjectCard(project, index));
+    });
+}
+
+function initViewAllProjects() {
+    const openBtn = document.getElementById('viewAllProjectsBtn');
+    const modal = document.getElementById('projectsViewAllModal');
+    const overlay = document.getElementById('projectsViewAllOverlay');
+    const closeBtn = document.getElementById('projectsViewAllClose');
+    if (!openBtn || !modal) return;
+
+    const open = () => {
+        renderViewAllProjects(currentFilter);
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    };
+    const close = () => {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+    };
+
+    openBtn.addEventListener('click', open);
+    overlay?.addEventListener('click', close);
+    closeBtn?.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) close();
+    });
 }
 
 function createProjectCard(project, index) {
     const card = document.createElement('div');
     card.className = 'project-card';
-    card.setAttribute('data-aos', 'fade-up');
-    card.setAttribute('data-aos-delay', (index % 3) * 100);
     card.setAttribute('data-category', project.category);
 
     const resolveAssetUrl = (src) => {
@@ -895,17 +982,19 @@ function createProjectCard(project, index) {
     const faIcon = categoryFAIcons[project.category] || categoryFAIcons.default;
 
     card.innerHTML = `
-        <div class="project-card-header">
+        <div class="project-card-header" onclick="openProjectModal(${project.id})" style="cursor:pointer;">
             <div class="project-image-container">
                 ${projectImageHtml}
                 <div class="project-image-placeholder" style="background: ${gradient}">
                     <div class="project-icon"><i class="${faIcon}" style="color:#fff;font-size:1.7rem"></i></div>
                 </div>
-                <div class="project-overlay">
-                    <button class="project-view-btn" onclick="openProjectModal(${project.id})">
-                        <i class="fas fa-eye"></i>
-                        <span>Voir détails</span>
-                    </button>
+                <div class="project-cover-scrim"></div>
+                <div class="project-cover-text">
+                    <span class="project-category-badge project-category-badge--cover">
+                        ${getCategoryIcon(project.category)}
+                        ${getCategoryName(project.category)}
+                    </span>
+                    <h3 class="project-card-title">${project.title}</h3>
                 </div>
             </div>
             ${featuredBadge}
@@ -917,19 +1006,14 @@ function createProjectCard(project, index) {
                     <i class="far fa-calendar"></i>
                     ${project.year}
                 </span>
-                <span class="project-category-badge">
-                    ${getCategoryIcon(project.category)}
-                    ${getCategoryName(project.category)}
-                </span>
             </div>
-            <h3 class="project-card-title">${project.title}</h3>
             <p class="project-card-description">${project.shortDescription}</p>
             <div class="project-tech-tags">
-                ${project.technologies.slice(0, 4).map(tech => 
+                ${project.technologies.slice(0, 3).map(tech => 
                     `<span class="tech-tag-mini">${tech}</span>`
                 ).join('')}
-                ${project.technologies.length > 4 
-                    ? `<span class="tech-tag-mini more">+${project.technologies.length - 4}</span>` 
+                ${project.technologies.length > 3 
+                    ? `<span class="tech-tag-mini more">+${project.technologies.length - 3}</span>` 
                     : ''}
             </div>
         </div>
@@ -987,34 +1071,13 @@ function initProjectFilters() {
             
             // Obtenir le filtre
             currentFilter = button.getAttribute('data-filter');
-            visibleProjects = 6; // Réinitialiser
             
             // Filtrer et afficher les projets
-            renderProjects(currentFilter, visibleProjects);
+            renderProjects(currentFilter);
             
             // Réinitialiser AOS
-            if (typeof AOS !== 'undefined') {
-                AOS.refresh();
-            }
         });
     });
-}
-
-// ==================== BOUTON CHARGER PLUS ====================
-function initLoadMore() {
-    const loadMoreBtn = document.getElementById('loadMoreBtn');
-    
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', () => {
-            visibleProjects += 3;
-            renderProjects(currentFilter, visibleProjects);
-            
-            // Réinitialiser AOS
-            if (typeof AOS !== 'undefined') {
-                AOS.refresh();
-            }
-        });
-    }
 }
 
 // ==================== MODAL DE PROJET ====================
@@ -1093,23 +1156,6 @@ function createModalContent(project) {
         }
     };
 
-    const modalHeroImage = project.image
-        ? `
-            <div class="modal-section">
-                <div class="project-hero-image" style="border-radius:16px; overflow:hidden;">
-                    <img
-                        src="${resolveAssetUrl(project.image)}"
-                        alt="${project.title}"
-                        style="width:100%; height:auto; display:block;"
-                        loading="lazy"
-                        decoding="async"
-                        onerror="this.closest('.modal-section')?.remove();"
-                    >
-                </div>
-            </div>
-        `
-        : '';
-
     const gallerySources = Array.isArray(project.gallery) ? project.gallery : [];
     const modalGallery = gallerySources.length > 0
         ? `
@@ -1136,8 +1182,12 @@ function createModalContent(project) {
         `
         : '';
 
+    const hasCover = !!project.image;
+    const coverUrl = hasCover ? resolveAssetUrl(project.image) : '';
+
     return `
-        <div class="modal-header">
+        <div class="modal-header${hasCover ? ' modal-header--cover' : ''}"${hasCover ? ` style="background-image:url('${coverUrl.replace(/'/g, "\\'")}')"` : ''}>
+            ${hasCover ? '<div class="modal-header-scrim"></div>' : ''}
             <div class="modal-header-content">
                 <span class="modal-icon" style="background:${gradient};width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="${faIcon}" style="color:#fff;font-size:1.4rem"></i></span>
                 <div>
@@ -1161,7 +1211,6 @@ function createModalContent(project) {
         </div>
         
         <div class="modal-body">
-            ${modalHeroImage}
             <!-- Informations générales -->
             <div class="modal-section">
                 <h3 class="modal-section-title">
@@ -1954,9 +2003,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==================== INITIALISATION ====================
-document.addEventListener('DOMContentLoaded', () => {
-    initAdvancedAnimations();
-});
+// (curseur suiveur / effets magnétiques désactivés : interface stable)
 
 // Export des fonctions pour utilisation globale
 window.animateCounterAdvanced = animateCounterAdvanced;
@@ -2294,3 +2341,75 @@ document.addEventListener('DOMContentLoaded', function () {
         card.appendChild(legend);
     });
 });
+/* ==================== FONCTIONS MODALES PROGRAMME ==================== */
+function openProgramModal(program) {
+    const modalId = program === 'bts' ? 'programModalBTS' : 'programModalAEC';
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeProgramModal(program) {
+    const modalId = program === 'bts' ? 'programModalBTS' : 'programModalAEC';
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Fermer modale avec Échap
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const btsModal = document.getElementById('programModalBTS');
+        const aecModal = document.getElementById('programModalAEC');
+        if (btsModal && btsModal.classList.contains('active')) {
+            closeProgramModal('bts');
+        }
+        if (aecModal && aecModal.classList.contains('active')) {
+            closeProgramModal('aec');
+        }
+    }
+});
+
+// ==================== LOGO DU GRAND CERCLE + MOT DE BIENVENUE (accueil) ====================
+// logo-C.png = mode clair · logo-S.png = mode sombre (même dossier que index.html)
+(function heroExtras() {
+    function tryFallback(img, file) {
+        // si l'image n'est pas trouvée à côté de index.html, on essaie dans img/
+        img.addEventListener('error', function () {
+            if (!img.dataset.retry) { img.dataset.retry = '1'; img.src = 'img/' + file; }
+            else console.warn('Logo introuvable :', file);
+        });
+    }
+    function apply() {
+        // Police écriture manuscrite
+        if (!document.getElementById('welcomeFont')) {
+            const l = document.createElement('link');
+            l.id = 'welcomeFont'; l.rel = 'stylesheet';
+            l.href = 'https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap';
+            document.head.appendChild(l);
+        }
+        // Logo dans le cercle
+        const orb = document.querySelector('.ld-orb--main');
+        if (orb && !orb.querySelector('.ld-logo')) {
+            orb.innerHTML =
+                '<img class="ld-logo ld-logo--light" src="logo-C.png" alt="Logo Sahraoui Tudert" width="800" height="800">' +
+                '<img class="ld-logo ld-logo--dark" src="logo-S.png" alt="" aria-hidden="true" width="800" height="800">';
+            tryFallback(orb.querySelector('.ld-logo--light'), 'logo-C.png');
+            tryFallback(orb.querySelector('.ld-logo--dark'), 'logo-S.png');
+        }
+        // Petit mot de bienvenue, en haut au centre
+        const lobby = document.getElementById('lobby');
+        if (lobby && !lobby.querySelector('.ld-welcome')) {
+            const w = document.createElement('p');
+            w.className = 'ld-welcome';
+            w.innerHTML = 'Salut, bienvenue chez moi <span aria-hidden="true">✿</span>';
+            lobby.prepend(w);
+        }
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
+    else apply();
+})();
