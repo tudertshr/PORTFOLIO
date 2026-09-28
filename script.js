@@ -46,7 +46,7 @@
                     </div>
                     <span class="ld-chip ld-chip--1"><i class="fas fa-network-wired"></i>Administration réseau</span>
                     <span class="ld-chip ld-chip--2"><i class="fas fa-shield-halved"></i>Cybersécurité</span>
-                    <span class="ld-chip ld-chip--3"><i class="fas fa-key"></i>FreeRADIUS · OpenLDAP</span>
+                    <span class="ld-chip ld-chip--3"><i class="fas fa-key"></i>Administration systèmes</span>
                     <span class="ld-chip ld-chip--4"><i class="fas fa-cube"></i>Hack The Box</span>
                     <span class="ld-chip ld-chip--5"><i class="fas fa-certificate"></i>CCNA</span>
                 </div>
@@ -2402,12 +2402,12 @@ document.addEventListener('keydown', function(event) {
             tryFallback(orb.querySelector('.ld-logo--dark'), 'logo-S.png');
         }
         // Petit mot de bienvenue, en haut au centre
-        const lobby = document.getElementById('lobby');
-        if (lobby && !lobby.querySelector('.ld-welcome')) {
+        // Ajouté directement au body : positionné par rapport au haut de la page (pas de la section)
+        if (!document.querySelector('.ld-welcome')) {
             const w = document.createElement('p');
             w.className = 'ld-welcome';
             w.innerHTML = 'Salut, bienvenue chez moi <span aria-hidden="true">✿</span>';
-            lobby.prepend(w);
+            document.body.appendChild(w);
         }
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
