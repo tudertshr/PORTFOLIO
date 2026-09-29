@@ -78,7 +78,7 @@ const CONFIG = {
     typingDelay: 2000,
     scrollOffset: 80,
     testimonialAutoplay: true,
-    testimonialInterval: 5000,
+    testimonialInterval: 120000, // 2 minutes (en millisecondes : 60000 = 1 minute)
     particlesCount: 50
 };
 
@@ -267,7 +267,7 @@ function initCounters() {
         'Certifications': () => {
             if (typeof certificationsData === 'undefined') return null;
             return certificationsData.filter(c =>
-                c.icon !== 'fas fa-trophy' && c.icon !== 'fas fa-star' && !(c.badge || '').includes('🏆')
+                c.icon !== 'fas fa-trophy' && c.icon !== 'fas fa-star' && !(c.badge || '').includes('🏆') && c.date !== 'En cours'
             ).length;
         },
         'Prix': () => {
@@ -714,6 +714,22 @@ const timelineData = [
 
 const certificationsData = [
     {
+        icon: 'fas fa-shield-alt',
+        color: '#00bceb',
+        title: 'Network Security',
+        issuer: 'Cisco Networking Academy',
+        date: 'En cours',
+        badge: 'Network Security'
+    },
+    {
+        icon: 'fas fa-network-wired',
+        color: '#00bceb',
+        title: 'CCNA : Enterprise Networking, Security, and Automation',
+        issuer: 'Cisco Networking Academy',
+        date: 'En cours',
+        badge: 'CCNA 03'
+    },
+    {
         icon: 'fas fa-network-wired',
         color: '#00bceb',
         title: 'CCNA : Switching, Routing, and Wireless Essentials',
@@ -829,7 +845,110 @@ function renderCertifications() {
 document.addEventListener('DOMContentLoaded', () => {
     renderTimeline();
     renderCertifications();
+    renderExperiences();
 });
+
+// ==================== AFFICHAGE DES EXPÉRIENCES (auto, comme les projets) ====================
+function truncateText(text, maxLen) {
+    if (!text || text.length <= maxLen) return text || '';
+    const cut = text.slice(0, maxLen);
+    return cut.slice(0, cut.lastIndexOf(' ')) + '…';
+}
+
+function createExperienceCard(exp) {
+    const card = document.createElement('div');
+    card.className = 'exp-card';
+    card.onclick = () => openExpModal(exp.id);
+
+    const statusMap = {
+        'En cours': { cls: 'exp-status-wip',  icon: 'fa-spinner fa-spin' },
+        'À venir':  { cls: 'exp-status-soon', icon: 'fa-hourglass-half' },
+        'Terminé':  { cls: 'exp-status-done', icon: 'fa-check-circle' }
+    };
+    const statusInfo = statusMap[exp.status] || statusMap['Terminé'];
+
+    const coverHtml = exp.cover
+        ? `<div class="exp-card-cover" style="background-image:url('${exp.cover}')"></div>`
+        : '';
+
+    const companyHtml = exp.company
+        ? `<p class="exp-company"><i class="fas fa-building"></i> <strong>${exp.company}</strong></p>`
+        : '';
+    const periodHtml = exp.period
+        ? `<p class="exp-period"><i class="fas fa-calendar-alt"></i> ${exp.period}${exp.duration ? ` · <em>${exp.duration}</em>` : ''}</p>`
+        : '';
+    const locationHtml = exp.location
+        ? `<p class="exp-location"><i class="fas fa-map-marker-alt"></i> ${exp.location}</p>`
+        : '';
+    const themeHtml = exp.theme
+        ? `<div class="exp-card-theme"><i class="fas fa-lightbulb"></i><span>${exp.theme}</span></div>`
+        : '';
+
+    const summaryText = truncateText(exp.summary || exp.context || '', 130);
+    const summaryHtml = summaryText ? `<p class="exp-summary">${summaryText}</p>` : '';
+
+    const cardTagsList = exp.card_tags || (exp.technologies || []).slice(0, 4);
+    const tagsHtml = cardTagsList.length
+        ? `<div class="exp-tags">${cardTagsList.map(t => `<span class="exp-tag">${t}</span>`).join('')}</div>`
+        : '';
+
+    const secondaryLink = exp.practical_url
+        ? { url: exp.practical_url, label: 'Rapport en ligne', icon: 'fas fa-external-link-alt' }
+        : exp.report_url
+        ? { url: exp.report_url, label: 'Voir le PDF', icon: 'fas fa-file-pdf' }
+        : null;
+    const secondaryLinkHtml = secondaryLink
+        ? `<a href="${secondaryLink.url}" target="_blank" class="exp-report-btn" onclick="event.stopPropagation()"><i class="${secondaryLink.icon}"></i> ${secondaryLink.label}</a>`
+        : '';
+
+    card.innerHTML = `
+        ${coverHtml}
+        <div class="exp-card-header">
+            <div class="exp-logo-wrap"><i class="${exp.icon || 'fas fa-briefcase'}"></i></div>
+            <div class="exp-card-meta">
+                <span class="exp-type-badge"><i class="fas fa-user-graduate"></i> ${exp.type || 'Expérience'}</span>
+                <span class="exp-status-badge ${statusInfo.cls}"><i class="fas ${statusInfo.icon}"></i> ${exp.status || ''}</span>
+            </div>
+        </div>
+        <div class="exp-card-body">
+            <h3 class="exp-title">${exp.title}</h3>
+            ${companyHtml}
+            ${periodHtml}
+            ${locationHtml}
+            ${themeHtml}
+            ${summaryHtml}
+            ${tagsHtml}
+        </div>
+        <div class="exp-card-footer">
+            <div class="exp-footer-row">
+                <span class="exp-read-more"><i class="fas fa-expand-alt"></i> Voir le détail</span>
+                ${secondaryLinkHtml}
+            </div>
+        </div>
+    `;
+    return card;
+}
+
+function renderExperiences() {
+    const grid = document.getElementById('expGrid');
+    if (!grid || typeof experiencesData === 'undefined') return;
+
+    grid.innerHTML = '';
+    Object.values(experiencesData).forEach(exp => {
+        grid.appendChild(createExperienceCard(exp));
+    });
+
+    const placeholder = document.createElement('div');
+    placeholder.className = 'exp-card exp-card-placeholder';
+    placeholder.innerHTML = `
+        <div class="exp-placeholder-inner">
+            <i class="fas fa-plus-circle"></i>
+            <p>Prochain stage / emploi</p>
+            <span>À venir</span>
+        </div>
+    `;
+    grid.appendChild(placeholder);
+}
 
 // ==================== EXPORT DES FONCTIONS GLOBALES ====================
 window.scrollToSection = scrollToSection;
@@ -841,6 +960,7 @@ function initProjects() {
     initProjectFilters();
     initProjectModal();
     initProjectsArrows();
+    initExpArrows();
     initViewAllProjects();
 }
 
@@ -882,6 +1002,23 @@ function initProjectsArrows() {
     if (!grid || !prevBtn || !nextBtn) return;
 
     const scrollAmount = () => (grid.querySelector('.project-card')?.offsetWidth || 300) + 20;
+
+    prevBtn.addEventListener('click', () => {
+        grid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+    });
+    nextBtn.addEventListener('click', () => {
+        grid.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+    });
+}
+
+// ==================== FLÈCHES DE DÉFILEMENT — EXPÉRIENCES ====================
+function initExpArrows() {
+    const grid = document.getElementById('expGrid');
+    const prevBtn = document.getElementById('expPrevBtn');
+    const nextBtn = document.getElementById('expNextBtn');
+    if (!grid || !prevBtn || !nextBtn) return;
+
+    const scrollAmount = () => (grid.querySelector('.exp-card')?.offsetWidth || 340) + 28;
 
     prevBtn.addEventListener('click', () => {
         grid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
