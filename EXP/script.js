@@ -10,6 +10,8 @@
 // ║   (ou technologies), practical_url / report_url (lien affiché).         ║
 // ║   Types : "Stage" | "CDI" | "CDD" | "Alternance" | "Freelance"         ║
 // ║   Status : "En cours" | "À venir" | "Terminé"                            ║
+// ║   Couverture : cover: { clair: 'img/...', sombre: 'img/...' }           ║
+// ║   (le bon fichier est choisi automatiquement selon le thème)           ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
 
 const experiencesData = {
@@ -25,7 +27,11 @@ const experiencesData = {
         icon: 'fas fa-shield-alt',
 
         title: 'Stagiaire — Administration Système & Sécurité Réseau',
-        cover: 'img/covers/cover-stage.jpg',
+        // Couvertures du stage : une pour le mode clair, une pour le mode sombre
+        cover: {
+            clair:  'img/covers/clair/cover-stage.png',
+            sombre: 'img/covers/sombre/cover-stage.jpg'
+        },
         company: 'HighTech Compass',
         sector: 'Informatique & Télécommunications',
         location: 'Algérie',
@@ -134,6 +140,12 @@ const experiencesData = {
         icon: 'fas fa-graduation-cap',
         card_tags: ['PFE', 'Mémoire', '6 mois'],
 
+        // Couvertures : à décommenter quand les deux images existeront
+        // cover: {
+        //     clair:  'img/covers/clair/cover-stage2.png',
+        //     sombre: 'img/covers/sombre/cover-stage2.jpg'
+        // },
+
         title: "Stage de fin d'études (PFE) avec mémoire",
         company: 'Entreprise à définir',
         location: 'Lieu à définir',
@@ -154,7 +166,7 @@ const experiencesData = {
        1. Copier le bloc ci-dessus
        2. Changer l'id (ex : 'stage-03', 'cdi-01', 'alternance-01'...)
        3. Remplir les champs (title, company, period, duration, location,
-          theme, summary, card_tags, icon...)
+          theme, summary, card_tags, icon, cover { clair, sombre }...)
        4. Enregistrer — la carte apparaît automatiquement dans la section
           Expérience, et la fenêtre de détail se génère avec ces données.
     ────────────────────────────────────────────────────────────────────── */
@@ -180,6 +192,11 @@ function openExpModal(id) {
     const statusInfo  = statusMap[exp.status] || statusMap['Terminé'];
     const statusClass = statusInfo.cls;
     const statusIcon  = statusInfo.icon;
+
+    // Couverture du stage selon le thème (clair / sombre) — via themedCover() du script principal
+    const coverUrl = exp.cover
+        ? (typeof themedCover === 'function' ? themedCover(exp.cover) : (typeof exp.cover === 'string' ? exp.cover : (exp.cover.sombre || exp.cover.clair || '')))
+        : '';
 
     const tasksHTML = (exp.tasks || []).map(t => `
         <div class="exp-modal-task">
@@ -240,9 +257,9 @@ function openExpModal(id) {
     `).join('');
 
     content.innerHTML = `
-        <div class="exp-modal-hero"${exp.cover ? ` style="background-image: linear-gradient(100deg, rgba(11,7,21,0.88), rgba(11,7,21,0.6)), url('${exp.cover}'); background-size: cover; background-position: center;"` : ''}>
+        <div class="exp-modal-hero"${coverUrl ? ` style="background-image: linear-gradient(100deg, rgba(11,7,21,0.88), rgba(11,7,21,0.6)), url('${coverUrl}'); background-size: cover; background-position: center;"` : ''}>
             <div class="exp-modal-hero-left">
-                <div class="exp-modal-logo"${exp.cover ? ` style="background-image:url('${exp.cover}'); background-size:cover; background-position:center;"` : ''}>${exp.cover ? '' : '<i class="fas fa-building"></i>'}</div>
+                <div class="exp-modal-logo"${coverUrl ? ` style="background-image:url('${coverUrl}'); background-size:cover; background-position:center;"` : ''}>${coverUrl ? '' : '<i class="fas fa-building"></i>'}</div>
                 <div>
                     <h2 class="exp-modal-title">${exp.title}</h2>
                     <p class="exp-modal-company"><strong>${exp.company}</strong>${exp.sector ? ' · ' + exp.sector : ''}</p>
