@@ -14,7 +14,7 @@ const REVIEWS_DATA = [
         relation: "4 semestres · BTS (Systèmes, réseaux & sécurité) : Admin & Sécurité des infrastructures réseaux, CCNA, Network Security.",
         text: "Sahraoui Tudert s'est rapidement démarquée de mes autres étudiants, se montrant particulièrement attentive et intéressée par chaque cours. Il ne fait aucun doute qu'elle s'avérera un ajout exceptionnel à vos effectifs, par ses multiples qualités, son professionnalisme et son assiduité.",
         email: "aekchel@hotmail.com",
-        phone: "+213 557 32 67 43",
+        phone: "",
         source: "Lettre de recommandation · Béjaïa, 28/09/2026"
     },
     {
@@ -26,7 +26,7 @@ const REVIEWS_DATA = [
         relation: "M'a enseigné Linux et Windows à l'INSIM de Bouira (Administration et sécurité des réseaux, 2024-2025).",
         text: "J'ai pu apprécier son sérieux, son assiduité et son intérêt pour les enseignements dispensés. Elle s'est distinguée par son implication dans les activités pédagogiques et par sa capacité à assimiler les concepts, avec 19/20 dans chacun des deux modules que j'ai enseignés.",
         email: "a.abbas@univ-bouira.dz",
-        phone: "+213 7 76 15 67 59",
+        phone: "",
         source: "Lettre de recommandation · Bouira, 23/09/2026"
     },
     {
