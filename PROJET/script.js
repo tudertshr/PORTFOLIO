@@ -120,7 +120,7 @@ const projectsData = [
                 'Méthodologie de test (scan Nmap) et lecture d’alertes IDS'
             ]
         },
-        links: { demo: null, github: null, documentation: null, pdf: 'doc/Rapport Technique PFSENSE.pdf', photos: ['img/TP4.png'] },
+        links: { demo: null, github: null, documentation: null, pdf: 'doc/Rapport_PFSENSE.pdf', photos: ['img/TP4.png'] },
         gallery: [ 'img/PF1.png','img/PF2.png']
     },
     {
@@ -833,7 +833,7 @@ esac
                 'Construction d\'une matrice de risques et d\'un plan de traitement'
             ]
         },
-        links: { demo: null, github: null, documentation: null, pdf: 'doc/ÉTude de gestion des risques (AEROPORT) - Méthode EBIOS.pdf', photos: [] },
+        links: { demo: null, github: null, documentation: null, pdf: 'doc/EBIOS_AEROPORT.pdf', photos: [] },
         gallery: []
     },
     {
