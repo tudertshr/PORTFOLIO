@@ -7802,3 +7802,631 @@ body.dark .id-avatar .id-logo--dark { display: block; }
     .testimonials-container .testimonial-card { padding: 1.2rem; }
     .testimonials-container .testimonial-text { font-size: 1rem; }
 }
+
+/* ==================== Témoignages : mention lettres signées ==================== */
+.testimonials-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.75rem auto 0;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+.testimonials-note i { color: var(--color-primary); }
+
+/* ==========================================================================
+   SCRIPTS D'AUTOMATISATION (fenêtre projet) — besoin, explication, code
+   ========================================================================== */
+.scripts-list { display: flex; flex-direction: column; gap: 1.4rem; margin-top: 1rem; }
+
+.script-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color, rgba(209, 36, 126, 0.15));
+    border-radius: var(--border-radius-lg, 16px);
+    padding: 1.3rem 1.4rem;
+    box-shadow: var(--shadow-sm);
+}
+.script-head { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.script-num {
+    flex: 0 0 auto; width: 2.1rem; height: 2.1rem; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; color: #fff; background: linear-gradient(135deg, #9d4edd 0%, #ff6b9d 100%);
+}
+.script-head-text { flex: 1 1 200px; min-width: 0; }
+.script-step { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-primary); }
+.script-title { margin: 0.1rem 0 0; font-size: 1.05rem; line-height: 1.3; color: var(--text-primary); }
+.script-tag {
+    flex: 0 0 auto; font-size: 0.72rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 999px;
+    color: var(--color-primary); background: rgba(157, 78, 221, 0.12);
+}
+
+.script-block { margin-bottom: 0.95rem; }
+.script-block p { margin: 0; line-height: 1.65; color: var(--text-secondary); font-size: 0.93rem; }
+.script-block-label { font-weight: 700; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-primary); }
+.script-block-label i { color: var(--color-primary); margin-right: 0.35rem; }
+.script-steps { margin: 0; padding-left: 1.3rem; display: flex; flex-direction: column; gap: 0.45rem; }
+.script-steps li { line-height: 1.6; color: var(--text-secondary); font-size: 0.93rem; }
+.script-steps li::marker { color: var(--color-primary); font-weight: 700; }
+
+.script-usage, .script-pre {
+    margin: 0; background: #1e1b2e; color: #e6e1f5; border-radius: 10px;
+    font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
+    font-size: 0.8rem; line-height: 1.6; tab-size: 4; overflow-x: auto; white-space: pre;
+}
+.script-usage { padding: 0.8rem 1rem; }
+.script-note {
+    margin: 0 0 0.95rem; padding: 0.7rem 0.9rem; border-radius: 10px; font-size: 0.85rem; line-height: 1.55;
+    color: var(--text-secondary); background: rgba(247, 151, 30, 0.1); border-left: 3px solid #f7971e;
+}
+.script-note i { color: #f7971e; margin-right: 0.35rem; }
+
+.script-code { margin-top: 0.4rem; border: 1px solid var(--border-color, rgba(209, 36, 126, 0.15)); border-radius: 12px; overflow: hidden; }
+.script-code summary {
+    display: flex; align-items: center; gap: 0.6rem; cursor: pointer; list-style: none;
+    padding: 0.8rem 1rem; font-weight: 600; font-size: 0.9rem; color: var(--text-primary);
+    background: rgba(157, 78, 221, 0.08); transition: background 0.2s ease;
+}
+.script-code summary::-webkit-details-marker { display: none; }
+.script-code summary:hover { background: rgba(157, 78, 221, 0.15); }
+.script-code summary i { color: var(--color-primary); }
+.script-code summary em { margin-left: auto; font-style: normal; font-size: 0.75rem; font-weight: 500; color: var(--text-secondary); }
+.script-code summary::after { content: '\25BE'; color: var(--color-primary); transition: transform 0.2s ease; }
+.script-code[open] summary::after { transform: rotate(180deg); }
+
+.script-toolbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap;
+    padding: 0.55rem 0.9rem; background: #2a2540; color: #cfc8ea; font-size: 0.78rem;
+}
+.script-filename i { margin-right: 0.35rem; color: #ff9bd0; }
+.script-toolbar-btns { display: flex; gap: 0.5rem; }
+.script-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer;
+    padding: 0.35rem 0.75rem; border-radius: 8px; font-size: 0.76rem; font-weight: 600; font-family: inherit;
+    color: #fff; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.18);
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+.script-btn:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-1px); }
+.script-btn.copied { background: #2e9e6b; border-color: #2e9e6b; }
+.script-pre { border-radius: 0; padding: 1rem 1.1rem; max-height: 480px; overflow: auto; }
+.script-pre code { font-family: inherit; }
+
+.tok-c { color: #8d86aa; font-style: italic; }
+.tok-s { color: #a5e3a0; }
+.tok-v { color: #ffb86c; }
+.tok-k { color: #ff8fc8; font-weight: 600; }
+
+@media (max-width: 600px) {
+    .script-card { padding: 1rem; }
+    .script-pre { font-size: 0.74rem; max-height: 380px; }
+    .script-code summary em { display: none; }
+}
+
+/* ---- Sélecteur de scripts : boutons, un seul script affiché à la fois ---- */
+.script-groups { display: flex; flex-direction: column; gap: 1rem; margin-top: 0.8rem; }
+.script-group-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 0.5rem; }
+.script-group-label em { font-style: normal; font-weight: 500; text-transform: none; letter-spacing: 0; color: var(--text-secondary); }
+.script-picks { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.script-pick {
+    display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer;
+    padding: 0.55rem 0.95rem; border-radius: 999px; font-family: inherit; font-size: 0.86rem; font-weight: 600;
+    color: var(--text-primary); background: var(--bg-card);
+    border: 1px solid var(--border-color, rgba(209, 36, 126, 0.2));
+    transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.script-pick i { color: var(--color-primary); font-size: 0.8rem; }
+.script-pick:hover { transform: translateY(-1px); border-color: var(--color-primary); box-shadow: var(--shadow-sm); }
+.script-pick.active { color: #fff; background: var(--gradient-primary); border-color: transparent; box-shadow: var(--shadow-primary); }
+.script-pick.active i { color: #fff; }
+.sp-num {
+    width: 1.4rem; height: 1.4rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700; color: #fff; background: var(--gradient-secondary);
+}
+.script-pick.active .sp-num { background: rgba(255, 255, 255, 0.25); }
+.script-arrow { color: var(--text-light); font-size: 0.7rem; }
+
+.script-panel { margin-top: 1rem; }
+.script-panel:empty { display: none; }
+.script-view {
+    background: var(--bg-card); border: 1px solid var(--border-color, rgba(209, 36, 126, 0.15));
+    border-radius: var(--border-radius-lg, 16px); padding: 1.1rem 1.2rem; box-shadow: var(--shadow-sm);
+    animation: scriptIn 0.25s ease;
+}
+.script-view-head { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.script-need { margin: 0 0 0.9rem; line-height: 1.6; color: var(--text-secondary); font-size: 0.93rem; }
+.script-code-box { border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color, rgba(209, 36, 126, 0.15)); }
+.script-more { margin-top: 0.9rem; }
+.script-more summary { cursor: pointer; list-style: none; font-weight: 600; font-size: 0.88rem; color: var(--text-primary); }
+.script-more summary::-webkit-details-marker { display: none; }
+.script-more summary i { color: var(--color-primary); margin-right: 0.4rem; }
+.script-more summary::after { content: '\25BE'; margin-left: 0.4rem; color: var(--color-primary); }
+.script-more[open] summary { margin-bottom: 0.7rem; }
+.script-more .script-steps { margin-bottom: 0.8rem; }
+.script-more .script-note { margin: 0.8rem 0 0; }
+@keyframes scriptIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (max-width: 600px) {
+    .script-view { padding: 0.9rem; }
+    .script-pick { font-size: 0.8rem; padding: 0.5rem 0.8rem; }
+}
+/* ========== AMÉLIORATION : Sections du script (Besoin / Comment ça marche / Code) ========== */
+.script-section { 
+    margin-bottom: 1.5rem; 
+    padding-bottom: 1.3rem;
+}
+.script-section:last-child { 
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.script-section-title { 
+    font-size: 0.9rem; 
+    font-weight: 700; 
+    text-transform: uppercase; 
+    letter-spacing: 0.05em;
+    color: var(--color-primary); 
+    margin: 0 0 0.8rem; 
+    display: flex; 
+    align-items: center; 
+    gap: 0.5rem;
+}
+
+.script-section-title i { 
+    font-size: 1rem; 
+}
+
+/* Besoin */
+.script-need { 
+    margin: 0; 
+    line-height: 1.8; 
+    color: var(--text-secondary); 
+    font-size: 0.95rem;
+    padding: 0;
+}
+
+/* Étapes Comment ça marche - Points numérotés texte fluide */
+.script-steps-text { 
+    margin: 0; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 0.8rem;
+}
+
+.script-steps-text p { 
+    margin: 0;
+    line-height: 1.7; 
+    color: var(--text-secondary); 
+    font-size: 0.95rem;
+}
+
+.script-steps-text strong { 
+    color: var(--color-primary); 
+    font-weight: 700;
+    margin-right: 0.4rem;
+}
+
+/* Boîte d'utilisation */
+.script-usage-box { 
+    margin-top: 0.9rem; 
+    padding: 0.9rem 1rem; 
+    background: var(--bg-secondary, rgba(209, 36, 126, 0.08)); 
+    border-radius: 8px; 
+    border-left: 3px solid var(--color-primary);
+}
+
+.script-usage-box strong { 
+    color: var(--text-primary); 
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.script-usage { 
+    margin: 0 !important; 
+    font-size: 0.82rem;
+    background: transparent !important;
+    color: var(--text-primary) !important;
+    font-weight: 500;
+}
+
+/* Note importante */
+.script-note { 
+    margin: 0.8rem 0 0; 
+    padding: 0.8rem 1rem; 
+    background: rgba(247, 151, 30, 0.12) !important;
+    border-left: 3px solid #f7971e !important;
+    border-radius: 6px;
+    color: var(--text-secondary); 
+    font-size: 0.88rem; 
+    line-height: 1.6;
+}
+
+.script-note i { 
+    margin-right: 0.5rem; 
+    color: #f7971e;
+}
+
+.script-note strong {
+    color: var(--text-primary);
+}
+
+/* Améliorer le code box */
+.script-code-box { 
+    border-radius: 10px; 
+    overflow: hidden; 
+    border: 1px solid var(--border-color, rgba(209, 36, 126, 0.15));
+    background: #1e1b2e;
+}
+
+.script-toolbar {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 0.8rem; 
+    flex-wrap: wrap;
+    padding: 0.7rem 1rem; 
+    background: #2a2540; 
+    color: #cfc8ea; 
+    font-size: 0.79rem;
+    border-bottom: 1px solid rgba(209, 36, 126, 0.15);
+}
+
+.script-filename { 
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.script-filename i { 
+    color: #ff9bd0; 
+}
+
+.script-toolbar-btns { 
+    display: flex; 
+    gap: 0.6rem; 
+}
+
+.script-btn {
+    display: inline-flex; 
+    align-items: center; 
+    gap: 0.4rem; 
+    cursor: pointer;
+    padding: 0.4rem 0.8rem; 
+    border-radius: 6px; 
+    font-size: 0.77rem; 
+    font-weight: 600; 
+    font-family: inherit;
+    color: #fff; 
+    background: rgba(255, 255, 255, 0.12); 
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.script-btn:hover { 
+    background: rgba(255, 255, 255, 0.22); 
+    transform: translateY(-1px);
+}
+
+.script-btn.copied { 
+    background: #2e9e6b; 
+    border-color: #2e9e6b; 
+}
+
+.script-pre { 
+    border-radius: 0; 
+    padding: 1.1rem; 
+    max-height: 500px; 
+    overflow: auto;
+    margin: 0;
+    background: #1e1b2e !important;
+}
+
+.script-pre code { 
+    font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
+}
+
+@keyframes scriptIn { 
+    from { opacity: 0; transform: translateY(6px); } 
+    to { opacity: 1; transform: none; } 
+}
+
+@media (max-width: 768px) {
+    .script-view {
+        padding: 1.2rem;
+    }
+    
+    .script-section-title {
+        font-size: 0.85rem;
+    }
+    
+    .script-need,
+    .script-steps li {
+        font-size: 0.9rem;
+    }
+    
+    .script-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+    }
+    
+    .script-toolbar-btns {
+        width: 100%;
+    }
+    
+    .script-btn {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .script-view { 
+        padding: 1rem;
+    }
+    
+    .script-pre { 
+        font-size: 0.72rem; 
+        max-height: 350px; 
+        padding: 0.9rem;
+    }
+}
+
+/* ==================== PROJETS PHARES : liseré or rose ==================== */
+.project-card--featured {
+    position: relative;
+    border-color: transparent;
+    box-shadow: 0 4px 18px rgba(247,220,120,0.28), 0 0 0 1px rgba(250,228,140,0.35);
+}
+.project-card--featured::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(135deg, #fff6c9 0%, #fbe38a 25%, #f6d768 48%, #fff0b0 72%, #fbe38a 100%);
+    background-size: 220% 220%;
+    animation: featuredGoldShimmer 7s ease-in-out infinite;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    pointer-events: none;
+    z-index: 3;
+}
+.project-card--featured:hover {
+    border-color: transparent;
+    box-shadow: 0 10px 30px rgba(247,220,120,0.42), 0 0 0 1px rgba(250,228,140,0.55);
+}
+@keyframes featuredGoldShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+}
+/* Badge "Projet phare" : or rose */
+.project-card--featured .project-featured-badge {
+    background: linear-gradient(135deg, rgba(255,240,170,0.95), rgba(248,222,110,0.95), rgba(255,244,190,0.95));
+    border-color: rgba(255,250,220,0.75);
+    color: #6b5210;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.35);
+}
+.project-card--featured .project-featured-badge i { color: #b8901a; }
+@media (prefers-reduced-motion: reduce) {
+    .project-card--featured::before { animation: none; }
+}
+
+/* ==================== FILTRES PROJETS : UNE SEULE LIGNE ==================== */
+.project-filters {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(0.25rem, 0.6vw, 0.5rem);
+    overflow-x: auto;            /* très petit écran : défilement horizontal, jamais de 2e ligne */
+    scrollbar-width: none;
+    padding: 4px 2px;
+}
+.project-filters::-webkit-scrollbar { display: none; }
+
+.project-filters .filter-btn {
+    flex: 0 0 auto;
+    width: auto;
+    white-space: nowrap;
+    padding: 0.42rem clamp(0.55rem, 1vw, 0.9rem);
+    font-size: clamp(0.7rem, 1vw, 0.8rem);
+    gap: 0.35rem;
+}
+
+/* Sur écran étroit : on aligne à gauche pour que le défilement démarre au début */
+@media (max-width: 1100px) {
+    .project-filters { justify-content: flex-start; }
+}
+
+/* Bouton "Projets phares" : étoile colorée uniquement, sans titre */
+.filter-btn--featured i { color: #f5b301; font-size: 1rem; transition: transform 0.2s; }
+.filter-btn--featured:hover i { transform: rotate(18deg) scale(1.15); }
+.filter-btn--featured:not(.active) { border-color: rgba(245, 179, 1, 0.5); }
+.filter-btn--featured.active i { color: #ffd54a; filter: drop-shadow(0 0 3px rgba(0,0,0,0.25)); }
+
+/* Bouton "Projets phares" : masque le texte (reste lisible par les lecteurs d'écran), garde l'étoile + le compteur */
+.filter-btn--featured > span:not(.filter-count) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* Bouton "Projets phares" : étoile 5 branches dorée (SVG aux angles arrondis, dégradé or métallisé) */
+.filter-btn--featured i {
+    display: inline-block;
+    width: 1.15rem;
+    height: 1.15rem;
+    font-size: 0;
+    color: transparent;
+    background: linear-gradient(145deg, #f8dc7a 0%, #e0a91c 45%, #a87b00 100%);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.6l2.8 6 6.5.8-4.8 4.5 1.3 6.5L12 17.1 6.2 20.4l1.3-6.5-4.8-4.5 6.5-.8z' stroke='black' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.6l2.8 6 6.5.8-4.8 4.5 1.3 6.5L12 17.1 6.2 20.4l1.3-6.5-4.8-4.5 6.5-.8z' stroke='black' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+    transition: transform 0.2s;
+}
+.filter-btn--featured i::before { content: none; }
+.filter-btn--featured:hover i { transform: rotate(12deg) scale(1.12); }
+.filter-btn--featured:not(.active) { border-color: rgba(200, 150, 20, 0.45); }
+.filter-btn--featured.active i {
+    background: linear-gradient(145deg, #fff3bf 0%, #ffd54a 55%, #f0b400 100%);
+    filter: drop-shadow(0 1px 2px rgba(120, 60, 0, 0.35));
+}
+
+/* Texte du bouton masqué (reste lisible par les lecteurs d'écran) */
+.filter-btn--featured > span:not(.filter-count) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ==================== MODE SOMBRE : rectangle du filtre "Projets phares" doré ==================== */
+body.dark .project-filters .filter-btn--featured {
+    background: linear-gradient(145deg, rgba(248, 220, 122, 0.16), rgba(168, 123, 0, 0.14));
+    border: 1.5px solid #e0a91c;
+    color: #f8dc7a;
+    box-shadow: 0 0 0 1px rgba(224, 169, 28, 0.18), 0 3px 14px rgba(224, 169, 28, 0.22);
+}
+body.dark .project-filters .filter-btn--featured:hover {
+    background: linear-gradient(145deg, rgba(248, 220, 122, 0.26), rgba(168, 123, 0, 0.22));
+    border-color: #f8dc7a;
+    box-shadow: 0 0 0 1px rgba(248, 220, 122, 0.3), 0 4px 18px rgba(224, 169, 28, 0.38);
+}
+/* Sélectionné : rectangle plein doré, étoile foncée pour rester bien visible */
+body.dark .project-filters .filter-btn--featured.active {
+    background: linear-gradient(145deg, #f8dc7a 0%, #e0a91c 55%, #b8860b 100%);
+    border-color: transparent;
+    color: #3a2600;
+    box-shadow: 0 4px 18px rgba(224, 169, 28, 0.45);
+}
+body.dark .project-filters .filter-btn--featured.active i {
+    background: linear-gradient(145deg, #5a3b00, #3a2600);
+    filter: none;
+}
+/* Compteur assorti */
+body.dark .filter-btn--featured:not(.active) .filter-count {
+    background: linear-gradient(145deg, #f8dc7a, #d4a017);
+    color: #3a2600;
+    opacity: 1;
+}
+body.dark .filter-btn--featured.active .filter-count {
+    background: rgba(58, 38, 0, 0.85);
+    color: #f8dc7a;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   FICHE STAGE — bandeau en mode clair : même rendu que la fiche projet
+   Photo bien visible, voile sombre léger et transparent, écriture blanche.
+   Le mode sombre reste inchangé.
+   ══════════════════════════════════════════════════════════════════ */
+body:not(.dark) .exp-modal-hero {
+    position: relative;
+    isolation: isolate;
+}
+body:not(.dark) .exp-modal-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(15,6,24,0.04) 0%, rgba(15,6,24,0.26) 55%, rgba(12,5,20,0.55) 100%);
+    pointer-events: none;
+}
+body:not(.dark) .exp-modal-title {
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.75), 0 0 2px rgba(0, 0, 0, 0.45);
+}
+body:not(.dark) .exp-modal-company,
+body:not(.dark) .exp-modal-info-row {
+    color: #fff;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.75), 0 0 2px rgba(0, 0, 0, 0.45);
+}
+body:not(.dark) .exp-modal-info-row i { color: #ffb3dc; }
+
+/* Pastilles Stage / Terminé : mêmes pastilles sombres translucides que les projets */
+body:not(.dark) .exp-modal-badges > * {
+    background: rgba(20, 8, 32, 0.5);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(6px);
+}
+body:not(.dark) .exp-modal-badges > * i { color: #fff; }
+
+
+/* ══════════════════════════════════════════════════════════════════
+   FICHE STAGE — plus de vide en haut + couverture plus grande
+   Cause du vide : le bouton fermer était « float » et repoussait le bandeau.
+   Le bouton reste collé en haut à droite, mais ne prend plus de place.
+   ══════════════════════════════════════════════════════════════════ */
+.exp-modal-close {
+    float: none;
+    position: sticky;
+    top: 16px;
+    width: 36px;
+    height: 36px;
+    margin: 16px 16px -52px auto;   /* -52px = hauteur + marge : le contenu remonte */
+}
+
+/* Le bandeau commence tout en haut de la fenêtre */
+.exp-modal-hero {
+    margin-top: -28px;              /* annule le padding haut du contenu */
+    min-height: 300px;              /* couverture plus grande : plus de détails visibles */
+    align-items: flex-end;          /* texte en bas, comme la fiche projet */
+    padding: 20px 24px 24px;
+}
+
+@media (max-width: 768px) {
+    .exp-modal-hero {
+        min-height: 260px;
+        margin-top: -20px;          /* padding haut mobile = 20px */
+        align-items: stretch;
+        justify-content: flex-end;
+    }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   CERTIFICATIONS — petit bouton « Vérifier le badge » (Credly)
+   ══════════════════════════════════════════════════════════════════ */
+.cert-verify-btn {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    padding: 4px 11px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    color: var(--cert-color);
+    background: var(--cert-tint);
+    border: 1px solid var(--cert-line);
+    border-radius: 999px;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.cert-verify-btn i { font-size: 0.7rem; }
+.cert-verify-btn:hover {
+    background: var(--cert-color);
+    border-color: var(--cert-color);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   FICHE STAGE — bouton « Portfolio » (sites complémentaires) en rose
+   en mode clair. Le mode sombre reste inchangé.
+   ══════════════════════════════════════════════════════════════════ */
+body:not(.dark) .exp-related-btn-portfolio {
+    background: var(--color-primary);
+    color: #fff;
+    border: 1px solid var(--color-primary);
+}

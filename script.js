@@ -82,6 +82,45 @@ const CONFIG = {
     particlesCount: 50
 };
 
+// ==================== COUVERTURES SELON LE THÈME ====================
+// Clair  : img/covers/clair/cover-P1.png ... cover-P17.png, cover-stage.png
+// Sombre : img/covers/sombre/cover-p1.jpg ... cover-p16.jpg, cover-p17.png, cover-stage.jpg
+// (les noms respectent exactement la casse des fichiers : GitHub Pages y est sensible)
+const COVERS = {
+    clair:  { dir: 'img/covers/clair/',  file: k => 'cover-' + (k === 'stage' ? 'stage' : k.toUpperCase()) + '.png' },
+    sombre: { dir: 'img/covers/sombre/', file: k => 'cover-' + k + (k === 'p17' ? '.png' : '.jpg') }
+};
+
+function isDarkTheme() {
+    return document.body.classList.contains('dark');
+}
+
+// Reçoit n'importe quel chemin du type ".../cover-p3.jpg" ou ".../cover-stage.png"
+// et renvoie l'image correspondant au thème actif. Autres chemins : inchangés.
+function themedCover(src) {
+    if (!src) return src;
+    // Format { clair: '...', sombre: '...' } déclaré dans chaque projet (PROJET/script.js)
+    if (typeof src === 'object') {
+        return (isDarkTheme() ? src.sombre : src.clair) || src.clair || src.sombre || '';
+    }
+    const m = String(src).match(/cover-(p\d+|stage)\.(png|jpe?g|webp)$/i);
+    if (!m) return src;
+    const set = isDarkTheme() ? COVERS.sombre : COVERS.clair;
+    return set.dir + set.file(m[1].toLowerCase());
+}
+
+// Rafraîchit toutes les couvertures visibles quand on change de thème
+let openedProjectId = null;
+function refreshThemedCovers() {
+    if (typeof projectsData !== 'undefined') renderProjects(currentFilter, true);
+    if (typeof renderExperiences === 'function') renderExperiences();
+    if (openedProjectId !== null && typeof projectsData !== 'undefined') {
+        const p = projectsData.find(x => x.id === openedProjectId);
+        const header = document.querySelector('#modalContent .modal-header--cover');
+        if (p && header) header.style.backgroundImage = "url('" + themedCover(p.image) + "')";
+    }
+}
+
 // ==================== INITIALISATION ====================
 document.addEventListener('DOMContentLoaded', function() {
     // Initialiser toutes les fonctionnalités
@@ -117,7 +156,8 @@ function initThemeToggle() {
         document.body.classList.toggle('dark');
         
         const newTheme = document.body.classList.contains('dark') ? 'dark' : 'light';
-        localStorage.setItem('theme', newTheme);
+ localStorage.setItem('theme', newTheme);
+        refreshThemedCovers();
         
         // Animation du bouton
         themeToggle.style.transform = 'rotate(360deg) scale(1.2)';
@@ -291,6 +331,17 @@ function initCounters() {
             }
         }
     });
+
+    // Stats de la section À propos : mêmes données réelles que l'accueil
+    document.querySelectorAll('[data-stat]').forEach(el => {
+        const fn = statsMap[el.getAttribute('data-stat')];
+        const val = fn ? fn() : null;
+        if (val !== null && !isNaN(val)) el.textContent = val;
+    });
+
+    // Année du pied de page automatique
+    const yearEl = document.getElementById('currentYear');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
 
     // Animation au scroll
     const observerOptions = { threshold: 0.5, rootMargin: '0px' };
@@ -735,7 +786,8 @@ const certificationsData = [
         title: 'CCNA : Switching, Routing, and Wireless Essentials',
         issuer: 'Cisco Networking Academy — OU Academy Incubator',
         date: '29 Juillet 2026',
-        badge: 'CCNA 02'
+        badge: 'CCNA 02',
+        verifyUrl: 'https://www.credly.com/badges/2586a8a5-7418-411b-b452-d9a0f78a32f5/public_url'
     },
     {
         icon: 'fas fa-network-wired',
@@ -743,7 +795,8 @@ const certificationsData = [
         title: 'CCNA : Présentation des réseaux',
         issuer: 'Cisco Networking Academy — The Open University',
         date: '02 Mars 2026',
-        badge: 'CCNA 01'
+        badge: 'CCNA 01',
+        verifyUrl: 'https://www.credly.com/badges/89ddeccd-896f-4c36-9052-1b6f17152393/public_url'
     },
     {
         icon: 'fas fa-shield-alt',
@@ -751,7 +804,8 @@ const certificationsData = [
         title: 'Introduction à la cybersécurité',
         issuer: 'Cisco Networking Academy',
         date: '02 Mars 2026',
-        badge: 'CyberSec'
+        badge: 'CyberSec',
+        verifyUrl: 'https://www.credly.com/badges/3df5a22b-60da-474e-863e-008f39b063e0/public_url'
     },
     {
         icon: 'fas fa-server',
@@ -759,7 +813,8 @@ const certificationsData = [
         title: 'Notions de base sur les réseaux',
         issuer: 'Cisco Networking Academy — INSIM Bouira',
         date: '27 Juin 2025',
-        badge: 'Réseau'
+        badge: 'Réseau',
+        verifyUrl: 'https://www.credly.com/badges/7aa2b383-f2fd-415a-b056-886422067460/public_url'
     },
     {
         icon: 'fas fa-laptop-code',
@@ -830,6 +885,13 @@ function renderCertifications() {
                 <h4 class="cert-title">${cert.title}</h4>
                 <p class="cert-issuer">${cert.issuer}</p>
                 <span class="cert-date"><i class="far fa-calendar-alt"></i> ${cert.date}</span>
+                ${cert.verifyUrl ? `
+                    <a href="${cert.verifyUrl}" target="_blank" rel="noopener noreferrer" class="cert-verify-btn"
+                       style="--cert-color: ${cert.color}; --cert-tint: ${cert.color}18; --cert-line: ${cert.color}66;"
+                       title="Vérifier ce badge sur Credly">
+                        <i class="fas fa-check-circle"></i> Vérifier le badge
+                    </a>
+                ` : ''}
                 ${cert.pdf ? `
                     <div class="cert-attachments" style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
                         <a href="${cert.pdf}" target="_blank" class="modal-link-btn" style="text-decoration:none;">
@@ -868,7 +930,7 @@ function createExperienceCard(exp) {
     const statusInfo = statusMap[exp.status] || statusMap['Terminé'];
 
     const coverHtml = exp.cover
-        ? `<div class="exp-card-cover" style="background-image:url('${exp.cover}')"></div>`
+        ? `<div class="exp-card-cover" style="background-image:url('${themedCover(exp.cover)}')"></div>`
         : '';
 
     const companyHtml = exp.company
@@ -933,6 +995,7 @@ function renderExperiences() {
     const grid = document.getElementById('expGrid');
     if (!grid || typeof experiencesData === 'undefined') return;
 
+    const prevExpScroll = grid.scrollLeft;
     grid.innerHTML = '';
     Object.values(experiencesData).forEach(exp => {
         grid.appendChild(createExperienceCard(exp));
@@ -948,6 +1011,7 @@ function renderExperiences() {
         </div>
     `;
     grid.appendChild(placeholder);
+    grid.scrollTo({ left: prevExpScroll, behavior: 'instant' });
 }
 
 // ==================== EXPORT DES FONCTIONS GLOBALES ====================
@@ -967,25 +1031,33 @@ function initProjects() {
 // ==================== AFFICHAGE DES PROJETS ====================
 let currentFilter = 'all';
 
-function getFilteredProjects(filter) {
-    return filter === 'all'
-        ? projectsData
-        : projectsData.filter(p => p.category === filter);
+// Un projet correspond-il au filtre ? ("featured" = projets phares, sinon = catégorie)
+function projectMatchesFilter(project, filter) {
+    if (filter === 'all') return true;
+    if (filter === 'featured') return project.featured === true;
+    return project.category === filter;
 }
 
-function renderProjects(filter = 'all') {
+function getFilteredProjects(filter) {
+    const list = projectsData.filter(p => projectMatchesFilter(p, filter));
+    // Projets phares en premier (tri stable : l'ordre d'origine est conservé dans chaque groupe)
+    return [...list].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+}
+
+function renderProjects(filter = 'all', keepScroll = false) {
     const projectsGrid = document.getElementById('projectsGrid');
     if (!projectsGrid) return;
 
     const filteredProjects = getFilteredProjects(filter);
 
+    const prevScroll = projectsGrid.scrollLeft;
     projectsGrid.innerHTML = '';
-    projectsGrid.scrollLeft = 0;
 
     filteredProjects.forEach((project, index) => {
         const projectCard = createProjectCard(project, index);
         projectsGrid.appendChild(projectCard);
     });
+    projectsGrid.scrollTo({ left: keepScroll ? prevScroll : 0, behavior: 'instant' });
 
     // Si la modale "Voir tout" est ouverte, la resynchroniser avec le filtre courant
     const modal = document.getElementById('projectsViewAllModal');
@@ -1066,7 +1138,7 @@ function initViewAllProjects() {
 
 function createProjectCard(project, index) {
     const card = document.createElement('div');
-    card.className = 'project-card';
+    card.className = 'project-card' + (project.featured ? ' project-card--featured' : '');
     card.setAttribute('data-category', project.category);
 
     const resolveAssetUrl = (src) => {
@@ -1084,7 +1156,7 @@ function createProjectCard(project, index) {
         ? `
                 <img
                     class="project-image"
-                    src="${resolveAssetUrl(project.image)}"
+                    src="${resolveAssetUrl(themedCover(project.image))}"
                     alt="${project.title}"
                     loading="lazy"
                     decoding="async"
@@ -1185,9 +1257,7 @@ function initProjectFilters() {
     if (typeof projectsData !== 'undefined') {
         filterButtons.forEach(button => {
             const f = button.getAttribute('data-filter');
-            const count = f === 'all'
-                ? projectsData.length
-                : projectsData.filter(p => p.category === f).length;
+            const count = projectsData.filter(p => projectMatchesFilter(p, f)).length;
             // Supprimer l'ancien badge s'il existe
             const oldBadge = button.querySelector('.filter-count');
             if (oldBadge) oldBadge.remove();
@@ -1247,6 +1317,7 @@ function openProjectModal(projectId) {
     const modalContent = document.getElementById('modalContent');
     
     modalContent.innerHTML = createModalContent(project);
+    openedProjectId = project.id;
     
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -1261,7 +1332,161 @@ function closeProjectModal() {
     const modal = document.getElementById('projectModal');
     modal.classList.remove('active');
     document.body.style.overflow = 'auto';
+    openedProjectId = null;
 }
+
+// ==================== SCRIPTS D'AUTOMATISATION (fenêtre projet) ====================
+function scriptEscape(str) {
+    return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+// Coloration syntaxique Bash légère : commentaires, chaînes, variables, mots-clés
+function highlightBash(code) {
+    const re = /(#[^\n]*)|("(?:[^"\\]|\\.)*")|('(?:[^'\\]|\\.)*')|(\$\{[^}\n]*\}|\$\(|\$[A-Za-z_][A-Za-z_0-9]*|\$[0-9#?@!])|\b(if|then|else|elif|fi|for|while|do|done|in|exit|set|echo|read|touch|rm|mv|cp|mkdir|chmod|chown|ln|cat|grep|sed|awk|find|systemctl|sudo|apt|netplan|command)\b/g;
+    let out = '', last = 0, m;
+    while ((m = re.exec(code)) !== null) {
+        out += scriptEscape(code.slice(last, m.index));
+        const cls = m[1] ? 'tok-c' : (m[2] || m[3]) ? 'tok-s' : m[4] ? 'tok-v' : 'tok-k';
+        out += '<span class="' + cls + '">' + scriptEscape(m[0]) + '</span>';
+        last = m.index + m[0].length;
+        if (m[0].length === 0) re.lastIndex++;
+    }
+    return out + scriptEscape(code.slice(last));
+}
+
+function renderProjectScripts(project) {
+    if (!project.scripts || project.scripts.length === 0) return '';
+    // Regroupe les scripts par groupe, dans l'ordre d'apparition
+    const groups = [];
+    project.scripts.forEach((sc, i) => {
+        const name = sc.group || 'Scripts';
+        let g = groups.find(x => x.name === name);
+        if (!g) { g = { name, items: [] }; groups.push(g); }
+        g.items.push({ sc, i });
+    });
+    return `
+            <div class="modal-section">
+                <h3 class="modal-section-title">
+                    <i class="fas fa-terminal"></i>
+                    Scripts d'automatisation
+                </h3>
+                <p class="modal-text">Cliquez sur un script pour afficher son code.</p>
+                <div class="script-groups">
+                    ${groups.map(g => {
+                        const ordered = g.items.every(x => x.sc.order);
+                        return `
+                    <div class="script-group">
+                        <div class="script-group-label">${scriptEscape(g.name)}${ordered ? ' <em>· à lancer dans l\'ordre</em>' : ''}</div>
+                        <div class="script-picks">
+                            ${g.items.map(({ sc, i }, k) => `${k > 0 && ordered ? '<span class="script-arrow"><i class="fas fa-chevron-right"></i></span>' : ''}<button type="button" class="script-pick" onclick="selectProjectScript(${project.id}, ${i}, this)">${sc.order ? `<span class="sp-num">${sc.order}</span>` : '<i class="fas fa-terminal"></i>'}<span>${scriptEscape(sc.label || sc.title)}</span></button>`).join('')}
+                        </div>
+                    </div>`;
+                    }).join('')}
+                </div>
+                <div class="script-panel" id="scriptPanel-${project.id}"></div>
+            </div>`;
+}
+
+// Affiche un seul script à la fois ; un second clic sur le même bouton le referme
+function selectProjectScript(projectId, index, btn) {
+    const panel = document.getElementById('scriptPanel-' + projectId);
+    const sc = getProjectScript(projectId, index);
+    if (!panel || !sc) return;
+    const picks = panel.parentElement.querySelectorAll('.script-pick');
+    if (btn.classList.contains('active')) {
+        btn.classList.remove('active');
+        panel.innerHTML = '';
+        return;
+    }
+    picks.forEach(b => b.classList.toggle('active', b === btn));
+    panel.innerHTML = `
+        <div class="script-view">
+            <div class="script-view-head">
+                <h4 class="script-title">${scriptEscape(sc.label || sc.title)}</h4>
+                <span class="script-tag"><i class="fas fa-file-code"></i> ${scriptEscape(sc.filename)}</span>
+            </div>
+            
+            <div class="script-section">
+                <h5 class="script-section-title"><i class="fas fa-question-circle"></i> Le besoin</h5>
+                <p class="script-need">${scriptEscape(sc.need)}</p>
+            </div>
+            
+            <div class="script-section">
+                <h5 class="script-section-title"><i class="fas fa-cogs"></i> Comment ça marche</h5>
+                <div class="script-steps-text">${(sc.how || []).map((h, i) => `<p><strong>${i + 1}.</strong> ${scriptEscape(h)}</p>`).join('')}</div>
+                ${sc.usage ? `<div class="script-usage-box"><strong>Utilisation :</strong><pre class="script-usage">${scriptEscape(sc.usage)}</pre></div>` : ''}
+                ${sc.note ? `<p class="script-note"><i class="fas fa-info-circle"></i> <strong>Note :</strong> ${scriptEscape(sc.note)}</p>` : ''}
+            </div>
+
+            <div class="script-section">
+                <h5 class="script-section-title"><i class="fas fa-code"></i> Code</h5>
+                <div class="script-code-box">
+                    <div class="script-toolbar">
+                        <span class="script-filename"><i class="fas fa-file-code"></i> ${scriptEscape(sc.filename)} · ${sc.code.split('\n').length - 1} lignes</span>
+                        <div class="script-toolbar-btns">
+                            <button type="button" class="script-btn" onclick="copyProjectScript(${projectId}, ${index}, this)">
+                                <i class="far fa-copy"></i> <span>Copier</span>
+                            </button>
+                            <button type="button" class="script-btn" onclick="downloadProjectScript(${projectId}, ${index})">
+                                <i class="fas fa-download"></i> <span>Télécharger</span>
+                            </button>
+                        </div>
+                    </div>
+                    <pre class="script-pre"><code>${highlightBash(sc.code)}</code></pre>
+                </div>
+            </div>
+        </div>`;
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+window.selectProjectScript = selectProjectScript;
+
+function getProjectScript(projectId, index) {
+    const p = (typeof projectsData !== 'undefined') ? projectsData.find(x => x.id === projectId) : null;
+    return p && p.scripts ? p.scripts[index] : null;
+}
+
+function copyProjectScript(projectId, index, btn) {
+    const sc = getProjectScript(projectId, index);
+    if (!sc) return;
+    const done = () => {
+        const label = btn.querySelector('span');
+        const old = label.textContent;
+        label.textContent = 'Copié !';
+        btn.classList.add('copied');
+        setTimeout(() => { label.textContent = old; btn.classList.remove('copied'); }, 1800);
+    };
+    const fallback = () => {
+        const ta = document.createElement('textarea');
+        ta.value = sc.code;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) { /* copie impossible */ }
+        document.body.removeChild(ta);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(sc.code).then(done).catch(fallback);
+    } else {
+        fallback();
+    }
+}
+
+function downloadProjectScript(projectId, index) {
+    const sc = getProjectScript(projectId, index);
+    if (!sc) return;
+    const blob = new Blob([sc.code], { type: 'text/x-shellscript;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = sc.filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+window.copyProjectScript = copyProjectScript;
+window.downloadProjectScript = downloadProjectScript;
 
 function createModalContent(project) {
     const categoryGradients = {
@@ -1320,7 +1545,7 @@ function createModalContent(project) {
         : '';
 
     const hasCover = !!project.image;
-    const coverUrl = hasCover ? resolveAssetUrl(project.image) : '';
+    const coverUrl = hasCover ? resolveAssetUrl(themedCover(project.image)) : '';
 
     return `
         <div class="modal-header${hasCover ? ' modal-header--cover' : ''}"${hasCover ? ` style="background-image:url('${coverUrl.replace(/'/g, "\\'")}')"` : ''}>
@@ -1479,6 +1704,9 @@ function createModalContent(project) {
                 </ul>
             </div>
             ` : ''}
+
+            <!-- ===== SCRIPTS D'AUTOMATISATION (code affichable, copiable, téléchargeable) ===== -->
+            ${renderProjectScripts(project)}
 
             ${modalGallery}
             
@@ -2152,6 +2380,9 @@ window.createRippleEffect = createRippleEffect;document.addEventListener('DOMCon
     const taskCount = document.getElementById('taskCount');
     const clearCompletedBtn = document.getElementById('clearCompleted');
     const filterButtons = document.querySelectorAll('.filter-btn');
+
+    // Cette mini-application de tâches n'existe pas dans la page : on ne fait rien
+    if (!taskInput || !addBtn || !taskList) return;
     
     // État de l'application
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
