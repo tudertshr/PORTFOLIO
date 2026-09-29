@@ -1,9 +1,15 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
 // ║              EXPÉRIENCES PROFESSIONNELLES — Données & Modal             ║
 // ║   Ce fichier est chargé AVANT script.js dans index.html                 ║
-// ║   Pour ajouter une expérience : copier un bloc, changer l'id            ║
+// ║   Pour ajouter un stage / une expérience : copier un bloc ci-dessous,   ║
+// ║   changer l'id, remplir les champs. La carte s'ajoute automatiquement   ║
+// ║   dans la section « Expérience Professionnelle » du site, exactement   ║
+// ║   comme les projets se génèrent depuis PROJET/script.js.                ║
+// ║   Champs utilisés pour la carte : icon, type, status, title, company,   ║
+// ║   period, duration, location, theme, summary (ou context), card_tags    ║
+// ║   (ou technologies), practical_url / report_url (lien affiché).         ║
 // ║   Types : "Stage" | "CDI" | "CDD" | "Alternance" | "Freelance"         ║
-// ║   Status : "En cours" | "Terminé"                                       ║
+// ║   Status : "En cours" | "À venir" | "Terminé"                            ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
 
 const experiencesData = {
@@ -16,6 +22,7 @@ const experiencesData = {
         type: 'Stage',
         status: 'Terminé',
         featured: true,
+        icon: 'fas fa-shield-alt',
 
         title: 'Stagiaire — Administration Système & Sécurité Réseau',
         cover: 'img/covers/cover-stage.jpg',
@@ -115,12 +122,41 @@ const experiencesData = {
         report_status: 'Terminé',
     },
 
+
+    // ────────────────────────────────────────────────────────────────────────
+    // STAGE 02 — Stage de fin d'études (PFE) — À VENIR
+    // Thème, entreprise, lieu et dates exactes : à compléter
+    // ────────────────────────────────────────────────────────────────────────
+    'stage-02': {
+        id: 'stage-02',
+        type: "Stage de fin d'études",
+        status: 'À venir',
+        icon: 'fas fa-graduation-cap',
+        card_tags: ['PFE', 'Mémoire', '6 mois'],
+
+        title: "Stage de fin d'études (PFE) avec mémoire",
+        company: 'Entreprise à définir',
+        location: 'Lieu à définir',
+
+        period: 'Novembre — Mai / Juin',
+        duration: '6 mois',
+        tutor: 'À compléter',
+
+        theme: 'À définir',
+        context: "Stage de fin d'études de six mois, avec rédaction d'un mémoire. Le contenu détaillé (contexte, missions, technologies) sera ajouté dès que le thème sera fixé.",
+
+        report_label: 'Mémoire de fin d\'études',
+        report_note: 'Le mémoire sera disponible à la fin du stage.',
+    },
+
     /* ──────────────────────────────────────────────────────────────────────
        Pour ajouter une nouvelle expérience :
        1. Copier le bloc ci-dessus
-       2. Changer l'id (ex : 'stage-02', 'cdi-01', 'alternance-01'...)
-       3. Remplir tous les champs
-       4. Enregistrer — la carte et la modal se génèrent automatiquement
+       2. Changer l'id (ex : 'stage-03', 'cdi-01', 'alternance-01'...)
+       3. Remplir les champs (title, company, period, duration, location,
+          theme, summary, card_tags, icon...)
+       4. Enregistrer — la carte apparaît automatiquement dans la section
+          Expérience, et la fenêtre de détail se génère avec ces données.
     ────────────────────────────────────────────────────────────────────── */
 };
 
@@ -136,8 +172,14 @@ function openExpModal(id) {
     const modal   = document.getElementById('expModal');
     const content = document.getElementById('expModalContent');
 
-    const statusClass = exp.status === 'En cours' ? 'exp-status-wip' : 'exp-status-done';
-    const statusIcon  = exp.status === 'En cours' ? 'fa-spinner fa-spin' : 'fa-check-circle';
+    const statusMap = {
+        'En cours': { cls: 'exp-status-wip',  icon: 'fa-spinner fa-spin' },
+        'À venir':  { cls: 'exp-status-soon', icon: 'fa-hourglass-half' },
+        'Terminé':  { cls: 'exp-status-done', icon: 'fa-check-circle' }
+    };
+    const statusInfo  = statusMap[exp.status] || statusMap['Terminé'];
+    const statusClass = statusInfo.cls;
+    const statusIcon  = statusInfo.icon;
 
     const tasksHTML = (exp.tasks || []).map(t => `
         <div class="exp-modal-task">
@@ -273,7 +315,7 @@ function openExpModal(id) {
             <div class="exp-modal-report">
                 <i class="fas fa-file-alt"></i>
                 <div>
-                    <strong>Rapport théorique</strong>
+                    <strong>${exp.report_label || 'Rapport théorique'}</strong>
                     ${reportHTML}
                 </div>
             </div>
