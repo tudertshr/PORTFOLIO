@@ -1903,23 +1903,23 @@ body.dark .language-name {
 }
 
 /* Couleurs des niveaux */
-.skill-percentage[data-level="debutant"]     { background:rgba(255,190,11,0.13); color:#c8920e; }
-.skill-percentage[data-level="intermediaire"]{ background:rgba(77,204,148,0.13); color:#1f8a5c; }
-.skill-percentage[data-level="avance"]       { background:rgba(255,107,157,0.13); color:var(--color-primary); }
-body.dark .skill-percentage[data-level="debutant"]     { color:#e8b020; }
-body.dark .skill-percentage[data-level="intermediaire"]{ color:#3dc98a; }
-body.dark .skill-percentage[data-level="avance"]       { color:#ff8fb3; }
+.skill-percentage[data-level="debutant"]     { background:rgba(246,205,120,0.24); color:#a67c1f; }
+.skill-percentage[data-level="intermediaire"]{ background:rgba(140,213,180,0.24); color:#3a8a68; }
+.skill-percentage[data-level="avance"]       { background:rgba(240,160,192,0.24); color:#b9557f; }
+body.dark .skill-percentage[data-level="debutant"]     { background:rgba(246,205,120,0.12); color:#e6c980; }
+body.dark .skill-percentage[data-level="intermediaire"]{ background:rgba(140,213,180,0.12); color:#8fd4b5; }
+body.dark .skill-percentage[data-level="avance"]       { background:rgba(240,160,192,0.12); color:#f0a6c6; }
 
 /* Barre fine avec marqueurs de palier */
 .skill-bar-container {
-    height: 5px;
-    background: var(--bg-secondary);
+    height: 4px;
+    background: rgba(240, 160, 192, 0.16);
     border-radius: 999px;
     overflow: visible;
     position: relative;
 }
 
-body.dark .skill-bar-container { background: rgba(255,255,255,0.07); }
+body.dark .skill-bar-container { background: rgba(255,255,255,0.06); }
 
 /* Traits de palier discrets */
 .skill-bar-container::before {
@@ -1941,7 +1941,8 @@ body.dark .skill-bar-container { background: rgba(255,255,255,0.07); }
 
 .skill-bar {
     height: 100%;
-    background: var(--gradient-primary);
+    background: linear-gradient(90deg, #f5b3cc, #e0b0ea);
+    opacity: 1;
     border-radius: 999px;
     width: 0;
     transition: width 1.4s cubic-bezier(0.65, 0, 0.35, 1);
@@ -1949,13 +1950,10 @@ body.dark .skill-bar-container { background: rgba(255,255,255,0.07); }
     overflow: hidden;
 }
 
-.skill-bar::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-    animation: shimmer 2.5s infinite;
-}
+body.dark .skill-bar { background: linear-gradient(90deg, #d98fae, #b58fd0); opacity: 0.95; }
+
+/* Effet brillant supprimé pour un rendu plus sobre */
+.skill-bar::after { display: none; }
 
 @keyframes shimmer {
     0%   { transform: translateX(-100%); }
@@ -1988,9 +1986,9 @@ body.dark .skill-bar-container { background: rgba(255,255,255,0.07); }
     border-radius: 50%;
     flex-shrink: 0;
 }
-.legend-dot.d1 { background: #e8b020; }
-.legend-dot.d2 { background: #3dc98a; }
-.legend-dot.d3 { background: var(--color-primary); }
+.legend-dot.d1 { background: #f2cf8a; }
+.legend-dot.d2 { background: #9edcbe; }
+.legend-dot.d3 { background: #f2a9c6; }
 
 /* ── Nuage de technos ── */
 .technologies-cloud {
@@ -8429,4 +8427,45 @@ body:not(.dark) .exp-related-btn-portfolio {
     background: var(--color-primary);
     color: #fff;
     border: 1px solid var(--color-primary);
+}
+
+/* ==================== COMPÉTENCES : cartes compactes en défilement horizontal ==================== */
+.skills-scroll-wrapper { position: relative; margin-bottom: 1.25rem; }
+.skills-scroll {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scroll-behavior: smooth;
+    padding: 0.25rem 0.25rem 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-secondary) transparent;
+}
+.skills-scroll .skill-category-card,
+.skills-scroll .skill-category-card:hover {
+    flex: 0 0 370px;
+    scroll-snap-align: start;
+    transform: none;
+    padding: 1rem 1.1rem 0.9rem;
+}
+.skills-scroll .category-header { margin-bottom: 0.8rem; padding-bottom: 0.6rem; }
+.skills-scroll .category-icon { width: 32px; height: 32px; font-size: 0.85rem; }
+.skills-scroll .skills-list { gap: 0.6rem; }
+.skills-scroll .skill-header { margin-bottom: 0.3rem; align-items: flex-start; }
+.skills-scroll .skill-name { font-size: 0.8rem; }
+.skill-tools {
+    margin-left: 0.3rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-light);
+    white-space: nowrap;
+}
+.skills-scroll .skill-level-legend { display: none; }
+.skill-level-legend--global { margin-top: 0.6rem; padding-top: 0; border-top: none; }
+@media (max-width: 700px) {
+    .skills-scroll .skill-category-card,
+    .skills-scroll .skill-category-card:hover { flex-basis: 84vw; }
+    .skill-tools { white-space: normal; }
 }
