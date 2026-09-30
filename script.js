@@ -131,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initTypingEffect();
     initCounters();
     initSkillBars();
+    initSkillArrows();
     initParticles();
     initProjects();
     initTestimonials();
@@ -384,6 +385,23 @@ function initSkillBars() {
     }, observerOptions);
     
     skillBars.forEach(bar => observer.observe(bar));
+}
+
+// ==================== FLÈCHES DE DÉFILEMENT — COMPÉTENCES ====================
+function initSkillArrows() {
+    const grid = document.getElementById('skillsScroll');
+    const prevBtn = document.getElementById('skillsPrevBtn');
+    const nextBtn = document.getElementById('skillsNextBtn');
+    if (!grid || !prevBtn || !nextBtn) return;
+
+    const scrollAmount = () => (grid.querySelector('.skill-category-card')?.offsetWidth || 370) + 16;
+
+    prevBtn.addEventListener('click', () => {
+        grid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+    });
+    nextBtn.addEventListener('click', () => {
+        grid.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+    });
 }
 
 // ==================== PARTICULES D'ARRIÈRE-PLAN ====================
