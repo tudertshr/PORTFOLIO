@@ -72,6 +72,73 @@ const projectsData = [
         gallery: ['img/SEC1.png','img/SEC2.png','img/SEC3.png','img/SEC4.png','img/SEC5.png','img/SEC6.png','img/SEC7.png','img/SEC8.png','img/SEC9.png','img/SEC10.png','img/SEC11.png','img/SEC12.png','img/SEC13.png','img/SEC14.png']
     },
     {
+        id: 18,
+        title: 'SOC automatisé : surveillance réseau avec le SIEM Wazuh',
+        category: 'security',
+        icon: '🛰️',
+        image: {
+            clair:  'img/covers/clair/cover-p18.png',
+            sombre: 'img/covers/sombre/cover-p18.png'
+        },
+        year: '2026',
+        status: 'Terminé',
+        featured: true,
+        shortDescription: 'Dossier SOC/SIEM (module Implantation de réseau) et labo pratique : Wazuh installé par scripts, attaque SSH depuis Kali, alerte détectée.',
+        description: 'Projet du module Implantation de réseau : « Conception et mise en place d’une solution SIEM dans un SOC automatisé ». Un dossier théorique de 58 pages explique comment un réseau est construit, protégé et surveillé, et comment une équipe de sécurité détecte, analyse et répond à une attaque. La partie pratique le met en application : un SIEM Wazuh installé par scripts d’automatisation, une machine surveillée par un agent, puis une attaque par force brute SSH lancée depuis Kali et détectée dans le dashboard.',
+        technologies: ['Wazuh', 'Suricata', 'MITRE ATT&CK', 'Hydra', 'Kali Linux', 'Ubuntu', 'SSH', 'VMware Workstation', 'Bash'],
+        role: 'Analyste SOC (lab) & administratrice sécurité',
+        duration: '—',
+        team: 'Individuel',
+        type: 'Projet académique',
+        details: {
+            context: 'Partie théorique : architecture réseau en trois couches, zones et DMZ, défense en profondeur, triade CIA, pare-feu, IDS/IPS, switch et port SPAN. Le SOC : niveaux d’analystes (Tier 1 à 3), MTTD et MTTR, SIEM, EDR, NDR, XDR et SOAR. Le SIEM : logs, événements, collecte, pipeline interne, détection, alertes, faux positifs, MITRE ATT&CK. Les outils open source : Wazuh, Security Onion, Suricata, Zeek, Wireshark, TheHive, Cortex, MISP, Shuffle, OpenVAS. Pour finir : réponse à incident, SOAR, IA et amélioration continue.',
+            objectives: [
+                'Comprendre comment un réseau d’entreprise est construit, protégé et surveillé',
+                'Comprendre le fonctionnement d’un SOC et du SIEM, du log jusqu’à l’incident',
+                'Installer un SIEM Wazuh de façon automatisée et surveiller une machine',
+                'Simuler une attaque par force brute SSH (MITRE T1110) et la retrouver dans le dashboard'
+            ],
+            achievements: [
+                'Installation du manager Wazuh sur UB1 avec un premier script (manager, indexer, dashboard, puis préparation de Suricata)',
+                'Connexion au dashboard et vérification des trois services actifs',
+                'Agent local installé sur UB1 avec un deuxième script, solution provisoire en attendant la machine victime',
+                'Machine victime « serv » surveillée avec un troisième script : agent actif dans le dashboard',
+                'Attaque par force brute SSH avec Hydra depuis Kali, qui trouve le mot de passe puis ouvre une session SSH',
+                'Alerte de niveau 12 « Multiple authentication failures followed by a success » et 182 événements retrouvés dans Discover',
+                'Alertes rattachées à MITRE ATT&CK (T1110, T1078) et aux exigences de conformité TSC, PCI-DSS et HIPAA'
+            ],
+            challenges: [
+                'Première installation interrompue par un manque d’espace disque : disque de la VM agrandi de 24 à 35 Go',
+                'Pas de place pour une machine victime séparée au départ : agent installé sur UB1 elle-même',
+                'Horloge de Kali non synchronisée avec les autres machines'
+            ],
+            results: 'Une chaîne de détection fonctionnelle, de la tentative de mot de passe jusqu’à l’alerte de haute sévérité. Le labo s’arrête à la détection : le triage, la réponse à incident et le SOAR sont expliqués dans le dossier mais pas rejoués en pratique.',
+            learnings: [
+                'Fonctionnement d’un SOC et d’un SIEM',
+                'Lecture d’une alerte Wazuh et de son rattachement à MITRE ATT&CK',
+                'Automatisation de l’installation avec des scripts Bash'
+            ]
+        },
+        links: { demo: null, github: null, documentation: null, pdf: 'doc/Projet_SIEM_surveillance_reseau_SOC.pdf', photos: [] },
+        gallery: [
+            'img/WAZ1.png',
+            'img/WAZ2.png',
+            'img/WAZ3.png',
+            'img/WAZ4.png',
+            'img/WAZ5.png',
+            'img/WAZ6.png',
+            'img/WAZ7.png',
+            'img/WAZ8.png',
+            'img/WAZ9.png',
+            'img/WAZ10.png',
+            'img/WAZ11.png',
+            'img/WAZ12.png',
+            'img/WAZ13.png',
+            'img/WAZ14.png',
+            'img/WAZ15.png'
+        ]
+    },
+    {
         id: 2,
         title: 'Mise en place de la sécurité réseau',
         category: 'security',
@@ -165,9 +232,9 @@ const projectsData = [
         year: '2026',
         status: 'Terminé',
         featured: true,
-        shortDescription: '7 scripts Bash triés pour administrer mon lab Linux : changement d\'IP, intégration au domaine LDAP et chaîne AAA FreeRADIUS (authentification, autorisation, accounting, supervision).',
+        shortDescription: '10 scripts Bash pour administrer mon lab Linux : changement d\'IP, intégration au domaine LDAP, chaîne AAA FreeRADIUS et déploiement automatisé du SIEM Wazuh.',
         description: 'Scripts Bash écrits avec l\'aide de l\'IA pour automatiser les tâches répétitives de mon lab OpenLDAP / FreeRADIUS / Zabbix. Le plus utile : un script qui met à jour l\'IP dans tous les fichiers de configuration quand je passe du stage à chez moi.',
-        technologies: ['Bash', 'Linux (Ubuntu)', 'SSSD', 'OpenLDAP', 'PAM', 'Netplan', 'FreeRADIUS', 'AAA', 'Zabbix', 'sed / awk', 'Outils IA'],
+        technologies: ['Bash', 'Linux (Ubuntu)', 'SSSD', 'OpenLDAP', 'PAM', 'Netplan', 'FreeRADIUS', 'AAA', 'Zabbix', 'sed / awk', 'Wazuh', 'Suricata', 'Outils IA'],
         role: 'Administratrice système & automatisation',
         duration: '1 mois',
         team: 'Individuel',
@@ -180,7 +247,7 @@ const projectsData = [
                 'Automatiser la chaîne AAA de FreeRADIUS'
             ],
             achievements: [
-                '7 scripts retenus après tri des doublons',
+                '10 scripts retenus après tri des doublons, dont 3 pour déployer le SIEM Wazuh (manager et agents)',
                 'Sauvegarde et test avant chaque modification, avec retour arrière automatique',
                 'Métriques Zabbix pour superviser accounting et authentification'
             ],
@@ -192,7 +259,8 @@ const projectsData = [
             learnings: [
                 'Bash : arguments, conditions, gestion d\'erreurs',
                 'sed, awk et grep pour éditer des configurations',
-                'SSSD, PAM, LDAP et modèle AAA avec FreeRADIUS'
+                'SSSD, PAM, LDAP et modèle AAA avec FreeRADIUS',
+                'Déploiement automatisé et rejouable d\'un SIEM Wazuh et de ses agents'
             ]
         },
         scripts: [
@@ -660,6 +728,227 @@ esac
 # Côté agent Zabbix (/etc/zabbix/zabbix_agentd.conf), une seule ligne suffit :
 # UserParameter=radius[*],/etc/zabbix/scripts/radius_monitoring.sh $1
 `
+            },
+            {
+                id: 'wazuh-manager',
+                group: 'SIEM Wazuh',
+                order: 1,
+                label: 'Installer le manager Wazuh',
+                filename: '01_manager_ub1.sh',
+                need: 'Installer tout le SIEM (manager, indexer, dashboard) puis relier la sonde Suricata en un seul script. Il s’arrête à la première erreur et peut être relancé : sa première étape nettoie une éventuelle installation précédente.',
+                how: [
+                    'Le script s’arrête à la première erreur et commence par nettoyer une éventuelle installation précédente (purge des paquets wazuh et filebeat et des dossiers résiduels).',
+                    'Il met le système à jour, puis installe curl, wget, tcpdump, ethtool, net-tools et suricata.',
+                    'Il télécharge wazuh-install.sh (version 4.14) et lance l’installation tout-en-un : manager, indexer et dashboard.',
+                    'Il extrait le fichier des mots de passe générés, en lecture réservée à l’utilisateur, et vérifie que les trois services sont actifs.',
+                    'Il passe l’interface de capture en mode promiscuous et fait un test tcpdump de 10 secondes.',
+                    'Il configure Suricata (HOME_NET, interface de capture, règles à jour, test de configuration) puis ajoute eve.json à la configuration du manager et redémarre celui-ci.'
+                ],
+                usage: 'sudo bash ./01_manager_ub1.sh',
+                code: `#!/bin/bash
+# ============================================================
+# A exécuter SUR UB1 (poste SIEM) — IP 192.168.163.135
+# Installe Wazuh (manager+indexer+dashboard) puis Suricata,
+# et relie les deux. Entièrement automatique.
+# ============================================================
+set -e
+export DEBIAN_FRONTEND=noninteractive
+
+SIEM_IP="192.168.163.135"
+CAPTURE_IFACE="ens37"         # 2e carte réseau (vérifiée via ip link show)
+HOME_NET_CIDR="192.168.163.0/24"   # <-- adapte à ton sous-réseau labo
+
+echo ">>> [0/7] Vérification des résidus d'une installation précédente"
+if dpkg -l | grep -qE "wazuh|filebeat"; then
+  echo "Des paquets wazuh/filebeat existent déjà -- nettoyage complet avant de repartir."
+  sudo apt remove --purge -y wazuh-indexer wazuh-manager wazuh-dashboard filebeat 2>/dev/null || true
+  sudo apt autoremove -y
+  # dossiers résiduels que dpkg --purge ne supprime pas s'ils ne sont pas vides
+  sudo rm -rf /var/log/wazuh-indexer /var/lib/wazuh-indexer /etc/wazuh-indexer
+  sudo rm -rf /var/log/filebeat /var/lib/filebeat /etc/filebeat
+  sudo rm -rf /var/ossec
+  sudo rm -rf /etc/wazuh-dashboard /var/log/wazuh-dashboard /usr/share/wazuh-dashboard
+  rm -f ~/wazuh-install.sh ~/wazuh-install-files.tar ~/wazuh-passwords.txt
+  rm -f ~/Bureau/wazuh-install.sh ~/Bureau/wazuh-install-files.tar
+fi
+
+echo ">>> [1/7] Mise à jour du système"
+sudo apt update && sudo apt -y upgrade
+sudo apt install -y curl wget tcpdump ethtool net-tools suricata
+
+echo ">>> [2/7] Téléchargement et installation de Wazuh (all-in-one)"
+cd ~
+curl -sO https://packages.wazuh.com/4.14/wazuh-install.sh
+sudo bash ./wazuh-install.sh -a 2>&1 | tee ~/wazuh-install.log
+
+echo ">>> [3/7] Extraction des mots de passe générés"
+sudo tar -O -xvf wazuh-install-files.tar wazuh-install-files/wazuh-passwords.txt > ~/wazuh-passwords.txt
+chmod 600 ~/wazuh-passwords.txt
+echo "Mots de passe sauvegardés dans ~/wazuh-passwords.txt"
+
+echo ">>> [4/7] Vérification des services Wazuh"
+sudo systemctl is-active wazuh-manager wazuh-indexer wazuh-dashboard
+
+echo ">>> [5/7] Configuration de l'interface de capture ($CAPTURE_IFACE)"
+sudo ip link set "$CAPTURE_IFACE" up
+sudo ip link set "$CAPTURE_IFACE" promisc on
+sudo ethtool -K "$CAPTURE_IFACE" gro off lro off || true
+echo "Test rapide de capture (10s max) :"
+sudo timeout 10 tcpdump -i "$CAPTURE_IFACE" -nn -c 20 || echo "Aucun paquet vu pour l'instant -- vérifie le mirroring du switch/vSwitch."
+
+echo ">>> [6/7] Configuration de Suricata"
+sudo sed -i "s#HOME_NET: .*#HOME_NET: \\"[$HOME_NET_CIDR]\\"#" /etc/suricata/suricata.yaml
+sudo sed -i "/af-packet:/,/interface:/ s/interface: .*/interface: $CAPTURE_IFACE/" /etc/suricata/suricata.yaml
+sudo suricata-update
+sudo suricata -T -c /etc/suricata/suricata.yaml -v
+sudo systemctl enable --now suricata
+sudo systemctl is-active suricata
+
+echo ">>> [7/7] Intégration Suricata -> Wazuh"
+OSSEC_CONF="/var/ossec/etc/ossec.conf"
+if ! sudo grep -q "suricata/eve.json" "$OSSEC_CONF"; then
+  sudo sed -i "s#</ossec_config>#  <localfile>\\n    <log_format>json</log_format>\\n    <location>/var/log/suricata/eve.json</location>\\n  </localfile>\\n</ossec_config>#" "$OSSEC_CONF"
+fi
+sudo systemctl restart wazuh-manager
+
+echo "============================================================"
+echo "Terminé. Dashboard : https://$SIEM_IP  (user: admin)"
+echo "Mot de passe dans : ~/wazuh-passwords.txt"
+echo "============================================================"
+`
+            },
+            {
+                id: 'wazuh-agent-local',
+                group: 'SIEM Wazuh',
+                order: 2,
+                label: 'Agent Wazuh local (UB1)',
+                filename: '02b_agent_local_ub1.sh',
+                need: 'Solution provisoire : faute de place pour une machine victime séparée, l’agent est installé sur UB1 elle-même et pointe vers 127.0.0.1. Le script prépare aussi SSH et Apache.',
+                how: [
+                    'Le script arrête et purge un agent Wazuh déjà présent, puis met à jour les listes de paquets.',
+                    'Il ajoute le dépôt Wazuh et sa clé GPG s’ils ne sont pas déjà là.',
+                    'Il installe wazuh-agent avec le manager 127.0.0.1, l’active au démarrage et vérifie qu’il est actif.',
+                    'Il installe openssh-server (le service visé par la force brute) et apache2.',
+                    'Il propose de vérifier l’enrôlement avec agent_control -l côté manager.'
+                ],
+                usage: 'sudo bash ./02b_agent_local_ub1.sh',
+                code: `#!/bin/bash
+# ============================================================
+# A exécuter SUR UB1 ELLE-MEME (solution temporaire en attendant
+# une vraie VM victime, KALI-DEF ayant été supprimée faute d'espace)
+# Installe l'agent Wazuh qui pointe vers localhost (127.0.0.1)
+# + SSH et Apache pour les scénarios S2 et S3.
+# ============================================================
+set -e
+export DEBIAN_FRONTEND=noninteractive
+
+SIEM_IP="127.0.0.1"   # l'agent et le manager sont sur la même machine
+
+echo ">>> [0/5] Vérification des résidus d'une installation précédente"
+if dpkg -l | grep -q wazuh-agent; then
+  echo "L'agent wazuh existe déjà -- nettoyage avant de repartir."
+  sudo systemctl stop wazuh-agent 2>/dev/null || true
+  sudo apt remove --purge -y wazuh-agent 2>/dev/null || true
+fi
+
+echo ">>> [1/5] Mise à jour des listes de paquets"
+sudo apt update
+
+echo ">>> [2/5] Ajout du dépôt Wazuh (si pas déjà présent, normal si déjà fait pour le manager)"
+if [ ! -f /etc/apt/sources.list.d/wazuh.list ]; then
+  curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import
+  sudo chmod 644 /usr/share/keyrings/wazuh.gpg
+  echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | sudo tee /etc/apt/sources.list.d/wazuh.list
+  sudo apt update
+fi
+
+echo ">>> [3/5] Installation et démarrage de l'agent Wazuh (manager=$SIEM_IP)"
+sudo WAZUH_MANAGER="$SIEM_IP" apt install -y wazuh-agent
+sudo systemctl daemon-reload
+sudo systemctl enable --now wazuh-agent
+sudo systemctl is-active wazuh-agent
+
+echo ">>> [4/5] Installation de SSH (scénario S2 - force brute)"
+sudo apt install -y openssh-server
+sudo systemctl enable --now ssh
+
+echo ">>> [5/5] Installation d'Apache (scénario S3 - exploitation web)"
+sudo apt install -y apache2
+sudo systemctl enable --now apache2
+
+echo "============================================================"
+echo "Terminé. Vérifie que l'agent apparaît :"
+echo "  sudo /var/ossec/bin/agent_control -l"
+echo ""
+echo "NOTE POUR LE MEMOIRE : agent installé en local sur le poste"
+echo "SIEM lui-meme, faute de VM victime separee (contrainte de"
+echo "stockage documentee en limite du systeme, §6.4)."
+echo "============================================================"
+`
+            },
+            {
+                id: 'wazuh-agent-victime',
+                group: 'SIEM Wazuh',
+                order: 3,
+                label: 'Agent Wazuh de la machine victime',
+                filename: '02c_agent_vict01.sh',
+                need: 'Installer l’agent sur la machine victime (utilisateur vict01, 192.168.163.142) et le relier au manager UB1 (192.168.163.135).',
+                how: [
+                    'Si un agent existe déjà, le script l’arrête, le purge et supprime /var/ossec, puis met à jour les listes de paquets.',
+                    'Il ajoute le dépôt Wazuh et sa clé GPG.',
+                    'Il installe wazuh-agent avec le manager 192.168.163.135, l’active et vérifie qu’il est actif.',
+                    'Il vérifie que ssh est actif, puis installe et active apache2.',
+                    'Il se termine en demandant de contrôler, dans la section Agents du dashboard, que la machine apparaît Active.'
+                ],
+                usage: 'sudo bash ./02c_agent_vict01.sh',
+                code: `#!/bin/bash
+# ============================================================
+# A exécuter SUR LA NOUVELLE MACHINE VICTIME (vict01 @ 192.168.163.142)
+# Installe l'agent Wazuh pointé vers le manager UB1 (192.168.163.135)
+# + Apache pour le scénario S3. SSH est déjà actif (connexion testée).
+# ============================================================
+set -e
+export DEBIAN_FRONTEND=noninteractive
+
+SIEM_IP="192.168.163.135"   # IP du manager, sur UB1
+
+echo ">>> [0/5] Vérification des résidus d'une installation précédente"
+if dpkg -l | grep -q wazuh-agent; then
+  echo "L'agent wazuh existe déjà -- nettoyage avant de repartir."
+  sudo systemctl stop wazuh-agent 2>/dev/null || true
+  sudo apt remove --purge -y wazuh-agent 2>/dev/null || true
+  sudo rm -rf /var/ossec
+fi
+
+echo ">>> [1/5] Mise à jour des listes de paquets"
+sudo apt update
+
+echo ">>> [2/5] Ajout du dépôt Wazuh"
+curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import
+sudo chmod 644 /usr/share/keyrings/wazuh.gpg
+echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | sudo tee /etc/apt/sources.list.d/wazuh.list
+sudo apt update
+
+echo ">>> [3/5] Installation et démarrage de l'agent Wazuh (manager=$SIEM_IP)"
+sudo WAZUH_MANAGER="$SIEM_IP" apt install -y wazuh-agent
+sudo systemctl daemon-reload
+sudo systemctl enable --now wazuh-agent
+sudo systemctl is-active wazuh-agent
+
+echo ">>> [4/5] Vérification de SSH (déjà actif normalement)"
+sudo systemctl enable --now ssh 2>/dev/null || true
+sudo systemctl is-active ssh
+
+echo ">>> [5/5] Installation d'Apache (scénario S3 - exploitation web)"
+sudo apt install -y apache2
+sudo systemctl enable --now apache2
+sudo systemctl is-active apache2
+
+echo "============================================================"
+echo "Terminé. Vérifie côté manager (UB1, 192.168.163.135) dans le"
+echo "dashboard web, section Agents, que 'vict01' apparaît Active."
+echo "============================================================"
+`
             }
         ],
         links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
@@ -996,7 +1285,7 @@ esac
             ]
         },
         links: { demo: null, github: null, documentation: null, pdf: null, photos: [] },
-        gallery: ['img/mach1.png','img/mach2.png','img/mach3.png','img/mach4.png','img/mach5.png']
+        gallery: ['img/mach1.png','img/mach2.png','img/mach3.png','img/mach4.png','img/mach5.png','img/mach6.png']
     },
     {
         id: 11,
