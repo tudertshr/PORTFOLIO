@@ -1546,7 +1546,7 @@ function createModalContent(project) {
                 </h3>
                 <div class="project-gallery">
                     ${gallerySources.map((src, i) => `
-                        <div class="gallery-item" onclick="openLightbox('${resolveAssetUrl(src).replace(/'/g, "\\'")}')">
+                        <div class="gallery-item" onclick="openLightbox('${resolveAssetUrl(src).replace(/'/g, "\\'")}', this)">
                             <img
                                 src="${resolveAssetUrl(src)}"
                                 alt="Image ${i + 1} — ${project.title}"
@@ -1737,7 +1737,7 @@ function createModalContent(project) {
                 </h3>
                 <div class="project-gallery">
                     ${project.links.photos.map((src, i) => `
-                        <div class="gallery-item" onclick="openLightbox('${src}')">
+                        <div class="gallery-item" onclick="openLightbox('${src}', this)">
                             <img src="${src}" alt="Photo projet ${i+1}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
                         </div>`).join('')}
                 </div>
@@ -1842,19 +1842,95 @@ function openGalleryImage(index) {
     console.log('Open gallery image:', index);
 }
 
-// ==================== LIGHTBOX ====================
-function openLightbox(src) {
-    let lb = document.getElementById('lightbox-overlay');
-    if (!lb) {
-        lb = document.createElement('div');
-        lb.id = 'lightbox-overlay';
-        lb.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:99999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
-        lb.innerHTML = '<img id="lightbox-img" style="max-width:90vw;max-height:90vh;border-radius:10px;box-shadow:0 0 40px rgba(0,0,0,0.8)">';
-        lb.addEventListener('click', () => lb.remove());
-        document.body.appendChild(lb);
+// ==================== LIGHTBOX (avec navigation gauche / droite) ====================
+// openLightbox(src, el) : "el" est l'élément .gallery-item cliqué (passé par onclick via "this").
+// La liste des images est lue dans la même galerie : on peut donc passer d'une image à l'autre
+// (flèches, clavier ← →, glissement du doigt) sans quitter le projet.
+function openLightbox(src, el) {
+    // 1. Récupérer les images de la même galerie (celles qui ne sont pas cassées)
+    let images = [src];
+    let index = 0;
+    const container = el && el.parentElement;
+    if (container) {
+        const found = Array.from(container.querySelectorAll('.gallery-item img'))
+            .map(img => img.currentSrc || img.src)
+            .filter(Boolean);
+        if (found.length > 0) {
+            images = found;
+            const items = Array.from(container.querySelectorAll('.gallery-item'));
+            const pos = items.indexOf(el.closest ? el.closest('.gallery-item') : el);
+            index = pos >= 0 ? pos : 0;
+        }
     }
-    document.getElementById('lightbox-img').src = src;
-    lb.style.display = 'flex';
+
+    // 2. Éviter les doublons si une lightbox est déjà ouverte
+    const existing = document.getElementById('lightbox-overlay');
+    if (existing) existing.dispatchEvent(new Event('lightbox-close'));
+
+    const multi = images.length > 1;
+    const lb = document.createElement('div');
+    lb.id = 'lightbox-overlay';
+    lb.setAttribute('role', 'dialog');
+    lb.setAttribute('aria-modal', 'true');
+    lb.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:99999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;touch-action:pan-y;';
+
+    const btnStyle = 'position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#fff;background:linear-gradient(135deg,#f472b6,#db2777);box-shadow:0 4px 18px rgba(0,0,0,0.45);z-index:2;';
+    lb.innerHTML =
+        '<img id="lightbox-img" alt="" style="max-width:90vw;max-height:88vh;border-radius:10px;box-shadow:0 0 40px rgba(0,0,0,0.8);cursor:default;user-select:none;-webkit-user-drag:none;">' +
+        (multi
+            ? '<button type="button" id="lightbox-prev" aria-label="Image précédente" style="' + btnStyle + 'left:16px;"><i class="fas fa-chevron-left"></i></button>' +
+              '<button type="button" id="lightbox-next" aria-label="Image suivante" style="' + btnStyle + 'right:16px;"><i class="fas fa-chevron-right"></i></button>' +
+              '<div id="lightbox-counter" style="position:absolute;bottom:18px;left:50%;transform:translateX(-50%);padding:6px 16px;border-radius:20px;background:rgba(0,0,0,0.55);color:#fff;font:600 0.95rem system-ui,sans-serif;z-index:2;"></div>'
+            : '') +
+        '<button type="button" id="lightbox-close" aria-label="Fermer" style="position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;color:#fff;font-size:1.2rem;background:rgba(255,255,255,0.18);z-index:2;"><i class="fas fa-times"></i></button>';
+
+    const imgEl = lb.querySelector('#lightbox-img');
+    const counter = lb.querySelector('#lightbox-counter');
+
+    function show() {
+        imgEl.src = images[index];
+        imgEl.alt = 'Image ' + (index + 1) + ' sur ' + images.length;
+        if (counter) counter.textContent = (index + 1) + ' / ' + images.length;
+    }
+    function go(step) {
+        if (!multi) return;
+        index = (index + step + images.length) % images.length;
+        show();
+    }
+    function close() {
+        document.removeEventListener('keydown', onKey, true);
+        lb.remove();
+    }
+    // Capture : ← → naviguent, Échap ferme seulement la lightbox (pas la fenêtre du projet derrière)
+    function onKey(e) {
+        if (e.key === 'ArrowLeft')  { e.preventDefault(); e.stopPropagation(); go(-1); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); e.stopPropagation(); go(1); }
+        else if (e.key === 'Escape') { e.stopPropagation(); close(); }
+    }
+
+    // Clic : fond = fermer ; image et boutons = ne ferment pas
+    lb.addEventListener('click', close);
+    imgEl.addEventListener('click', e => e.stopPropagation());
+    lb.querySelector('#lightbox-close').addEventListener('click', e => { e.stopPropagation(); close(); });
+    if (multi) {
+        lb.querySelector('#lightbox-prev').addEventListener('click', e => { e.stopPropagation(); go(-1); });
+        lb.querySelector('#lightbox-next').addEventListener('click', e => { e.stopPropagation(); go(1); });
+    }
+
+    // Glissement du doigt (mobile)
+    let touchX = null;
+    lb.addEventListener('touchstart', e => { touchX = e.changedTouches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', e => {
+        if (touchX === null) return;
+        const dx = e.changedTouches[0].clientX - touchX;
+        touchX = null;
+        if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
+    lb.addEventListener('lightbox-close', close);
+    document.addEventListener('keydown', onKey, true);
+    document.body.appendChild(lb);
+    show();
 }
 
 // ==================== GESTION DES PIÈCES JOINTES PROJETS ====================
@@ -1900,7 +1976,7 @@ function refreshGallery(projectId) {
         grid.innerHTML = '<p class="empty-gallery-msg"><i class="fas fa-camera"></i> Aucune photo ajoutée</p>';
     } else {
         grid.innerHTML = data.photos.map((src, i) => `
-            <div class="gallery-item" onclick="openLightbox('${src}')">
+            <div class="gallery-item" onclick="openLightbox('${src}', this)">
                 <img src="${src}" alt="Photo ${i+1}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
                 <button class="gallery-delete-btn" onclick="event.stopPropagation();removeProjectPhoto(${projectId},${i})" title="Supprimer"><i class="fas fa-times"></i></button>
             </div>
